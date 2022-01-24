@@ -8,7 +8,7 @@ function App() {
     <>
       <AppHeader/>
       <main className={styles.app}>
-        <BurgerIngredients />
+        <BurgerIngredients/>
         <BurgerConstructor />
       </main>
     </>
