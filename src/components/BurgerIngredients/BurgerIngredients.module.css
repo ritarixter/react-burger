@@ -1,0 +1,57 @@
+.section{
+  max-width:600px;
+  box-sizing: border-box;
+ 
+}
+
+.cards{
+  display: flex;
+  list-style: none;
+  margin: 0;
+  margin-bottom: 40px;
+  padding: 0;
+  padding-left: 16px;
+  padding-right: 6px;
+  flex-wrap: wrap;
+
+}
+
+.card{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  max-width: 268px;
+  max-height: 208px;
+}
+
+.card:nth-child(2n){
+  margin-left: 24px;
+}
+
+.price{
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.link{
+  text-decoration: none;
+}
+
+.scrollbar{
+  height: 719px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2F2F37;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #8585AD;
+}
+
