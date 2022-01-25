@@ -8,7 +8,7 @@ function AppHeader(){
       <nav className={`${styles.nav} mt-4`}>
         <ul className={styles.menu}>
           <li className="text text_type_main-default p-5">
-            <a href='#' className={styles.menu__item}>
+            <a href='#' className={`${styles.menu__item} ${styles.menu__item_active}`}>
               <BurgerIcon type="primary" /><span className='ml-2'>Конструктор</span>
             </a>
           </li>

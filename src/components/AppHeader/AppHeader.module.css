@@ -27,6 +27,10 @@
  transition: color .2s ease-in-out;
 }
 
+.menu__item_active{
+  color: #fff;
+}
+  
 .navigation__item:hover{
   color: #fff;
 }
