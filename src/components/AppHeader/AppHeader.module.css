@@ -1,15 +1,15 @@
-.header{
+.header {
   background-color: #1c1c21;
   max-width: 1920px;
   margin: 0 auto;
 }
 
-.nav{
+.nav {
   max-width: 1280px;
   margin: 0 auto;
 }
 
-.menu{
+.menu {
   list-style: none;
   padding: 0;
   margin: 0;
@@ -18,27 +18,27 @@
   align-items: center;
 }
 
-.menu__item{
- text-align: center;
- display: flex;
- align-items: center;
- text-decoration: none;
- color: #8585AD;
- transition: color .2s ease-in-out;
+.menu__item {
+  text-align: center;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #8585ad;
+  transition: color 0.2s ease-in-out;
 }
 
-.menu__item_active{
-  color: #fff;
-}
-  
-.navigation__item:hover{
+.menu__item_active {
   color: #fff;
 }
 
-.mr_l{
- margin-left: auto;
+.navigation__item:hover {
+  color: #fff;
 }
 
-.m_center{
-margin: 0 auto;
+.mr_l {
+  margin-left: auto;
+}
+
+.m_center {
+  margin: 0 auto;
 }
