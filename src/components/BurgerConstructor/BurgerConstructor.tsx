@@ -28,12 +28,11 @@ function BurgerConstructor(props: {
         <div className={`${styles.scrollbar}`}>
           {props.fillings.map(
             (item: {
-              _id: string;
               name: string;
               price: number;
               image: string;
-            }) => (
-              <li className={styles.list_item} key={item._id}>
+            },index) => (
+              <li className={styles.list_item}  key={`fillings_${index}`}>
                 <span className="mr-2">
                   <DragIcon type="primary" />
                 </span>
@@ -48,12 +47,11 @@ function BurgerConstructor(props: {
 
           {props.sauces.map(
             (item: {
-              _id: string;
               name: string;
               price: number;
               image: string;
-            }) => (
-              <li className={styles.list_item} key={item._id}>
+            },index) => (
+              <li className={styles.list_item} key={`sauce_${index}`}>
                 <span className="mr-2">
                   <DragIcon type="primary" />
                 </span>

@@ -27,7 +27,7 @@ function BurgerIngredients(props: {
             }) => (
               <CardIngredients
                 image={roll.image}
-                _id={roll._id}
+                key={roll._id}
                 name={roll.name}
                 price={roll.price}
               />
@@ -42,13 +42,13 @@ function BurgerIngredients(props: {
           {props.sauces.map(
             (sauce: {
               image: string;
-              _id: string;
               name: string;
               price: number;
+              _id: string;
             }) => (
               <CardIngredients
                 image={sauce.image}
-                _id={sauce._id}
+                key={sauce._id}
                 name={sauce.name}
                 price={sauce.price}
               />
@@ -69,7 +69,7 @@ function BurgerIngredients(props: {
             }) => (
               <CardIngredients
                 image={filling.image}
-                _id={filling._id}
+                key={filling._id}
                 name={filling.name}
                 price={filling.price}
               />
