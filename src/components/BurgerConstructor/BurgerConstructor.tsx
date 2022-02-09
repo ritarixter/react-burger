@@ -4,7 +4,6 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Key } from "react";
 import PropTypes from "prop-types";
 import styles from "./BurgerConstructor.module.css";
 
