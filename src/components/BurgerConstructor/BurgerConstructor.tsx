@@ -8,30 +8,33 @@ import PropTypes from "prop-types";
 import styles from "./BurgerConstructor.module.css";
 
 function BurgerConstructor(props: {
-  rolls: { image: string; _id: string; name: string; price: number }[];
-  fillings: { image: string; _id: string; name: string; price: number }[];
+  buns: { image: string; _id: string; name: string; price: number }[];
+  mains: { image: string; _id: string; name: string; price: number }[];
   sauces: { image: string; _id: string; name: string; price: number }[];
-}) {
+}) 
+
+{
   return (
     <section className={`${styles.section} mt-25 ml-10 pl-4`}>
+       {props.buns && props.sauces && props.mains &&
       <ul className={styles.burger_list}>
-        <li className="ml-8" key={props.rolls[0]._id}>
+        <li className="ml-8" key={props.buns[0]._id}>
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={`${props.rolls[0].name} (верх)`}
-            price={props.rolls[0].price}
-            thumbnail={props.rolls[0].image}
+            text={`${props.buns[0].name} (верх)`} 
+            price={props.buns[0].price}
+            thumbnail={props.buns[0].image}
           />
         </li>
         <div className={`${styles.scrollbar}`}>
-          {props.fillings.map(
+          {props.mains.map(
             (item: {
               name: string;
               price: number;
               image: string;
             },index) => (
-              <li className={styles.list_item}  key={`fillings_${index}`}>
+              <li className={styles.list_item}  key={`mains_${index}`}>
                 <span className="mr-2">
                   <DragIcon type="primary" />
                 </span>
@@ -63,16 +66,18 @@ function BurgerConstructor(props: {
             )
           )}
         </div>
-        <li className="ml-8" key={props.rolls[0]._id + 1}>
+        <li className="ml-8" key={props.buns[0]._id+1}>
           <ConstructorElement
             type="bottom"
             isLocked={true}
-            text={`${props.rolls[0].name} (низ)`}
-            price={props.rolls[0].price}
-            thumbnail={props.rolls[0].image}
+            text={`${props.buns[0].name} (низ)`}
+            price={props.buns[0].price}
+            thumbnail={props.buns[0].image}
           />
         </li>
+       
       </ul>
+       }
       <article className={`${styles.order} mt-10`}>
         <p className={`text text_type_digits-medium mr-10 ${styles.price}`}>
           610{" "}
