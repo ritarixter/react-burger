@@ -1,19 +1,18 @@
-.ingridient{
+.ingridient {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.calories{
+.calories {
   list-style: none;
   padding: 0;
   margin: 0;
   display: flex;
-  color: #8585AD;
-
+  color: #8585ad;
 }
 
-.calories_number{
+.calories_number {
   text-align: center;
   margin: 0;
   padding: 0;

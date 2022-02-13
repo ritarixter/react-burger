@@ -3,33 +3,60 @@ import styles from "./BurgerIngredients.module.css";
 import Menu from "../Menu/Menu";
 import CardIngredients from "../CardIngredients/CardIngredients";
 import PropTypes from "prop-types";
+import Modal from "../Modal/Modal";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 function BurgerIngredients(props: {
-  rolls: { image: string; _id: string; name: string; price: number }[];
+  buns: { image: string; _id: string; name: string; price: number }[];
   sauces: { image: string; _id: string; name: string; price: number }[];
-  fillings: { image: string; _id: string; name: string; price: number }[];
+  mains: { image: string; _id: string; name: string; price: number }[];
+  dataIngrigients: any;
 }) {
+
+  const [open, setOpen] = React.useState(false)
+  const [data, setData] = React.useState([])
+
+ function openModal(prop: any){
+  setOpen(true)
+  {props.dataIngrigients &&
+    setData(props.dataIngrigients.find((item: any) => item._id === prop))
+   }
+ }
+
+ function closeModal(){
+  setOpen(false)
+ }
+
+function closeModalEsc(evt: { key: string; }){
+ if (evt.key === "Escape") {
+   setOpen(false);
+ }
+  
+}
+
   return (
     <section className={styles.section}>
       <h1 className="text text_type_main-large mt-10 mb-5">Соберите бургер</h1>
       <Menu />
       <div className={styles.scrollbar}>
-        <h2 className="text text_type_main-medium mb-6" id="rolls">
+        <h2 className="text text_type_main-medium mb-6" id="buns">
           Булки
         </h2>
         <ul className={`${styles.cards}`}>
-          {props.rolls.map(
-            (roll: {
+          {props.buns.map(
+            (bun: {
               image: string;
               _id: string;
               name: string;
               price: number;
             }) => (
               <CardIngredients
-                image={roll.image}
-                key={roll._id}
-                name={roll.name}
-                price={roll.price}
+                image={bun.image}
+                key={bun._id}
+                name={bun.name}
+                price={bun.price}
+                openModal={openModal}
+                id={bun._id}
               />
             )
           )}
@@ -51,32 +78,43 @@ function BurgerIngredients(props: {
                 key={sauce._id}
                 name={sauce.name}
                 price={sauce.price}
+                openModal={openModal}
+                id={sauce._id}
               />
             )
           )}
         </ul>
 
-        <h2 className="text text_type_main-medium mb-6" id="fillings">
+        <h2 className="text text_type_main-medium mb-6" id="mains">
           Начинки
         </h2>
         <ul className={styles.cards}>
-          {props.fillings.map(
-            (filling: {
+          {props.mains.map(
+            (main: {
               image: string;
               _id: string;
               name: string;
               price: number;
             }) => (
               <CardIngredients
-                image={filling.image}
-                key={filling._id}
-                name={filling.name}
-                price={filling.price}
+                image={main.image}
+                key={main._id}
+                name={main.name}
+                price={main.price}
+                openModal={openModal}
+                id={main._id}
               />
             )
           )}
         </ul>
       </div>
+      {open &&
+
+      
+          
+        <Modal title="Детали заказа" closeModalEsc={closeModalEsc} closeModal={closeModal}><IngredientDetails data={data}/></Modal>
+
+    }
     </section>
   );
 }
