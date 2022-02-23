@@ -2,7 +2,6 @@ import styles from "./IngredientDetails.module.css";
 import PropTypes from "prop-types";
 
 function IngredientDetails(data: any) {
-  console.log(data.data.name);
   return (
     <div className={`${styles.ingridient} pb-15`}>
       <img src={data.data.image} alt="Фото ингридиента" />

@@ -3,28 +3,23 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import React from "react";
+import { DataContext } from "./dataContext";
+import { getData } from "../../utils/API";
 
 function App() {
-  const url = "https://norma.nomoreparties.space/api";
   const [dataIngrigients, setDataIngrigients] = React.useState([]);
   const [error, setError] = React.useState(false);
 
   React.useEffect(() => {
-    fetch(`${url}/ingredients`)
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          return Promise.reject(`Ошибка: ${res.status}`);
-        }
-      })
+    getData()
       .then((res) => {
         const ApiData = res.data;
         setDataIngrigients(ApiData);
+        setError(false);
       })
       .catch((err) => {
         setError(true);
-        console.log(err)
+        console.log(err);
       });
   }, []);
 
@@ -50,8 +45,10 @@ function App() {
     [dataIngrigients]
   );
 
-  return (
+  return (  
     <>
+    {!error ? 
+      <>
       <AppHeader />
       <main className={styles.app}>
         <BurgerIngredients
@@ -60,10 +57,17 @@ function App() {
           sauces={sauces}
           dataIngrigients={dataIngrigients}
         />
-        <BurgerConstructor buns={buns} mains={mains} sauces={sauces} />
+        <DataContext.Provider value={dataIngrigients}>
+          <BurgerConstructor />
+        </DataContext.Provider>
       </main>
-
+      </>
+      :
+      <p>Произошла ошибка.</p>
+      
+      }
       <div id="modal"></div>
+
     </>
   );
 }
