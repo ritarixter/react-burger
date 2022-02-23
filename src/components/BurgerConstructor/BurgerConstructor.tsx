@@ -9,14 +9,12 @@ import React from "react";
 import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import { DataContext } from "../App/dataContext";
+import { DataContext } from "../../context/dataContext";
 import { dataOrder } from "../../utils/API";
 
-function totalPrice(arr: any[], bun: any) {
-  let totalPrice = 0;
-  arr.forEach((item) => {
-    totalPrice = totalPrice + item.price;
-  });
+function totalPrice(arr: any[], bun: any) { 
+  let totalPrice = arr.reduce((sum,item) => sum+item.price,0
+  );
   bun && (totalPrice = totalPrice + bun.price * 2);
   return totalPrice;
 }
@@ -24,15 +22,16 @@ function totalPrice(arr: any[], bun: any) {
 //Подскажите пожалуйста, при нажатии на кнопку 'Оформить заказ' происходит 3 рендера, как это можно исправить,не могу понять 
 function BurgerConstructor() {
   const data: any[] = React.useContext(DataContext);
-  const [orderNumber, setOrderNumber] = React.useState(0);
+  const [orderNumber, setOrderNumber] = React.useState(null);
   const [orderSuccess, setOrderSuccess] = React.useState(false);
+  const [clearIngrigient, setClearIngridient] =  React.useState(false)
   const [open, setOpen] = React.useState(false);
   /*const buns = React.useMemo(
       () =>
         data.filter((ingredient: { type: string }) => ingredient.type === "bun"),
       [data]
     );*/
-  const ingridients = React.useMemo(
+  let ingridients = React.useMemo(
     () =>
       data.filter((ingredient: { type: string }) => ingredient.type !== "bun"),
     [data]
@@ -59,6 +58,8 @@ function BurgerConstructor() {
   }
   function closeModal() {
     setOpen(false);
+    setOrderNumber(null)
+    setClearIngridient(true)
   }
   function closeModalEsc(evt: { key: string }) {
     if (evt.key === "Escape") {
@@ -68,7 +69,7 @@ function BurgerConstructor() {
 
   return (
     <section className={`${styles.section} mt-25 ml-10 pl-4`}>
-      {data.length > 0 && (
+      {data.length > 0 &&(
         <ul className={styles.burger_list}>
           <li className="ml-8" key={bun._id}>
             <ConstructorElement
@@ -80,8 +81,8 @@ function BurgerConstructor() {
             />
           </li>
           <div className={`${styles.scrollbar}`}>
-            {ingridients.map(
-              (
+         { !clearIngrigient && (    ingridients.map(
+                (
                 item: {
                   name: string;
                   price: number;
@@ -100,7 +101,9 @@ function BurgerConstructor() {
                   />
                 </li>
               )
-            )}
+            ))}
+            
+        
           </div>
           <li className="ml-8" key={bun._id + 1}>
             <ConstructorElement
@@ -115,7 +118,10 @@ function BurgerConstructor() {
       )}
       <article className={`${styles.order} mt-10`}>
         <p className={`text text_type_digits-medium mr-10 ${styles.price}`}>
-          {totalPrice(ingridients, bun)}
+        {!clearIngrigient?
+          totalPrice(ingridients, bun)
+          :bun.price*2
+        }
           <span className={`${styles.price_icon} ml-3`}>
             <CurrencyIcon type="primary" />
           </span>

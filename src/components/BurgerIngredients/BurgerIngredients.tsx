@@ -5,21 +5,39 @@ import CardIngredients from "../CardIngredients/CardIngredients";
 import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import { DataContext } from "../../context/dataContext";
 
-function BurgerIngredients(props: {
-  buns: { image: string; _id: string; name: string; price: number }[];
-  sauces: { image: string; _id: string; name: string; price: number }[];
-  mains: { image: string; _id: string; name: string; price: number }[];
-  dataIngrigients: any;
-}) {
-
+function BurgerIngredients() {
+  const ingridients:any[] = React.useContext(DataContext)
   const [open, setOpen] = React.useState(false)
   const [data, setData] = React.useState([])
+ 
+  const buns = React.useMemo(
+    () =>
+    ingridients.filter(
+        (ingredient: { type: string }) => ingredient.type === "bun"
+      ),
+    [ingridients]
+  );
+  const sauces = React.useMemo(
+    () =>
+    ingridients.filter(
+        (ingredient: { type: string }) => ingredient.type === "sauce"
+      ),
+    [ingridients]
+  );
+  const mains = React.useMemo(
+    () =>
+    ingridients.filter(
+        (ingredient: { type: string }) => ingredient.type === "main"
+      ),
+    [ingridients]
+  );
 
  function openModal(prop: any){
   setOpen(true)
-  {props.dataIngrigients &&
-    setData(props.dataIngrigients.find((item: any) => item._id === prop))
+  {ingridients &&
+    setData(ingridients.find((item: any) => item._id === prop))
    }
  }
 
@@ -43,7 +61,7 @@ function closeModalEsc(evt: { key: string; }){
           Булки
         </h2>
         <ul className={`${styles.cards}`}>
-          {props.buns.map(
+          {buns.map(
             (bun: {
               image: string;
               _id: string;
@@ -66,7 +84,7 @@ function closeModalEsc(evt: { key: string; }){
           Соусы
         </h2>
         <ul className={styles.cards}>
-          {props.sauces.map(
+          {sauces.map(
             (sauce: {
               image: string;
               name: string;
@@ -89,7 +107,7 @@ function closeModalEsc(evt: { key: string; }){
           Начинки
         </h2>
         <ul className={styles.cards}>
-          {props.mains.map(
+          {mains.map(
             (main: {
               image: string;
               _id: string;

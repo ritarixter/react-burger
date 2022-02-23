@@ -3,7 +3,7 @@ import AppHeader from "../AppHeader/AppHeader";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import React from "react";
-import { DataContext } from "./dataContext";
+import { DataContext } from "../../context/dataContext";
 import { getData } from "../../utils/API";
 
 function App() {
@@ -22,42 +22,20 @@ function App() {
         console.log(err);
       });
   }, []);
-
-  const buns = React.useMemo(
-    () =>
-      dataIngrigients.filter(
-        (ingredient: { type: string }) => ingredient.type === "bun"
-      ),
-    [dataIngrigients]
-  );
-  const sauces = React.useMemo(
-    () =>
-      dataIngrigients.filter(
-        (ingredient: { type: string }) => ingredient.type === "sauce"
-      ),
-    [dataIngrigients]
-  );
-  const mains = React.useMemo(
-    () =>
-      dataIngrigients.filter(
-        (ingredient: { type: string }) => ingredient.type === "main"
-      ),
-    [dataIngrigients]
-  );
-
   return (  
     <>
     {!error ? 
       <>
       <AppHeader />
       <main className={styles.app}>
+   
+        <DataContext.Provider value={dataIngrigients}>
         <BurgerIngredients
-          buns={buns}
+          /*buns={buns}
           mains={mains}
           sauces={sauces}
-          dataIngrigients={dataIngrigients}
+          dataIngrigients={dataIngrigients}*/
         />
-        <DataContext.Provider value={dataIngrigients}>
           <BurgerConstructor />
         </DataContext.Provider>
       </main>
