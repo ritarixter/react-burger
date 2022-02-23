@@ -6,6 +6,7 @@
   box-sizing: border-box;
   max-width: 268px;
   max-height: 208px;
+  cursor: pointer;
 }
 
 .card:nth-child(2n) {

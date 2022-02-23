@@ -6,7 +6,7 @@ function Menu() {
   const [current, setCurrent] = React.useState("Булки");
   return (
     <div style={{ display: "flex" }} className="mb-10">
-      <a href="#rolls" className={styles.link}>
+      <a href="#buns" className={styles.link}>
         <Tab value="Булки" active={current === "Булки"} onClick={setCurrent}>
           Булки
         </Tab>
@@ -16,7 +16,7 @@ function Menu() {
           Соусы
         </Tab>
       </a>
-      <a href="#fillings" className={styles.link}>
+      <a href="#mains" className={styles.link}>
         <Tab
           value="Начинки"
           active={current === "Начинки"}
