@@ -1,13 +1,13 @@
 import styles from "./OrderDetails.module.css";
 import logoDone from "../../images/done.png";
 
-function OrderDetails() {
+function OrderDetails(props: any) {
   return (
     <div className={`${styles.info} pb-30`}>
       <h2
         className={`${styles.orderNumber} text text_type_digits-large mt-4 mb-8 `}
       >
-        034536
+        {props.orderNumber}
       </h2>
       <p className="text text_type_main-medium ">индентификатор заказа</p>
       <img className="mt-15 mb-15" src={logoDone} alt="Заказ принят" />
