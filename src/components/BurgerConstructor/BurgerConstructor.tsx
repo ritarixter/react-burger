@@ -11,6 +11,7 @@ import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { DataContext } from "../../context/dataContext";
 import { dataOrder } from "../../utils/API";
+import { useDispatch, useSelector } from "react-redux";
 
 function totalPrice(arr: any[], bun: any) { 
   let totalPrice = arr.reduce((sum,item) => sum+item.price,0
@@ -19,8 +20,10 @@ function totalPrice(arr: any[], bun: any) {
   return totalPrice;
 }
 
-//Подскажите пожалуйста, при нажатии на кнопку 'Оформить заказ' происходит 3 рендера, как это можно исправить,не могу понять 
+
 function BurgerConstructor() {
+  const dispatch = useDispatch()
+  //const order = useSelector(state => state.order.orderNumber)
   const data: any[] = React.useContext(DataContext);
   const [orderNumber, setOrderNumber] = React.useState(null);
   const [orderSuccess, setOrderSuccess] = React.useState(false);

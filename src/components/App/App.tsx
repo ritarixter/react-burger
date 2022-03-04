@@ -5,6 +5,11 @@ import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import React from "react";
 import { DataContext } from "../../context/dataContext";
 import { getData } from "../../utils/API";
+import { createStore } from "redux";
+import { rootReducer } from "../../services/reducers";
+import { Provider } from "react-redux";
+
+const store = createStore(rootReducer);
 
 function App() {
   const [dataIngrigients, setDataIngrigients] = React.useState([]);
@@ -23,7 +28,7 @@ function App() {
       });
   }, []);
   return (  
-    <>
+    <Provider store={store}>
     {!error ? 
       <>
       <AppHeader />
@@ -46,7 +51,7 @@ function App() {
       }
       <div id="modal"></div>
 
-    </>
+    </Provider>
   );
 }
 
