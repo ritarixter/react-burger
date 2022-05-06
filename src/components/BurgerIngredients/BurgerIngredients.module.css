@@ -28,3 +28,7 @@
 .scrollbar::-webkit-scrollbar-thumb {
   background-color: #8585ad;
 }
+
+.link {
+  text-decoration: none;
+}
