@@ -12,7 +12,6 @@ import {
 import { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-
 function BurgerIngredients() {
   const ingridients = useSelector(
     (state) => state.ingredientsReducer.ingredients
@@ -126,13 +125,15 @@ function BurgerIngredients() {
           </h2>
           <ul className={styles.cards}>
             {sauces.map((sauce) => (
-              <CardIngredients
-                image={sauce.image}
-                name={sauce.name}
-                price={sauce.price}
-                openModal={openModal}
-                id={sauce._id}
-              />
+              <>
+                <CardIngredients
+                  image={sauce.image}
+                  name={sauce.name}
+                  price={sauce.price}
+                  openModal={openModal}
+                  id={sauce._id}
+                />
+              </>
             ))}
           </ul>
         </section>

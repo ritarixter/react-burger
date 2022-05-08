@@ -1,6 +1,5 @@
 import {
   ConstructorElement,
-  DragIcon,
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -25,8 +24,6 @@ import {
 import { useCallback } from "react";
 import DraggableItem from "../draggableItem/draggableItem";
 
-
-
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.ingredientsReducer.ingredients);
@@ -40,21 +37,8 @@ function BurgerConstructor() {
     (state) => state.constructorReducer.draggableElements
   );
 
-  const orderClearIngredient = useSelector(
-    (state) => state.orderReducer.orderClearIngredient
-  );
-  let ingridients = React.useMemo(
-    () => data.filter((ingredient) => ingredient.type !== "bun"),
-    [data]
-  );
-
-  const bun = React.useMemo(
-    () => data.find((ingredient) => ingredient.type === "bun"),
-    [data]
-  );
-
   const totalPrice = React.useMemo(() => {
-    const bunsPrice = bunElement.type === 'bun' ? bunElement.price * 2 : 0;
+    const bunsPrice = bunElement.type === "bun" ? bunElement.price * 2 : 0;
     const nonBunElementsPrice = draggableElements.reduce(
       (acc, item) => acc + item.price,
       0
@@ -67,35 +51,20 @@ function BurgerConstructor() {
     if (draggedItem.type === "bun") {
       dispatch(addBunElement({ ...draggedItem, uid: uuidv4() }));
     } else if (bunElement._id) {
-      // в конструкторе уже есть булка, можно добавить начинку
       dispatch(addNonBunElement({ ...draggedItem, uid: uuidv4() }));
     }
   };
 
-  const handleCanIngredientDrop = ({ id }) => {
-    const draggedItem = data.find((item) => item._id === id);
-    return !(!bunElement._id && draggedItem.type !== "bun");
-    // если в конструкторе еще нет булки, добавить начинку нельзя
-  };
-
-  const [{ isHover, isCanDrop, isDragging }, dropTarget] = useDrop(
-    {
-      accept: "BurgerIngredient",
-      drop(itemId) {
-        handleIngredientDrop(itemId);
-      },
-      canDrop(itemId) {
-        return handleCanIngredientDrop(itemId);
-      },
-      collect: (monitor) => ({
-        isHover: monitor.isOver(),
-        isCanDrop: monitor.canDrop(),
-        isDragging: monitor.canDrop() && !monitor.isOver(),
-      }),
+  const [, dropTarget] = useDrop({
+    accept: "BurgerIngredient",
+    drop(itemId) {
+      handleIngredientDrop(itemId);
     },
-    [handleIngredientDrop, handleCanIngredientDrop]
-  );
+  });
 
+  const [, sortTarget] = useDrop({
+    accept: "DraggableItem",
+  });
   const findDraggableElement = useCallback(
     (uid) => {
       const draggableElement = draggableElements.find(
@@ -122,19 +91,6 @@ function BurgerConstructor() {
     [findDraggableElement, dispatch]
   );
 
-  const [, sortTarget] = useDrop(() => ({
-    accept: "DraggableItem",
-  }));
-
-  const isConstructorEmpty = !bunElement._id && !draggableElements.length;
-
-  const constructorElementsClass = `${styles.constructor__elements} 
-  ${
-    (isConstructorEmpty || isDragging) && styles.constructor__elements_dropArea
-  } 
-  ${isHover && isCanDrop ? styles.constructor__elements_canDrop : ""}
-  ${isHover && !isCanDrop ? styles.constructor__elements_canNotDrop : ""}`;
-
   function openModal() {
     dispatch(getOrderData(data));
     dispatch(setOrderOpen());
@@ -150,60 +106,67 @@ function BurgerConstructor() {
 
   return (
     <section className={`${styles.section} mt-25 ml-10 pl-4`}>
-        <div ref={dropTarget}>
-          <ul className={constructorElementsClass}>
-            {bunElement.type === "bun" && (
-              <li
-                className={`${styles.constructor__bunElement} mr-4 mb-4`}
-                data-id={bunElement._id}
-              >
-                <ConstructorElement
-                  type="top"
-                  text={`${bunElement.name} (верх)`}
-                  price={bunElement.price}
-                  thumbnail={bunElement.image}
-                  isLocked
-                />
-              </li>
-            )}
-            <div className={`${styles.scrollbar}`} ref={sortTarget}>
-              {isConstructorEmpty && (
-                <p
-                  className={`${styles.constructor__text} mt-10
+      <div ref={dropTarget}>
+        <ul className={styles.burger_list}>
+          {bunElement.type == "bun" ? (
+            <li
+              className={`${styles.constructor__bunElement} mr-4`}
+              data-id={bunElement._id}
+            >
+              <ConstructorElement
+                type="top"
+                text={`${bunElement.name} (верх)`}
+                price={bunElement.price}
+                thumbnail={bunElement.image}
+                isLocked
+              />
+            </li>
+          ) : (
+            <li className={`${ styles.constructor__bunElements} ${styles.constructor__bunElements_top} ml-7`}></li>
+          )}
+          <div className={`${styles.scrollbar}`} ref={sortTarget}>
+            {draggableElements.length == 0 && !bunElement._id && (
+              <p
+                className={`${styles.constructor__text} mt-10
               text text text_type_main-medium text_color_inactive`}
-                >
-                  Добавьте булочку, чтобы начать собирать бургер
-                </p>
-              )}
-              {draggableElements.map((item) => (
-                <DraggableItem
-                  key={item.uid}
-                  id={item._id}
-                  uid={item.uid}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  findDraggableElement={findDraggableElement}
-                  moveDraggableElement={moveDraggableElement}
-                />
-              ))}
-            </div>
-            {bunElement.type === "bun" && (
-              <li
-                className={`${styles.constructor__bunElement} mr-4 mb-4`}
-                data-id={bunElement._id}
               >
-                <ConstructorElement
-                  type="top"
-                  text={`${bunElement.name} (низ)`}
-                  price={bunElement.price}
-                  thumbnail={bunElement.image}
-                  isLocked
-                />
-              </li>
+                Добавьте булочку, чтобы начать собирать бургер
+              </p>
             )}
-          </ul>
-        </div>
+            {draggableElements.map((item) => (
+              <DraggableItem
+                key={item.uid}
+                id={item._id}
+                uid={item.uid}
+                name={item.name}
+                price={item.price}
+                image={item.image}
+                findDraggableElement={findDraggableElement}
+                moveDraggableElement={moveDraggableElement}
+              />
+            ))}
+          </div>
+
+          {bunElement.type == "bun" ? (
+            <li
+              className={`${styles.constructor__bunElement} mr-4 mb-4`}
+              data-id={bunElement._id}
+            >
+              <ConstructorElement
+                type="bottom"
+                text={`${bunElement.name} (низ)`}
+                price={bunElement.price}
+                thumbnail={bunElement.image}
+                isLocked
+              />
+            </li>
+          ) : (
+            <li
+              className={`${styles.constructor__bunElements}  ${styles.constructor__bunElements_buttom} ml-7`}
+            ></li>
+          )}
+        </ul>
+      </div>
 
       <article className={`${styles.order} mt-10`}>
         <p className={`text text_type_digits-medium mr-10 ${styles.price}`}>

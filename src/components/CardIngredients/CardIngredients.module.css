@@ -6,7 +6,8 @@
   box-sizing: border-box;
   max-width: 268px;
   max-height: 208px;
-  cursor: pointer;
+  cursor:grab;
+  position: relative;
 }
 
 .card:nth-child(2n) {
@@ -17,4 +18,8 @@
   display: flex;
   align-items: center;
   text-align: center;
+}
+
+.card_isDragging{
+  background:radial-gradient(circle,rgba(87,0,255,.35)0,#131316 65%)
 }

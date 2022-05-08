@@ -60,54 +60,33 @@
   background-color: #8585ad;
 }
 
-.constructor__elements {
-  margin: 0;
-  padding-left: 0;
-  padding-right: 0;
-  display: flex;
-  flex-direction: column;
-  max-height: calc(100vh - 340px);
-  height: 100vh;
-  border-radius: 1%;
-}
-
-.constructor__elements_dropArea {
-  outline: 1px dashed var(--interface-accent);
-}
-
-.constructor__elements_canDrop {
-  outline: 2px solid var(--interface-accent);
-}
-
-.constructor__elements_canNotDrop {
-  outline: 1px dashed var(--interface-error);
-}
-
 .constructor__bunElement {
   display: flex;
   justify-content: flex-end;
   cursor: pointer;
 }
 
-.constructor__nonBunElements {
-  height: 100%;
-  margin: 0;
-  padding-left: 0;
-  padding-right: 0;
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.constructor__totalPriceContainer {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.constructor__totalPrice {
-  display: flex;
-  align-items: center;
-}
-
 .constructor__text {
   text-align: center;
+}
+
+.constructor__bunElements{
+  border: 2px dashed white;
+  padding: 15px 23px;
+  display: inline-block;
+  background: #1c1c21;
+  max-width: 486px;
+  min-height: 48px;
+  font-family: 'Jet Brains Mono';
+  font-size: 16px;
+  line-height: 24px;
+  color: #F2F2F3;
+  flex-grow: 1;}
+
+.constructor__bunElements_top{
+  border-radius: 88px 88px 40px 40px;
+}
+
+.constructor__bunElements_buttom{
+  border-radius: 40px 40px 88px 88px;
 }

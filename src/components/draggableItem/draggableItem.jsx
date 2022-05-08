@@ -1,12 +1,12 @@
-import { useDispatch } from 'react-redux';
-import { useDrag, DragPreviewImage, useDrop } from 'react-dnd';
-import PropTypes from 'prop-types';
+import { useDispatch } from "react-redux";
+import { useDrag, useDrop } from "react-dnd";
+import PropTypes from "prop-types";
 import {
   ConstructorElement,
   DragIcon,
-} from '@ya.praktikum/react-developer-burger-ui-components';
-import { deleteElement } from '../../services/actions/constructor';
-import draggableItemStyles from './draggableItem.module.css';
+} from "@ya.praktikum/react-developer-burger-ui-components";
+import styles from "./draggableItem.module.css";
+import { deleteElement } from "../../services/actions/constructor";
 
 function DraggableItem({
   id,
@@ -14,7 +14,6 @@ function DraggableItem({
   name,
   price,
   image,
-  onClickToIngredient,
   findDraggableElement,
   moveDraggableElement,
 }) {
@@ -22,9 +21,9 @@ function DraggableItem({
 
   const originalIndex = findDraggableElement(uid).draggableElementIndex;
 
-  const [{ isDragging }, dragRef, dragPreview] = useDrag(
+  const [{ isDragging }, dragRef] = useDrag(
     () => ({
-      type: 'DraggableItem',
+      type: "DraggableItem",
       item: { uid, originalIndex },
       collect: (monitor) => ({
         isDragging: monitor.isDragging(),
@@ -40,11 +39,12 @@ function DraggableItem({
 
   const [, dropTarget] = useDrop(
     () => ({
-      accept: 'DraggableItem',
+      accept: "DraggableItem",
       hover({ uid: draggedUid }) {
         if (draggedUid !== uid) {
-          const { draggableElementIndex: overIndex } =
-            findDraggableElement(uid);
+          const { draggableElementIndex: overIndex } = findDraggableElement(
+            uid
+          );
           moveDraggableElement(draggedUid, overIndex);
         }
       },
@@ -53,25 +53,23 @@ function DraggableItem({
   );
 
   const handleIngredientDelete = (e) => {
-    const itemToDeleteUid = e.target.closest('li').dataset.uid;
+    const itemToDeleteUid = e.target.closest("li").dataset.uid;
     dispatch(deleteElement(itemToDeleteUid));
   };
 
   return (
     <li
-      className={`${draggableItemStyles.draggableElement} 
-      ${
-        isDragging && draggableItemStyles.draggableElement_isDragging
-      } mb-4 ml-2`}
-      key={uid}
-      onClick={onClickToIngredient}
-      onKeyPress={onClickToIngredient}
+      className={`${styles.list_item} ${
+        isDragging && styles.draggableElement_isDragging
+      }`}
       data-id={id}
       data-uid={uid}
+      key={uid}
       ref={(node) => dragRef(dropTarget(node))}
     >
-      <DragIcon type="primary" />
-      <DragPreviewImage src={image} connect={dragPreview} />
+      <span className="mr-2">
+        <DragIcon type="primary" />
+      </span>
       <ConstructorElement
         text={name}
         price={price}
@@ -88,7 +86,6 @@ DraggableItem.propTypes = {
   name: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
-  onClickToIngredient: PropTypes.func.isRequired,
   findDraggableElement: PropTypes.func.isRequired,
   moveDraggableElement: PropTypes.func.isRequired,
 };
