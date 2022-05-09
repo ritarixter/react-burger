@@ -110,6 +110,7 @@ function BurgerIngredients() {
           <ul className={`${styles.cards}`}>
             {buns.map((bun) => (
               <CardIngredients
+                key={bun._id}//Я добавила каждому cardIngredients key, но ошибка не исчезает,не могу понять в чем причина
                 image={bun.image}
                 name={bun.name}
                 price={bun.price}
@@ -127,6 +128,7 @@ function BurgerIngredients() {
             {sauces.map((sauce) => (
               <>
                 <CardIngredients
+                  key={sauce._id}
                   image={sauce.image}
                   name={sauce.name}
                   price={sauce.price}
@@ -145,6 +147,7 @@ function BurgerIngredients() {
           <ul className={styles.cards}>
             {mains.map((main) => (
               <CardIngredients
+                key={main._id}
                 image={main.image}
                 name={main.name}
                 price={main.price}

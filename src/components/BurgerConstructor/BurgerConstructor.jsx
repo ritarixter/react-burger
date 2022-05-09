@@ -175,7 +175,7 @@ function BurgerConstructor() {
             <CurrencyIcon type="primary" />
           </span>
         </p>
-        <Button type="primary" size="large" onClick={openModal}>
+        <Button type="primary" size="large" onClick={openModal} disabled={totalPrice == 0}>
           Оформить заказ
         </Button>
       </article>
