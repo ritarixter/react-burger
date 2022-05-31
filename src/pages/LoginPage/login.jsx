@@ -1,31 +1,9 @@
 import React from 'react';
 import styles from './login.module.css';
-import { EmailInput, PasswordInput,Button,Input } from "@ya.praktikum/react-developer-burger-ui-components";
+import { Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Password } from '../../components/PasswordInput/PasswordInput';
+import { InputEmail } from '../../components/InputEmail/InputEmail';
 
-function InputEmail() {
-    const [value, setValue] = React.useState('')
-    const inputRef = React.useRef(null)
-    const onIconClick = () => {
-      setTimeout(() => inputRef.current.focus(), 0)
-      alert('Icon Click Callback')
-    }
-    return (
-      <Input
-        type={'email'}
-        placeholder={'E-mail'}
-        onChange={e => setValue(e.target.value)}
-        icon={'undefined'}
-        value={value}
-        name={'name'}
-        error={false}
-        ref={inputRef}
-        onIconClick={onIconClick}
-        errorText={'Ошибка'}
-        size={'default'}
-      />
-    )
-}
 
 export function LoginPage() {
 
@@ -35,16 +13,16 @@ export function LoginPage() {
       <form className={`${styles.form} mb-20`}>
         <h1 className='text text_type_main-medium mb-6'>Вход</h1>
 
-        <InputEmail/>
-        <div className="mb-6 mt-6"> <Password /></div>
+        <div className={styles.input}><InputEmail/></div> 
+        <div className={`${styles.input} mb-6 mt-6`}> <Password /></div>
        
         <Button type="primary" size="medium">
         Войти
         </Button>
       </form>
 
-      <p className='mb-4'>Вы — новый пользователь? <a href="#">Зарегистрироваться</a></p>
-      <p>Забыли пароль? <a href="#">Восстановить пароль</a></p>
+      <p className='mb-4 text text_type_main-default text_color_inactive'>Вы — новый пользователь? <a href="#" className={`${styles.link} text text_type_main-default`}>Зарегистрироваться</a></p>
+      <p className='text text_type_main-default text_color_inactive'>Забыли пароль? <a href="#" className={`${styles.link} text text_type_main-default`}>Восстановить пароль</a></p>
       </div>
       </div>
   )

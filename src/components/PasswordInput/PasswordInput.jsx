@@ -6,5 +6,5 @@ export function Password() {
     const onChange = e => {
       setValue(e.target.value)
     }
-    return <PasswordInput onChange={onChange} value={value} name={'password'}/>
+    return <PasswordInput onChange={onChange} value={value} name={'password'} />
 }

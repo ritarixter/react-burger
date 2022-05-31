@@ -9,7 +9,9 @@ import { getIngredientsData } from "../../services/actions/indredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { LoginPage } from "../../pages/LoginPage/login";
-
+import { RegisterPage } from "../../pages/RegisterPage/RegisterPage";
+import { ForgotPassPage } from "../../pages/ForgotPassPage/ForgotPassPage";
+import { ResetPassPage } from "../../pages/ResetPassPage/ResetPassPage";
 function App() {
   const error = useSelector(
     (state) => state.ingredientsReducer.ingredientsFailed
@@ -38,6 +40,21 @@ function App() {
           <AppHeader />
             <LoginPage/>
           </Route>
+
+          <Route path="/register">
+          <AppHeader />
+          <RegisterPage/>
+        </Route>
+
+        <Route path="/forgot-password">
+          <AppHeader />
+          <ForgotPassPage/>
+        </Route>
+
+          <Route path="/reset-password">
+          <AppHeader />
+          <ResetPassPage/>
+        </Route>
           </Router>
         </>
 
