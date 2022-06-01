@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './ForgotPassPage.module.css';
 import { Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Input} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Link } from 'react-router-dom';
 
 export function InputEmail() {
   const [value, setValue] = React.useState('')
@@ -34,7 +35,7 @@ export function ForgotPassPage() {
     <div className={styles.main}>
       <div className={styles.login}>
       <form className={`${styles.form} mb-20`}>
-        <h1 className='text text_type_main-medium mb-6'>Вход</h1>
+        <h1 className='text text_type_main-medium mb-6'>Восстановление пароля</h1>
 
         <div className={`${styles.input} mb-6`}><InputEmail/></div> 
  
@@ -43,7 +44,7 @@ export function ForgotPassPage() {
         </Button>
       </form>
 
-      <p className='mb-4 text text_type_main-default text_color_inactive'>Вспомнили пароль? <a href="#" className={`${styles.link} text text_type_main-default`}>Войти</a></p>
+      <p className='mb-4 text text_type_main-default text_color_inactive'>Вспомнили пароль? <Link to="/login" className={`${styles.link} text text_type_main-default`}>Войти</Link></p>
 
       </div>
       </div>

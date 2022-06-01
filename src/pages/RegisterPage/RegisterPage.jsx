@@ -4,6 +4,7 @@ import { Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Password } from '../../components/PasswordInput/PasswordInput';
 import { InputEmail } from '../../components/InputEmail/InputEmail';
 import { InputName } from '../../components/InputName/InputName';
+import { Link } from 'react-router-dom';
 
 export function RegisterPage(){
   return(
@@ -21,7 +22,7 @@ export function RegisterPage(){
       </Button>
     </form>
 
-    <p className='mb-4 text text_type_main-default text_color_inactive'>Уже зарегистрированы? <a href="#" className={`${styles.link} text text_type_main-default`}>Войти</a></p>
+    <p className='mb-4 text text_type_main-default text_color_inactive'>Уже зарегистрированы? <Link to="/login" href="#" className={`${styles.link} text text_type_main-default`}>Войти</Link></p>
     </div>
     </div>
   )

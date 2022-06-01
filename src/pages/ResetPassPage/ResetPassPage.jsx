@@ -3,6 +3,7 @@ import styles from './ResetPassPage.module.css';
 import { Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Password } from '../../components/PasswordInput/PasswordInput';
+import { Link } from 'react-router-dom';
 
 export function InputEmail() {
   const [value, setValue] = React.useState('')
@@ -68,7 +69,7 @@ export function ResetPassPage() {
         </Button>
       </form>
 
-      <p className='mb-4 text text_type_main-default text_color_inactive'>Вспомнили пароль? <a href="#" className={`${styles.link} text text_type_main-default`}>Войти</a></p>
+      <p className='mb-4 text text_type_main-default text_color_inactive'>Вспомнили пароль? <Link to="/login" className={`${styles.link} text text_type_main-default`}>Войти</Link></p>
 
       </div>
       </div>

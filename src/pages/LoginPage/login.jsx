@@ -3,6 +3,7 @@ import styles from './login.module.css';
 import { Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { Password } from '../../components/PasswordInput/PasswordInput';
 import { InputEmail } from '../../components/InputEmail/InputEmail';
+import { Link } from 'react-router-dom';
 
 
 export function LoginPage() {
@@ -21,8 +22,8 @@ export function LoginPage() {
         </Button>
       </form>
 
-      <p className='mb-4 text text_type_main-default text_color_inactive'>Вы — новый пользователь? <a href="#" className={`${styles.link} text text_type_main-default`}>Зарегистрироваться</a></p>
-      <p className='text text_type_main-default text_color_inactive'>Забыли пароль? <a href="#" className={`${styles.link} text text_type_main-default`}>Восстановить пароль</a></p>
+      <p className='mb-4 text text_type_main-default text_color_inactive'>Вы — новый пользователь? <Link to="/register" className={`${styles.link} text text_type_main-default`}>Зарегистрироваться</Link></p>
+      <p className='text text_type_main-default text_color_inactive'>Забыли пароль? <Link to="/forgot-password" className={`${styles.link} text text_type_main-default`}>Восстановить пароль</Link></p>
       </div>
       </div>
   )
