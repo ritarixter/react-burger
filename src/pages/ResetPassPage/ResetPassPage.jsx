@@ -52,7 +52,6 @@ export function InputPassword() {
   )
 }
 
-
 export function ResetPassPage() {
 
   return (
