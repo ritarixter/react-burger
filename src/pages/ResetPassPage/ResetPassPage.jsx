@@ -63,7 +63,6 @@ export function ResetPassPage() {
         <div className={`${styles.input} mb-6`}><InputPassword/></div> 
         <div className={`${styles.input} mb-6`}><InputEmail/></div> 
         
- 
         <Button type="primary" size="medium">
         Сохранить
         </Button>
