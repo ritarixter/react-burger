@@ -5,29 +5,7 @@ import { Password } from '../../components/PasswordInput/PasswordInput';
 import { InputEmail } from '../../components/InputEmail/InputEmail';
 import { Link } from 'react-router-dom';
 
-function InputEmail() {
-    const [value, setValue] = React.useState('')
-    const inputRef = React.useRef(null)
-    const onIconClick = () => {
-      setTimeout(() => inputRef.current.focus(), 0)
-      alert('Icon Click Callback')
-    }
-    return (
-      <Input
-        type={'email'}
-        placeholder={'E-mail'}
-        onChange={e => setValue(e.target.value)}
-        icon={'undefined'}
-        value={value}
-        name={'name'}
-        error={false}
-        ref={inputRef}
-        onIconClick={onIconClick}
-        errorText={'Ошибка'}
-        size={'default'}
-      />
-    )
-}
+
 
 export function LoginPage() {
 
