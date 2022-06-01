@@ -8,4 +8,7 @@
 
 * HTML5
 * CSS3
-* React
+* React 
+
+**Ссылка на проект**
+https://ritarixter.github.io/react-burger/

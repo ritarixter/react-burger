@@ -1,0 +1,35 @@
+.main{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90vh;
+}
+
+.form{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+   min-width: 480px;
+ 
+}
+.login{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+p{
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.input,
+.input div:not(input + div) {
+  width: 100%;
+}
+
+.link{
+  text-decoration: none;
+  color: #4C4CFF;
+}
