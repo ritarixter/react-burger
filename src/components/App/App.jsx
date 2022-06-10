@@ -1,6 +1,6 @@
 import styles from "./App.module.css";
 import AppHeader from "../AppHeader/AppHeader";
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import React from "react";
@@ -9,14 +9,20 @@ import { getIngredientsData } from "../../services/actions/indredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { LoginPage } from "../../pages/LoginPage/login";
-
+import { RegisterPage } from "../../pages/RegisterPage/RegisterPage";
+import { ForgotPassPage } from "../../pages/ForgotPassPage/ForgotPassPage";
+import { ResetPassPage } from "../../pages/ResetPassPage/ResetPassPage";
+import { ProfilePage } from "../../pages/ProfilePage/ProfilePage";
+import { useEffect } from "react";
+import { getData } from "../../utils/API";
 function App() {
+   const dispatch = useDispatch();
   const error = useSelector(
     (state) => state.ingredientsReducer.ingredientsFailed
   );
-
-  const dispatch = useDispatch();
-  React.useEffect(() => {
+ 
+  useEffect(() => {
+    document.title = "Stellar burgers";  
     dispatch(getIngredientsData());
   }, [dispatch]);
   return (
@@ -25,6 +31,7 @@ function App() {
       {!error ? (
         <>
         <Router>
+          <Switch>
           <Route path="/" exact={true}>
           <AppHeader />
           <main className={styles.app}>
@@ -38,6 +45,28 @@ function App() {
           <AppHeader />
             <LoginPage/>
           </Route>
+
+          <Route path="/register">
+          <AppHeader />
+          <RegisterPage/>
+        </Route>
+
+        <Route path="/forgot-password">
+          <AppHeader />
+          <ForgotPassPage/>
+        </Route>
+
+          <Route path="/reset-password">
+          <AppHeader />
+          <ResetPassPage/>
+        </Route>
+
+        
+        <Route path="/profile">
+          <AppHeader />
+          <ProfilePage/>
+        </Route>
+        </Switch>
           </Router>
         </>
 

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Input} from "@ya.praktikum/react-developer-burger-ui-components";
+import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 
-export function InputEmail() {
+export function InputName() {
   const [value, setValue] = React.useState('')
   const inputRef = React.useRef(null)
   const onIconClick = () => {
@@ -10,12 +10,12 @@ export function InputEmail() {
   }
   return (
     <Input
-      type={'email'}
-      placeholder={'E-mail'}
+      type={'text'}
+      placeholder={'Имя'}
       onChange={e => setValue(e.target.value)}
       icon={'undefined'}
       value={value}
-      name={'email'}
+      name={'name'}
       error={false}
       ref={inputRef}
       onIconClick={onIconClick}
