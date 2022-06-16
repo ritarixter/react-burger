@@ -72,11 +72,9 @@ export async function registerUser(nameValue, emailValue, passwordValue) {
 const cookieCheck = (res) => {
   if (res.ok) {
     let authToken;
-    console.log(res)
+    console.log(res);
     res.headers.forEach((header) => {
       if (header.indexOf("Bearer") === 0) {
-        // Отделяем схему авторизации от "полезной нагрузки токена",
-        // Стараемся экономить память в куках (доступно 4кб)
         authToken = header.split("Bearer ")[1];
       }
     });
@@ -89,17 +87,25 @@ const cookieCheck = (res) => {
   }
 };
 
-export async function refreshToken(refreshToken) {
+export async function refreshToken() {
   const res = await fetch(`${url}/auth/token `, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "token": refreshToken
+      token: localStorage.getItem("token"),
     }),
-  });
-  return responseCheck(res);
+  })
+    .then(responseCheck(res))
+    .then((refreshData) => {
+      if (!refreshData.success) {
+        return Promise.reject(refreshData);
+      }
+      localStorage.setItem("token", refreshData.refreshToken);
+      document.cookie = refreshData.accessToken;
+      return refreshData;
+    });
 }
 
 export async function authorizationUser(emailValue, passwordValue) {
@@ -116,41 +122,96 @@ export async function authorizationUser(emailValue, passwordValue) {
   return responseCheck(res);
 }
 
-export async function logoutUser(refreshToken) {
+export async function logoutUser() {
   const res = await fetch(`${url}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      "token": refreshToken
+      token: localStorage.getItem("token"),
     }),
   });
   return responseCheck(res);
 }
 
 export async function getDataUser(accessToken) {
-  const res = await fetch(`${url}/auth/user`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: accessToken
-    },
-  });
-  return responseCheck(res);
+  try {
+    const res = await fetch(`${url}/auth/user`, {//После добавление проверки на акутальность refreshToken-а, стали появлятся ошибки 403 в actions/profile.jsx в getDataUserProfile, почему так...?
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: accessToken,
+      },
+    });
+    return responseCheck(res);
+  } catch (err) {//Проверка на актуальность refreshToken-a -------
+    if (err.message === "jwt expired") {
+      const refreshData = await refreshToken();
+      const res = await fetch(`${url}/auth/user`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: refreshData.accessToken,
+        },
+      });
+      return await responseCheck(res);
+    } else {
+      return Promise.reject(`Ошибка: ${err.status}`);
+    }
+  }
 }
 
-export async function editProfile(accessToken,nameValue,emailValue) {
-  const res = await fetch(`${url}/auth/user`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: accessToken
-    },
-    body: JSON.stringify({
-      name: nameValue,
-      email: emailValue
-    }),
-  });
-  return responseCheck(res);
+export async function editProfile(accessToken, nameValue, emailValue) {
+  try {
+    const res = await fetch(`${url}/auth/user`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: accessToken,
+      },
+      body: JSON.stringify({
+        name: nameValue,
+        email: emailValue,
+      }),
+    });
+    return responseCheck(res);
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const refreshData = await refreshToken();
+      const res = await fetch(`${url}/auth/user`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: refreshData.accessToken,
+        },
+        body: JSON.stringify({
+          name: nameValue,
+          email: emailValue,
+        }),
+      });
+      return await responseCheck(res);
+    } else {
+      return Promise.reject(`Ошибка: ${err.status}`);
+    }
+  }
 }
+
+/*const fetchWithRefresh = async (url, options) => {
+  try {
+    const res = await fetch(url,options);
+    return await responseCheck(res)
+  } catch (err) {
+    if (err.message === "jwt expired") {
+      const refreshData = await refreshToken();
+      options.headers.authorization = refreshData.accessToken
+
+      const res = await fetch(url, options);
+      return await responseCheck(res)
+    }
+
+    else {
+      return Promise.reject(`Ошибка: ${err.status}`);
+    }
+  }
+}*/

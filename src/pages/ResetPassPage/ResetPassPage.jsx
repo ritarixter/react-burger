@@ -2,20 +2,25 @@ import React from "react";
 import styles from "./ResetPassPage.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
-import { Password } from "../../components/PasswordInput/PasswordInput";
 import { Link } from "react-router-dom";
 import { resetPassword } from "../../utils/API";
 import { useHistory } from "react-router-dom";
 import { useCallback } from "react";
-import { createUser } from "../../utils/API";
-
+import { useDispatch } from "react-redux";
+import { wasNotOnPageForgotPassword } from "../../services/actions/profile";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
 export function ResetPassPage() {
   const history = useHistory();
-
+  const dispatch = useDispatch()
   const [icon, setIcon] = React.useState("ShowIcon");
   const [type, setType] = React.useState("password");
   const [passwordValue, setPasswordValue] = React.useState("");
+  const [successForm, setSuccessForm] = React.useState(false);
   const [codeValue, setCodeValue] = React.useState("");
+  const wasOnPageForgotPassword = useSelector(
+    (state) => state.profileReducer.wasOnPageForgotPassword
+  );
 
   const inputRef = React.useRef(null);
 
@@ -32,17 +37,23 @@ export function ResetPassPage() {
 
   const resetPass = useCallback(
     (passwordValue, codeValue) => {
+      dispatch(wasNotOnPageForgotPassword())
       resetPassword(passwordValue, codeValue).then((res) => {
         const success = res.success;
         if (success) {
+          setSuccessForm(true)
           history.replace({ pathname: "/login" });
         }
       });
     },
     [history]
   );
+  if(!wasOnPageForgotPassword && !successForm ){
+    history.replace({ pathname: "/forgot-password" });
+  }
 
   return (
+  
     <div className={styles.main}>
       <div className={styles.login}>
         <form
@@ -64,9 +75,9 @@ export function ResetPassPage() {
               icon={icon}
               value={passwordValue}
               name={"password"}
-              error={false}
               ref={inputRef}
               onIconClick={onIconClick}
+              error={passwordValue.length<6}
               errorText={"Некорректный пароль"}
               size={"default"}
             />
@@ -100,5 +111,6 @@ export function ResetPassPage() {
         </p>
       </div>
     </div>
+   
   );
 }

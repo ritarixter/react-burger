@@ -1,19 +1,28 @@
 import styles from "./IngredientDetails.module.css";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+
 
 function IngredientDetails(data) {
+  const ingredients = useSelector(
+    (state) => state.ingredientsReducer.ingredients
+  );
+  const param = useParams();
+  const id = param.id;
+  const ingredient = ingredients.find((el) => el._id === id);
   
   return (
     <div className={`${styles.ingridient} pb-15`}>
-      <img src={data.data.image} alt="Фото ингридиента" />
-      <h3 className="text text_type_main-medium mt-4 mb-8">{data.data.name}</h3>
+      <img src={ingredient.image} alt="Фото ингридиента" />
+      <h3 className="text text_type_main-medium mt-4 mb-8">{ingredient.name}</h3>
       <ul className={styles.calories}>
         <li className="mr-5 text text_type_main-default">
           Калории,ккал
           <p
             className={`${styles.calories_number} text text_type_digits-default`}
           >
-            {data.data.calories}
+            {ingredient.calories}
           </p>
         </li>
         <li className="mr-5 text text_type_main-default">
@@ -21,7 +30,7 @@ function IngredientDetails(data) {
           <p
             className={`${styles.calories_number} text text_type_digits-default`}
           >
-            {data.data.proteins}
+            {ingredient.proteins}
           </p>
         </li>
         <li className="mr-5 text text_type_main-default">
@@ -29,7 +38,7 @@ function IngredientDetails(data) {
           <p
             className={`${styles.calories_number} text text_type_digits-default`}
           >
-            {data.data.fat}
+            {ingredient.fat}
           </p>
         </li>
         <li className="mr-5 text text_type_main-default">
@@ -37,7 +46,7 @@ function IngredientDetails(data) {
           <p
             className={`${styles.calories_number} text text_type_digits-default`}
           >
-            {data.data.carbohydrates}
+            {ingredient.carbohydrates}
           </p>
         </li>
       </ul>

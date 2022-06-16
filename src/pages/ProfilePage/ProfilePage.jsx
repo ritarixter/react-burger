@@ -11,32 +11,32 @@ import {
 import { NavLink } from "react-router-dom";
 import { logoutUser } from "../../utils/API";
 import { useDispatch, useSelector } from "react-redux";
-import { getData, logoutProfileUser, editData} from "../../services/actions/profile";
+import { getDataUserProfile, logoutProfileUser, editData} from "../../services/actions/profile";
 import { checkEmail } from "../../utils/functions";
 import { useEffect } from "react";
+import { useHistory } from "react-router-dom";
 
 
 
 export function ProfilePage() {
+  const history = useHistory()
   const dispatch = useDispatch();
   const inputRefPassword = React.useRef(null);
   const inputRefName = React.useRef(null);
+  const inputRefEmail = React.useRef(null);
   const name = useSelector((state) => state.profileReducer.name);
   const email = useSelector((state) => state.profileReducer.email);
   const password = useSelector((state) => state.profileReducer.password);
   const [btnDisabled, setBtnDisabled] = React.useState(false);
   const [disabledPassword, setDisabledPassword] = React.useState(true);
   const [disabledName, setDisabledName] = React.useState(true);
+  const [disabledEmail, setDisabledEmail] = React.useState(true);
   const [type, setType] = React.useState("password");
   const [valueName, setValueName] = React.useState("");
   const [valueEmail, setValueEmail] = React.useState("");
   const [valuePassword, setValuePassword] = React.useState('');
 
-  useEffect(() => {
-    localStorage.getItem('token') && dispatch(getData());
-  }, [dispatch]);
-
-
+  let emailSuccess = !checkEmail(valueEmail)
  useEffect(() => {
     setValueName(name);
     setValueEmail(email);
@@ -44,7 +44,7 @@ export function ProfilePage() {
   }, [name,email,password]);
 
   useEffect(() => {
-    if (checkEmail(valueEmail) && valuePassword.length > 5) {
+    if (checkEmail(valueEmail) & valuePassword.length>5) {
       setBtnDisabled(false);
     } else {
       setBtnDisabled(true);
@@ -52,10 +52,12 @@ export function ProfilePage() {
   }, [valueEmail, valuePassword]);
 
   const logoutProfile = () => {
-    logoutUser(localStorage.getItem("token")).then((res) => {
+    logoutUser().then((res) => {
       if (res.success) {
         localStorage.removeItem("token");
+        document.cookie = null;
         dispatch(logoutProfileUser());
+        history.replace({ pathname: "/login" });
       }
     });
   };
@@ -63,10 +65,28 @@ export function ProfilePage() {
     setTimeout(() => inputRefName.current.focus(), 0);
     if (disabledName) {
       setDisabledName(false);
+      setBtnDisabled(false);
     } else {
       setDisabledName(true);
     }
   };
+
+  const onIconClickEmail = () => {
+    setTimeout(() => inputRefEmail.current.focus(), 0);
+    if (disabledEmail) {
+      setDisabledEmail(false);
+      setBtnDisabled(false);
+    } else {
+      setDisabledEmail(true);
+    }
+  };
+
+  const onClickCancel = () => {
+    setValueName(name);
+    setValueEmail(email);
+    setValuePassword(password);
+  }
+
 
   const onIconClickPassword = () => {
     setTimeout(() => inputRefPassword.current.focus(), 0);
@@ -135,17 +155,28 @@ export function ProfilePage() {
               value={valueName}
               name={"name"}
               onIconClick={onIconClickName}
-              errorText={"Некорректный пароль"}
+              error={valueName.length<1}
+              errorText={"Некорректное имя"}
               size={"default"}
               ref={inputRefName}
               disabled={disabledName}
             />
           </div>
           <div className={`${styles.input} mb-6 mt-6`}>
-            <EmailInput
+          <Input
+              type={"email"}
+              placeholder={"E-mail"}
               onChange={(e) => setValueEmail(e.target.value)}
+              onBlur={()=> setDisabledEmail(true)}
+              icon={"EditIcon"}
               value={valueEmail}
               name={"email"}
+              onIconClick={onIconClickEmail}
+              error={emailSuccess}
+              errorText={"Некорректный формат e-mail"}
+              size={"default"}
+              ref={inputRefEmail}
+              disabled={disabledEmail}
             />
           </div>
           <div className={`${styles.input} mb-6`}>
@@ -158,6 +189,7 @@ export function ProfilePage() {
               value={valuePassword}
               name={"password"}
               onIconClick={onIconClickPassword}
+              error={valuePassword.length<6}
               errorText={"Некорректный пароль"}
               size={"default"}
               ref={inputRefPassword}
@@ -166,7 +198,7 @@ export function ProfilePage() {
           </div>
           <div className={styles.buttons}>
             {" "}
-            <Button type="secondary" size="medium">
+            <Button type="secondary" size="medium" onClick={(e)=>{e.preventDefault(); onClickCancel()}}>
               Отмена
             </Button>
             <Button type="primary" size="medium" htmlType="submit" disabled={btnDisabled}>

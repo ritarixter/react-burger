@@ -16,12 +16,12 @@ function BurgerIngredients() {
   const ingridients = useSelector(
     (state) => state.ingredientsReducer.ingredients
   );
-  const ingredientToView = useSelector(
+/*  const ingredientToView = useSelector(
     (state) => state.ingredientsReducer.ingredientToView
   );
   const ingredientModalOpen = useSelector(
     (state) => state.ingredientsReducer.ingredientModalOpen
-  );
+  );*/
   const dispatch = useDispatch();
   const bunRef = useRef(null);
   const mainRef = useRef(null);
@@ -52,7 +52,7 @@ function BurgerIngredients() {
     );
   }
 
-  function closeModal() {
+ /* function closeModal() {
     dispatch(resetIngredientToView());
   }
 
@@ -60,7 +60,7 @@ function BurgerIngredients() {
     if (evt.key === "Escape") {
       dispatch(resetIngredientToView());
     }
-  }
+  }*/
   function ingredintScroll(e) {
     const scrollPosition = e.target.scrollTop;
     const scrollOffset = 400;
@@ -158,15 +158,12 @@ function BurgerIngredients() {
           </ul>
         </section>
       </div>
-      {ingredientModalOpen && (
-        <Modal
-          title="Детали заказа"
-          closeModalEsc={closeModalEsc}
-          closeModal={closeModal}
-        >
-          <IngredientDetails data={ingredientToView} />
-        </Modal>
-      )}
+
+
+
+
+
+
     </section>
   );
 }

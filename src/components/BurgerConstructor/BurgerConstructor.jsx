@@ -23,9 +23,12 @@ import {
 } from "../../services/actions/constructor";
 import { useCallback } from "react";
 import DraggableItem from "../draggableItem/draggableItem";
+import { useHistory } from "react-router-dom";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
+  const history = useHistory();
+  const isAuth = useSelector((state) => state.profileReducer.isAuth);
   const data = useSelector((state) => state.ingredientsReducer.ingredients);
   const openOrder = useSelector((state) => state.orderReducer.orderOpen);
   const orderRequest = useSelector((state) => state.orderReducer.orderRequest);
@@ -92,8 +95,14 @@ function BurgerConstructor() {
   );
 
   function openModal() {
-    dispatch(getOrderData(data));
-    dispatch(setOrderOpen());
+    if(isAuth){
+      dispatch(getOrderData(data));
+      dispatch(setOrderOpen());
+    }
+    else{
+      history.replace({ pathname: "/login" });
+    }
+   
   }
   function closeModal() {
     dispatch(setOrderClose());

@@ -9,31 +9,45 @@ import {
 import { authorizationUser } from "../../utils/API";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
-import { getCookie } from "../../utils/getCookie";
+import { useDispatch } from "react-redux";
+import { authorizationFailed, getDataUserProfile} from "../../services/actions/profile";
+import { Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { checkEmail } from "../../utils/functions";
+import { useState } from "react";
 
 export function LoginPage() {
-  const history = useHistory();
-  const [valueEmail, setValueEmail] = React.useState("");
-  const [valuePassword, setValuePassword] = React.useState("");
- // const [success, setSuccess] = React.useState(false)
-
-
-
+  const dispatch = useDispatch()
+  const location = useLocation()
+  
+  const [valueEmail, setValueEmail] = useState("");
+  const [valuePassword, setValuePassword] = useState("");
+  const [successPassword, setSuccessPassword] = useState("");
+  const [successEmail, setSuccessEmail] = useState("");
+  const isAuth = useSelector(
+    (state) => state.profileReducer.isAuth
+  );
   const canAuthorizationUser = useCallback(
     (valueEmail, passwordValue) => {
      authorizationUser(valueEmail, passwordValue)
       .then((res) => {
-        const authorizationSuccess = res.success;
         localStorage.setItem("token", res.refreshToken);
         document.cookie= res.accessToken
-        console.log(document.cookie)
-        if (authorizationSuccess) {
-          //также сохраняем пользователя в приложении добавить
-          history.replace({ pathname: "/" });
+        if (res.success) {
+          dispatch(getDataUserProfile())        
+        }
+        else {
+          dispatch(authorizationFailed())
         }
        
       }) 
     })
+    if (isAuth) {
+      return <Redirect to={location.state?.from || '/'} />;
+    }
+
+
   return (
     <div className={styles.main}>
       <div className={styles.login}>
@@ -51,8 +65,8 @@ export function LoginPage() {
               value={valueEmail}
               name={"email"}
               size={"default"}
-              //error={success ? false : true}
-              //errorText={'Неверный e-mail или пароль'}
+              error={!checkEmail(valueEmail) && valueEmail.length>0}
+              errorText={'Некорректный формат e-mail'}
             />
           </div>
           <div className={`${styles.input} mb-6 mt-6`}>
