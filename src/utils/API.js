@@ -145,7 +145,7 @@ export async function getDataUser(accessToken) {
       },
     });
     return responseCheck(res);
-  } catch (err) {//Проверка на актуальность refreshToken-a -------
+  } catch (err) {//Проверка на актуальность refreshToken-a ------
     if (err.message === "jwt expired") {
       const refreshData = await refreshToken();
       const res = await fetch(`${url}/auth/user`, {
