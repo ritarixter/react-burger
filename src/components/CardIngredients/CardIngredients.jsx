@@ -7,7 +7,7 @@ import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 
-function CardIngredients({ id, image, price, name, openModal }) {
+function CardIngredients({ id, image, price, name}) {
   const location = useLocation();
 
   const [{ isDragging }, dragRef, dragPreview] = useDrag(
@@ -39,12 +39,11 @@ function CardIngredients({ id, image, price, name, openModal }) {
       className={styles.card__link}
     >
       
-      <li
+      <div
         className={`${styles.card} ${isDragging && styles.card_isDragging}`}
         ref={dragRef}
-        onClick={() => openModal(id)}
         draggable
-        key={id}
+        
       >
         <DragPreviewImage src={image} connect={dragPreview} />
         <img src={image} alt={name} className="pl-4 pr-4" />
@@ -57,7 +56,7 @@ function CardIngredients({ id, image, price, name, openModal }) {
           <CurrencyIcon type="primary" />
         </p>
         <p className="text text_type_main-default">{name}</p>
-      </li>
+      </div>
     </Link>
   );
 }

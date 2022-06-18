@@ -11,15 +11,17 @@ import {
 import { NavLink } from "react-router-dom";
 import { logoutUser } from "../../utils/API";
 import { useDispatch, useSelector } from "react-redux";
-import { getDataUserProfile, logoutProfileUser, editData} from "../../services/actions/profile";
+import {
+  getDataUserProfile,
+  logoutProfileUser,
+  editData,
+} from "../../services/actions/profile";
 import { checkEmail } from "../../utils/functions";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-
-
 export function ProfilePage() {
-  const history = useHistory()
+  const history = useHistory();
   const dispatch = useDispatch();
   const inputRefPassword = React.useRef(null);
   const inputRefName = React.useRef(null);
@@ -34,17 +36,17 @@ export function ProfilePage() {
   const [type, setType] = React.useState("password");
   const [valueName, setValueName] = React.useState("");
   const [valueEmail, setValueEmail] = React.useState("");
-  const [valuePassword, setValuePassword] = React.useState('');
+  const [valuePassword, setValuePassword] = React.useState("");
 
-  let emailSuccess = !checkEmail(valueEmail)
- useEffect(() => {
+  let emailSuccess = !checkEmail(valueEmail);
+  useEffect(() => {
     setValueName(name);
     setValueEmail(email);
-    setValuePassword(password); 
-  }, [name,email,password]);
+    setValuePassword(password);
+  }, [name, email, password]);
 
   useEffect(() => {
-    if (checkEmail(valueEmail) & valuePassword.length>5) {
+    if (checkEmail(valueEmail) & (valuePassword.length > 5)) {
       setBtnDisabled(false);
     } else {
       setBtnDisabled(true);
@@ -85,8 +87,7 @@ export function ProfilePage() {
     setValueName(name);
     setValueEmail(email);
     setValuePassword(password);
-  }
-
+  };
 
   const onIconClickPassword = () => {
     setTimeout(() => inputRefPassword.current.focus(), 0);
@@ -141,21 +142,24 @@ export function ProfilePage() {
             В этом разделе вы можете изменить свои персональные данные
           </p>
         </div>
-        <form className={styles.form}  onSubmit={(event) => {
+        <form
+          className={styles.form}
+          onSubmit={(event) => {
             event.preventDefault();
             dispatch(editData(valueName, valueEmail));
-          }}>
+          }}
+        >
           <div className={`${styles.input}`}>
             <Input
               type={"text"}
               placeholder={"Имя"}
               onChange={(e) => setValueName(e.target.value)}
-              onBlur={()=> setDisabledName(true)}
+              onBlur={() => setDisabledName(true)}
               icon={"EditIcon"}
               value={valueName}
               name={"name"}
               onIconClick={onIconClickName}
-              error={valueName.length<1}
+              error={valueName.length < 1}
               errorText={"Некорректное имя"}
               size={"default"}
               ref={inputRefName}
@@ -163,11 +167,11 @@ export function ProfilePage() {
             />
           </div>
           <div className={`${styles.input} mb-6 mt-6`}>
-          <Input
+            <Input
               type={"email"}
               placeholder={"E-mail"}
               onChange={(e) => setValueEmail(e.target.value)}
-              onBlur={()=> setDisabledEmail(true)}
+              onBlur={() => setDisabledEmail(true)}
               icon={"EditIcon"}
               value={valueEmail}
               name={"email"}
@@ -184,12 +188,15 @@ export function ProfilePage() {
               type={type}
               placeholder={"Пароль"}
               onChange={(e) => setValuePassword(e.target.value)}
-              onBlur={()=> {setDisabledPassword(true); setType("password"); }}
+              onBlur={() => {
+                setDisabledPassword(true);
+                setType("password");
+              }}
               icon={"EditIcon"}
               value={valuePassword}
               name={"password"}
               onIconClick={onIconClickPassword}
-              error={valuePassword.length<6}
+              error={valuePassword.length < 6}
               errorText={"Некорректный пароль"}
               size={"default"}
               ref={inputRefPassword}
@@ -198,10 +205,22 @@ export function ProfilePage() {
           </div>
           <div className={styles.buttons}>
             {" "}
-            <Button type="secondary" size="medium" onClick={(e)=>{e.preventDefault(); onClickCancel()}}>
+            <Button
+              type="secondary"
+              size="medium"
+              onClick={(e) => {
+                e.preventDefault();
+                onClickCancel();
+              }}
+            >
               Отмена
             </Button>
-            <Button type="primary" size="medium" htmlType="submit" disabled={btnDisabled}>
+            <Button
+              type="primary"
+              size="medium"
+              htmlType="submit"
+              disabled={btnDisabled}
+            >
               Сохранить
             </Button>
           </div>

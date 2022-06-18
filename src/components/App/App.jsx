@@ -8,7 +8,6 @@ import {
 } from "react-router-dom";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
-import React from "react";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getIngredientsData } from "../../services/actions/indredients";
@@ -23,22 +22,20 @@ import { NotFound404 } from "../../pages/NotFound404/NotFound404";
 import { useEffect } from "react";
 import { getDataUserProfile } from "../../services/actions/profile";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
-import { resetIngredientToView } from "../../services/actions/indredients";
 import Modal from "../Modal/Modal";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
+
 function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
 
   function closeModal() {
-    dispatch(resetIngredientToView());
     history.goBack();
   }
 
   function closeModalEsc(evt) {
     if (evt.key === "Escape") {
-      dispatch(resetIngredientToView());
       history.goBack();
     }
   }
@@ -47,33 +44,28 @@ function App() {
     (state) => state.ingredientsReducer.ingredientsFailed
   );
 
-  const ingredientModalOpen = useSelector(
-    (state) => state.ingredientsReducer.ingredientModalOpen
-  );
-
   useEffect(() => {
-    document.title = "Stellar burgers";
     dispatch(getIngredientsData());
     if (localStorage.getItem("token")) {
       dispatch(getDataUserProfile());
-    }/* else {
-      logoutUser().then((res) => {
-        localStorage.setItem("token", res.refreshToken);
-        document.cookie = res.accessToken;
-      });
-    }*/
+    }
   }, [dispatch]);
 
-console.log(location)
-  const background = ingredientModalOpen && location.state?.background;
+  const background = location.state && location.state?.background;
 
   return (
     <>
       {!error ? (
         <>
+          <AppHeader />
           <Switch location={background || location}>
+            <Route path="/ingredients/:id">
+              <div className="mt-30">
+                <IngredientDetails />
+              </div>
+            </Route>
+
             <Route path="/" exact={true}>
-              <AppHeader />
               <main className={styles.app}>
                 <DndProvider backend={HTML5Backend}>
                   <BurgerIngredients />
@@ -83,49 +75,38 @@ console.log(location)
             </Route>
 
             <Route path="/login" exact={true}>
-              <AppHeader />
               <LoginPage />
             </Route>
 
             <Route path="/register" exact={true}>
               <ProtectedRoute>
-                <AppHeader />
                 <RegisterPage />
               </ProtectedRoute>
             </Route>
 
             <Route path="/forgot-password" exact={true}>
               <ProtectedRoute>
-                <AppHeader />
                 <ForgotPassPage />
               </ProtectedRoute>
             </Route>
 
             <Route path="/reset-password" exact={true}>
               <ProtectedRoute>
-                <AppHeader />
                 <ResetPassPage />
               </ProtectedRoute>
             </Route>
 
             <Route path="/profile" exact={true}>
               <ProtectedRoute anonymous={true}>
-                <AppHeader />
                 <ProfilePage />
               </ProtectedRoute>
             </Route>
 
             <Route>
-              <AppHeader />
               <NotFound404 />
             </Route>
-
-            <Route path="/ingredients/:id">
-              <AppHeader />
-              <IngredientDetails />
-            </Route>
           </Switch>
-          
+
           {background && (
             <Switch>
               <Route path="/ingredients/:id">
@@ -139,12 +120,10 @@ console.log(location)
               </Route>
             </Switch>
           )}
-
         </>
       ) : (
-        <p>Произошла ошибка.</p>
+        <p>Произошла ошибка</p>
       )}
-      <div id="modal"></div>
     </>
   );
 }

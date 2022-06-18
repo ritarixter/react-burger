@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-
 function IngredientDetails(data) {
   const ingredients = useSelector(
     (state) => state.ingredientsReducer.ingredients
@@ -11,11 +10,13 @@ function IngredientDetails(data) {
   const param = useParams();
   const id = param.id;
   const ingredient = ingredients.find((el) => el._id === id);
-  
-  return (
-    <div className={`${styles.ingridient} pb-15`}>
+
+  return ingredient ? (
+    <div className={`${styles.ingredient__item} pb-15`}>
       <img src={ingredient.image} alt="Фото ингридиента" />
-      <h3 className="text text_type_main-medium mt-4 mb-8">{ingredient.name}</h3>
+      <h3 className="text text_type_main-medium mt-4 mb-8">
+        {ingredient.name}
+      </h3>
       <ul className={styles.calories}>
         <li className="mr-5 text text_type_main-default">
           Калории,ккал
@@ -51,6 +52,8 @@ function IngredientDetails(data) {
         </li>
       </ul>
     </div>
+  ) : (
+    <div> Произошла ошибка </div>
   );
 }
 

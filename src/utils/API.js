@@ -5,7 +5,7 @@ const responseCheck = (res) => {
   if (res.ok) {
     return res.json();
   } else {
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(res.status);
   }
 };
 
@@ -137,7 +137,7 @@ export async function logoutUser() {
 
 export async function getDataUser(accessToken) {
   try {
-    const res = await fetch(`${url}/auth/user`, {//После добавление проверки на акутальность refreshToken-а, стали появлятся ошибки 403 в actions/profile.jsx в getDataUserProfile, почему так...?
+    const res = await fetch(`${url}/auth/user`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -145,8 +145,9 @@ export async function getDataUser(accessToken) {
       },
     });
     return responseCheck(res);
-  } catch (err) {//Проверка на актуальность refreshToken-a ------
-    if (err.message === "jwt expired") {
+  } catch (err) {
+    //Проверка на актуальность refreshToken-a ------
+    if (err === "403") {
       const refreshData = await refreshToken();
       const res = await fetch(`${url}/auth/user`, {
         method: "GET",
@@ -177,7 +178,7 @@ export async function editProfile(accessToken, nameValue, emailValue) {
     });
     return responseCheck(res);
   } catch (err) {
-    if (err.message === "jwt expired") {
+    if (err === "403") {
       const refreshData = await refreshToken();
       const res = await fetch(`${url}/auth/user`, {
         method: "PATCH",

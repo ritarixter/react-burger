@@ -95,14 +95,12 @@ function BurgerConstructor() {
   );
 
   function openModal() {
-    if(isAuth){
+    if (isAuth) {
       dispatch(getOrderData(data));
       dispatch(setOrderOpen());
-    }
-    else{
+    } else {
       history.replace({ pathname: "/login" });
     }
-   
   }
   function closeModal() {
     dispatch(setOrderClose());
@@ -131,7 +129,9 @@ function BurgerConstructor() {
               />
             </li>
           ) : (
-            <li className={`${ styles.constructor__bunElements} ${styles.constructor__bunElements_top} ml-7`}></li>
+            <li
+              className={`${styles.constructor__bunElements} ${styles.constructor__bunElements_top} ml-7`}
+            ></li>
           )}
           <div className={`${styles.scrollbar}`} ref={sortTarget}>
             {draggableElements.length == 0 && !bunElement._id && (
@@ -184,7 +184,12 @@ function BurgerConstructor() {
             <CurrencyIcon type="primary" />
           </span>
         </p>
-        <Button type="primary" size="large" onClick={openModal} disabled={totalPrice == 0}>
+        <Button
+          type="primary"
+          size="large"
+          onClick={openModal}
+          disabled={totalPrice == 0}
+        >
           Оформить заказ
         </Button>
       </article>

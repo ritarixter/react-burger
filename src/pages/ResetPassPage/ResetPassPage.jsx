@@ -9,10 +9,9 @@ import { useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { wasNotOnPageForgotPassword } from "../../services/actions/profile";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
 export function ResetPassPage() {
   const history = useHistory();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const [icon, setIcon] = React.useState("ShowIcon");
   const [type, setType] = React.useState("password");
   const [passwordValue, setPasswordValue] = React.useState("");
@@ -37,30 +36,29 @@ export function ResetPassPage() {
 
   const resetPass = useCallback(
     (passwordValue, codeValue) => {
-      dispatch(wasNotOnPageForgotPassword())
+      dispatch(wasNotOnPageForgotPassword());
       resetPassword(passwordValue, codeValue).then((res) => {
         const success = res.success;
         if (success) {
-          setSuccessForm(true)
+          setSuccessForm(true);
           history.replace({ pathname: "/login" });
         }
       });
     },
     [history]
   );
-  if(!wasOnPageForgotPassword && !successForm ){
+  if (!wasOnPageForgotPassword && !successForm) {
     history.replace({ pathname: "/forgot-password" });
   }
 
   return (
-  
     <div className={styles.main}>
       <div className={styles.login}>
         <form
           className={`${styles.form} mb-20`}
           onSubmit={(event) => {
             event.preventDefault();
-            resetPass(passwordValue,codeValue);
+            resetPass(passwordValue, codeValue);
           }}
           name="reset-pass"
         >
@@ -77,7 +75,7 @@ export function ResetPassPage() {
               name={"password"}
               ref={inputRef}
               onIconClick={onIconClick}
-              error={passwordValue.length<6}
+              error={passwordValue.length < 6}
               errorText={"Некорректный пароль"}
               size={"default"}
             />
@@ -111,6 +109,5 @@ export function ResetPassPage() {
         </p>
       </div>
     </div>
-   
   );
 }

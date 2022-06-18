@@ -6,11 +6,14 @@ import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { canPasswordReset } from "../../utils/API";
 import { useDispatch } from "react-redux";
-import { wasOnPageForgotPassword, wasNotOnPageForgotPassword } from "../../services/actions/profile";
+import {
+  wasOnPageForgotPassword,
+  wasNotOnPageForgotPassword,
+} from "../../services/actions/profile";
 import { checkEmail } from "../../utils/functions";
 
 export function ForgotPassPage() {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const history = useHistory();
   const [valueEmail, setValueEmail] = React.useState("");
   const canResetPass = useCallback(
@@ -18,12 +21,10 @@ export function ForgotPassPage() {
       canPasswordReset(valueEmail).then((res) => {
         const success = res.success;
         if (success) {
-          dispatch(wasOnPageForgotPassword())
+          dispatch(wasOnPageForgotPassword());
           history.replace({ pathname: "/reset-password" });
-          
-        }
-        else {
-          dispatch(wasNotOnPageForgotPassword())
+        } else {
+          dispatch(wasNotOnPageForgotPassword());
         }
       });
     },
@@ -53,8 +54,8 @@ export function ForgotPassPage() {
               value={valueEmail}
               name={"email"}
               size={"default"}
-              error={!checkEmail(valueEmail) && valueEmail.length>0}
-              errorText={'Некорректный формат e-mail'}
+              error={!checkEmail(valueEmail) && valueEmail.length > 0}
+              errorText={"Некорректный формат e-mail"}
             />
           </div>
 

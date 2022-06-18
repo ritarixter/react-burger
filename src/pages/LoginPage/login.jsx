@@ -1,4 +1,3 @@
-import React from "react";
 import styles from "./login.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
@@ -8,9 +7,11 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { authorizationUser } from "../../utils/API";
 import { useCallback } from "react";
-import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { authorizationFailed, getDataUserProfile} from "../../services/actions/profile";
+import {
+  authorizationFailed,
+  getDataUserProfile,
+} from "../../services/actions/profile";
 import { Redirect } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -18,55 +19,50 @@ import { checkEmail } from "../../utils/functions";
 import { useState } from "react";
 
 export function LoginPage() {
-  const dispatch = useDispatch()
-  const location = useLocation()
-  
+  const dispatch = useDispatch();
+  const location = useLocation();
+
   const [valueEmail, setValueEmail] = useState("");
   const [valuePassword, setValuePassword] = useState("");
-  const [successPassword, setSuccessPassword] = useState("");
-  const [successEmail, setSuccessEmail] = useState("");
-  const isAuth = useSelector(
-    (state) => state.profileReducer.isAuth
-  );
-  const canAuthorizationUser = useCallback(
-    (valueEmail, passwordValue) => {
-     authorizationUser(valueEmail, passwordValue)
-      .then((res) => {
-        localStorage.setItem("token", res.refreshToken);
-        document.cookie= res.accessToken
-        if (res.success) {
-          dispatch(getDataUserProfile())        
-        }
-        else {
-          dispatch(authorizationFailed())
-        }
-       
-      }) 
-    })
-    if (isAuth) {
-      return <Redirect to={location.state?.from || '/'} />;
-    }
-
+  const isAuth = useSelector((state) => state.profileReducer.isAuth);
+  const canAuthorizationUser = useCallback((valueEmail, passwordValue) => {
+    authorizationUser(valueEmail, passwordValue).then((res) => {
+      localStorage.setItem("token", res.refreshToken);
+      document.cookie = res.accessToken;
+      if (res.success) {
+        dispatch(getDataUserProfile());
+      } else {
+        dispatch(authorizationFailed());
+      }
+    });
+  });
+  if (isAuth) {
+    return <Redirect to={location.state?.from || "/"} />;
+  }
 
   return (
     <div className={styles.main}>
       <div className={styles.login}>
-        <form className={`${styles.form} mb-20`} name="authorization"   onSubmit={(event) => {
+        <form
+          className={`${styles.form} mb-20`}
+          name="authorization"
+          onSubmit={(event) => {
             event.preventDefault();
             canAuthorizationUser(valueEmail, valuePassword);
-          }}>
+          }}
+        >
           <h1 className="text text_type_main-medium mb-6">Вход</h1>
 
           <div className={styles.input}>
             {" "}
             <Input
               placeholder={"E-mail"}
-              onChange={(e) =>  setValueEmail(e.target.value) }
+              onChange={(e) => setValueEmail(e.target.value)}
               value={valueEmail}
               name={"email"}
               size={"default"}
-              error={!checkEmail(valueEmail) && valueEmail.length>0}
-              errorText={'Некорректный формат e-mail'}
+              error={!checkEmail(valueEmail) && valueEmail.length > 0}
+              errorText={"Некорректный формат e-mail"}
             />
           </div>
           <div className={`${styles.input} mb-6 mt-6`}>

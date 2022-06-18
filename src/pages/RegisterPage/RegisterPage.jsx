@@ -10,7 +10,6 @@ import { registerUser } from "../../utils/API";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-
 export function RegisterPage() {
   const history = useHistory();
   const [valueEmail, setValueEmail] = React.useState("");
