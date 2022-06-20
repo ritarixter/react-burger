@@ -27,7 +27,7 @@ export function ingredientsReducer(state = ingredientsInitialState, action) {
         ingredientsFailed: true,
       };
     }
-    case RESET_INGREDIENT_TO_VIEW: {
+   /* case RESET_INGREDIENT_TO_VIEW: {
       return { ...state, ingredientToView: null, ingredientModalOpen: false };
     }
 
@@ -38,7 +38,7 @@ export function ingredientsReducer(state = ingredientsInitialState, action) {
         ingredientModalOpen: true,
       };
     }
-
+*/
     default: {
       return state;
     }

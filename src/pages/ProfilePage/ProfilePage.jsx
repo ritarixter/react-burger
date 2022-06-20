@@ -19,6 +19,7 @@ import {
 import { checkEmail } from "../../utils/functions";
 import { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { deleteCookie } from "../../utils/deleteCookie";
 
 export function ProfilePage() {
   const history = useHistory();
@@ -53,11 +54,13 @@ export function ProfilePage() {
     }
   }, [valueEmail, valuePassword]);
 
+
+
   const logoutProfile = () => {
     logoutUser().then((res) => {
       if (res.success) {
         localStorage.removeItem("token");
-        document.cookie = null;
+        deleteCookie("accessToken", null, { expires: -1 });
         dispatch(logoutProfileUser());
         history.replace({ pathname: "/login" });
       }
@@ -67,7 +70,6 @@ export function ProfilePage() {
     setTimeout(() => inputRefName.current.focus(), 0);
     if (disabledName) {
       setDisabledName(false);
-      setBtnDisabled(false);
     } else {
       setDisabledName(true);
     }
@@ -77,7 +79,6 @@ export function ProfilePage() {
     setTimeout(() => inputRefEmail.current.focus(), 0);
     if (disabledEmail) {
       setDisabledEmail(false);
-      setBtnDisabled(false);
     } else {
       setDisabledEmail(true);
     }

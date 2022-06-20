@@ -1,0 +1,59 @@
+.feed{
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.section{
+  display: flex;
+}
+
+.list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-right: 8px;
+}
+
+.scrollbar {
+  max-width: 608px;
+  box-sizing: border-box;
+  height: 719px;
+  overflow-y: scroll;
+  scroll-behavior: smooth;
+}
+
+.scrollbar::-webkit-scrollbar {
+  width: 8px;
+  background-color: #2f2f37;
+}
+
+.scrollbar::-webkit-scrollbar-thumb {
+  background-color: #8585ad;
+}
+
+.orders__status{
+  display: flex; 
+}
+
+.ordes__list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 272px;
+}
+
+.success{
+  color: #00CCCC;
+}
+
+.feed__info{
+  margin-left: 60px;
+}
+
+
+.orderNumber {
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}

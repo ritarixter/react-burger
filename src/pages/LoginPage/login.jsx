@@ -17,6 +17,9 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { checkEmail } from "../../utils/functions";
 import { useState } from "react";
+import { useEffect } from "react";
+import { setCookie } from "../../utils/setCookie";
+import { getCookie } from "../../utils/getCookie";
 
 export function LoginPage() {
   const dispatch = useDispatch();
@@ -28,7 +31,8 @@ export function LoginPage() {
   const canAuthorizationUser = useCallback((valueEmail, passwordValue) => {
     authorizationUser(valueEmail, passwordValue).then((res) => {
       localStorage.setItem("token", res.refreshToken);
-      document.cookie = res.accessToken;
+      setCookie('accessToken', res.accessToken);
+      const token = getCookie('accessToken')
       if (res.success) {
         dispatch(getDataUserProfile());
       } else {
@@ -36,6 +40,7 @@ export function LoginPage() {
       }
     });
   });
+
   if (isAuth) {
     return <Redirect to={location.state?.from || "/"} />;
   }

@@ -6,6 +6,7 @@ import {
   AUTHORIZATION_FAILED,
   FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_UNSUCCESS,
+  AUTH_CHECKED
 } from "../actions/profile";
 
 const profileInitialState = {
@@ -14,6 +15,7 @@ const profileInitialState = {
   password: "",
   isAuth: false,
   wasOnPageForgotPassword: false,
+  isAuthChecked: false
 };
 
 export const profileReducer = (state = profileInitialState, action) => {
@@ -71,6 +73,14 @@ export const profileReducer = (state = profileInitialState, action) => {
       return {
         ...state,
         wasOnPageForgotPassword: false,
+      };
+    }
+
+    
+    case AUTH_CHECKED: {
+      return {
+        ...state,
+        isAuthChecked:true
       };
     }
 

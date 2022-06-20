@@ -2,13 +2,18 @@ import { useHistory } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Redirect } from "react-router-dom";
+import Preloader from "../Preloader/Preloader";
 
 export default function ProtectedRoute({
   anonymous = false,
   children
 }) {
-  const isAuth = useSelector((state) => state.profileReducer.isAuth);
   const location = useLocation();
+  const isAuth = useSelector((state) => state.profileReducer.isAuth);
+  const isAuthChecked = useSelector((state) => state.profileReducer.isAuthChecked);
+  if (!isAuthChecked) {
+    return <Preloader />; 
+  }
   if (anonymous && !isAuth) {
     return (
       <Redirect

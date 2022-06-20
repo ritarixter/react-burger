@@ -7,6 +7,7 @@ export const AUTHORIZATION_SUCCESS = "AUTHORIZATION_SUCCESS";
 export const AUTHORIZATION_FAILED = "AUTHORIZATION_FAILED";
 export const FORGOT_PASSWORD_UNSUCCESS = "FORGOT_PASSWORD_UNSUCCESS";
 export const FORGOT_PASSWORD_SUCCESS = "FORGOT_PASSWORD_SUCCESS";
+export const AUTH_CHECKED = 'AUTH_CHECKED'
 
 export function getDataProfile(data) {
   return { type: GET_DATA_USER, data };
@@ -36,7 +37,11 @@ export function authorizationFailed() {
   return { type: AUTHORIZATION_FAILED };
 }
 
-export function editData(nameValue, emailValue, passwordValue) {
+export function authorizationChecked() {
+  return { type: AUTH_CHECKED };
+}
+
+export function editData(nameValue, emailValue) {
   return function (dispatch) {
     editProfile(document.cookie, nameValue, emailValue)
       .then((res) => {
@@ -51,13 +56,16 @@ export function editData(nameValue, emailValue, passwordValue) {
 
 export function getDataUserProfile() {
   return function (dispatch) {
-    getDataUser(document.cookie)
+    getDataUser()
       .then((res) => {
         const ApiData = res.user;
         dispatch(getDataProfile(ApiData));
       })
       .catch((err) => {
         console.log(`Ошибка при загрузке данных: ${err}`);
+      })
+      .finally(() => {
+        dispatch(authorizationChecked());
       });
   };
 }

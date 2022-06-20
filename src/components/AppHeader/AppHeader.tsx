@@ -9,6 +9,7 @@ import styles from "./AppHeader.module.css";
 
 function AppHeader() {
   const matchProfile = useRouteMatch("/profile");
+  const matchFeed= useRouteMatch("/feed");
   const match = useRouteMatch("/");
 
   return (
@@ -28,10 +29,15 @@ function AppHeader() {
           </li>
 
           <li className="text text_type_main-default p-5 ml-2">
-            <a href="#" className={styles.menu__item}>
-              <ListIcon type="secondary" />{" "}
+            <NavLink
+              to="/feed"
+              className={styles.menu__item}
+              activeClassName={styles.menu__item_active}
+              exact={true}
+            >
+              <ListIcon type={matchFeed?.isExact ? "primary" : "secondary"} />
               <span className="ml-2">Лента заказов</span>
-            </a>
+            </NavLink>
           </li>
 
           <li className={styles.m_center}>

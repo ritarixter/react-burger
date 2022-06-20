@@ -1,3 +1,4 @@
+import { getCookie } from "./getCookie";
 import { setCookie } from "./setCookie";
 const url = "https://norma.nomoreparties.space/api";
 
@@ -9,13 +10,13 @@ const responseCheck = (res) => {
   }
 };
 
-export async function getData() {
-  const res = await fetch(`${url}/ingredients`);
-  return responseCheck(res);
-}
+export function getData(){
+  return fetch(`${url}/ingredients`)
+  .then(responseCheck)
+ }
 
-export async function dataOrder(data) {
-  const res = await fetch(`${url}/orders`, {
+export function dataOrder(data) {
+  return fetch(`${url}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -23,12 +24,12 @@ export async function dataOrder(data) {
     body: JSON.stringify({
       ingredients: data.map((item) => item._id),
     }),
-  });
-  return responseCheck(res);
+  })
+    .then(responseCheck)
 }
 
-export async function canPasswordReset(valueEmail) {
-  const res = await fetch(`${url}/password-reset`, {
+export function canPasswordReset(valueEmail) {
+  return fetch(`${url}/password-reset`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -36,12 +37,12 @@ export async function canPasswordReset(valueEmail) {
     body: JSON.stringify({
       email: valueEmail,
     }),
-  });
-  return responseCheck(res);
+  })
+  .then(responseCheck)
 }
 
-export async function resetPassword(passwordValue, codeValue) {
-  const res = await fetch(`${url}/password-reset/reset`, {
+export function resetPassword(passwordValue, codeValue) {
+  return fetch(`${url}/password-reset/reset`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -50,12 +51,12 @@ export async function resetPassword(passwordValue, codeValue) {
       password: passwordValue,
       token: codeValue,
     }),
-  });
-  return responseCheck(res);
+  })
+  .then(responseCheck)
 }
 
-export async function registerUser(nameValue, emailValue, passwordValue) {
-  const res = await fetch(`${url}/auth/register`, {
+export function registerUser(nameValue, emailValue, passwordValue) {
+  return fetch(`${url}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -65,11 +66,11 @@ export async function registerUser(nameValue, emailValue, passwordValue) {
       password: passwordValue,
       name: nameValue,
     }),
-  });
-  return responseCheck(res);
+  })
+  .then(responseCheck)
 }
 
-const cookieCheck = (res) => {
+/*const cookieCheck = (res) => {
   if (res.ok) {
     let authToken;
     console.log(res);
@@ -85,10 +86,10 @@ const cookieCheck = (res) => {
   } else {
     return Promise.reject(`Ошибка: ${res.status}`);
   }
-};
+};*/
 
-export async function refreshToken() {
-  const res = await fetch(`${url}/auth/token `, {
+export function refreshToken() {
+  return fetch(`${url}/auth/token `, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -97,19 +98,21 @@ export async function refreshToken() {
       token: localStorage.getItem("token"),
     }),
   })
-    .then(responseCheck(res))
+    .then(responseCheck)
     .then((refreshData) => {
       if (!refreshData.success) {
         return Promise.reject(refreshData);
       }
       localStorage.setItem("token", refreshData.refreshToken);
-      document.cookie = refreshData.accessToken;
+     // document.cookie = refreshData.accessToken;
+      setCookie('accessToken', refreshData.accessToken)
       return refreshData;
     });
 }
 
-export async function authorizationUser(emailValue, passwordValue) {
-  const res = await fetch(`${url}/auth/login`, {
+
+export function authorizationUser(emailValue, passwordValue) {
+   return fetch(`${url}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -118,12 +121,13 @@ export async function authorizationUser(emailValue, passwordValue) {
       email: emailValue,
       password: passwordValue,
     }),
-  });
-  return responseCheck(res);
+  })
+  .then(responseCheck)
+  
 }
 
 export async function logoutUser() {
-  const res = await fetch(`${url}/auth/logout`, {
+  return fetch(`${url}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -131,72 +135,72 @@ export async function logoutUser() {
     body: JSON.stringify({
       token: localStorage.getItem("token"),
     }),
-  });
-  return responseCheck(res);
+  })
+  .then(responseCheck)
 }
 
-export async function getDataUser(accessToken) {
-  try {
-    const res = await fetch(`${url}/auth/user`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: accessToken,
-      },
-    });
-    return responseCheck(res);
-  } catch (err) {
-    //Проверка на актуальность refreshToken-a ------
-    if (err === "403") {
-      const refreshData = await refreshToken();
-      const res = await fetch(`${url}/auth/user`, {
-        method: "GET",
+export function getDataUser() {
+  return fetch(`${url}/auth/user`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getCookie('accessToken'),
+    },
+    })
+    .then(responseCheck)
+    .catch ((err) =>{    
+      if (err === 403) {
+     refreshToken()
+     .then((refreshData)=>{
+      return fetch(`${url}/auth/user`, {
+        method: "PATCH",
         headers: {
           "Content-Type": "application/json",
-          Authorization: refreshData.accessToken,
+          Authorization: refreshData.accessToken, 
         },
-      });
-      return await responseCheck(res);
-    } else {
-      return Promise.reject(`Ошибка: ${err.status}`);
-    }
-  }
+      })
+      .then(responseCheck)
+    })   
+  } else {
+    return Promise.reject(`Ошибка: ${err.status}`);
+  }})
 }
 
-export async function editProfile(accessToken, nameValue, emailValue) {
-  try {
-    const res = await fetch(`${url}/auth/user`, {
+export function editProfile(accessToken, nameValue, emailValue) {
+    return fetch(`${url}/auth/user`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        Authorization: accessToken,
+        Authorization: getCookie('accessToken'),
       },
       body: JSON.stringify({
         name: nameValue,
         email: emailValue,
       }),
-    });
-    return responseCheck(res);
-  } catch (err) {
-    if (err === "403") {
-      const refreshData = await refreshToken();
-      const res = await fetch(`${url}/auth/user`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: refreshData.accessToken,
-        },
-        body: JSON.stringify({
-          name: nameValue,
-          email: emailValue,
-        }),
-      });
-      return await responseCheck(res);
+    })
+    .then(responseCheck)
+     .catch ((err) =>{
+      if (err === 403) {
+      refreshToken()
+      .then((refreshData)=>{
+        return fetch(`${url}/auth/user`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: getCookie('accessToken'),
+          },
+          body: JSON.stringify({
+            name: nameValue,
+            email: emailValue,
+          }),
+        })
+        .then(responseCheck)
+      })   
     } else {
       return Promise.reject(`Ошибка: ${err.status}`);
-    }
+    }})
   }
-}
+
 
 /*const fetchWithRefresh = async (url, options) => {
   try {
