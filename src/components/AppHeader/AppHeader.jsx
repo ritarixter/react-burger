@@ -6,11 +6,16 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import styles from "./AppHeader.module.css";
+import { useSelector } from "react-redux";
 
 function AppHeader() {
   const matchProfile = useRouteMatch("/profile");
+  const matchProfileOrder = useRouteMatch("/profile/orders");
+  const matchProfileOrderId = useRouteMatch("/profile/orders/:id");
   const matchFeed= useRouteMatch("/feed");
   const match = useRouteMatch("/");
+  const isAuth = useSelector((state) => state.profileReducer.isAuth);
+  const name = useSelector((state) => state.profileReducer.name);
 
   return (
     <header className={styles.header}>
@@ -41,23 +46,44 @@ function AppHeader() {
           </li>
 
           <li className={styles.m_center}>
-            <a href="#" className={styles.menu__item}>
+          <NavLink
+              to="/"
+              className={styles.menu__item}
+            
+            >
               <Logo />
-            </a>
+              </NavLink>
           </li>
 
-          <li className={`${styles.mr_l} text text_type_main-default p-5`}>
+          {isAuth ?
+            <li className={`${styles.mr_l} text text_type_main-default p-5`}>
             <NavLink
               to="/profile"
-              className={styles.menu__item}
+              className={styles.menu__name}
               activeClassName={styles.menu__item_active}
             >
               <ProfileIcon
-                type={matchProfile?.isExact ? "primary" : "secondary"}
+                type={matchProfile?.isExact || matchProfileOrder?.isExact || (matchProfileOrderId && matchProfileOrderId.isExact) ? "primary" : "success"}
               />
-              <span className="ml-2">Личный кабинет</span>
+              <span className="ml-2">{name}</span>
             </NavLink>
           </li>
+          :
+                <li className={`${styles.mr_l} text text_type_main-default p-5`}>
+                <NavLink
+                  to="/profile"
+                  className={styles.menu__item}
+                  activeClassName={styles.menu__item_active}
+                >
+                  <ProfileIcon
+                    type={matchProfile?.isExact || matchProfileOrder?.isExact ? "primary" : "secondary"}
+                  />
+                  <span className="ml-2">Личный кабинет</span>
+                </NavLink>
+              </li>
+          }
+
+      
         </ul>
       </nav>
     </header>

@@ -28,6 +28,8 @@ import { FeedPage } from "../../pages/FeedPage/FeedPage";
 import { getCookie } from "../../utils/getCookie";
 import { authorizationChecked } from "../../services/actions/profile";
 import Preloader from "../Preloader/Preloader";
+import { ProfileOrderPage } from "../../pages/ProfileOrderPage/ProfileOrderPage";
+import { CardDetails } from "../CardDetails/CardDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -52,9 +54,8 @@ function App() {
     dispatch(getIngredientsData());
     if (getCookie("accessToken")) {
       dispatch(getDataUserProfile());
-    }
-    else{
-      dispatch(authorizationChecked())
+    } else {
+      dispatch(authorizationChecked());
     }
   }, [dispatch]);
 
@@ -63,77 +64,121 @@ function App() {
   return (
     <>
       {error ? (
-             <Preloader/>
-      ) : (   
+        <Preloader />
+      ) : (
         <>
-        <AppHeader />
-        <Switch location={background || location}>
-          <Route path="/ingredients/:id">
-            <div className="mt-30">
-              <IngredientDetails />
-            </div>
-          </Route>
-
-          <Route path="/" exact={true}>
-            <main className={styles.app}>
-              <DndProvider backend={HTML5Backend}>
-                <BurgerIngredients />
-                <BurgerConstructor />
-              </DndProvider>
-            </main>
-          </Route>
-
-          <Route path="/feed" exact={true}>
-            <FeedPage />
-          </Route>
-
-          <Route path="/login" exact={true}>
-            <LoginPage />
-          </Route>
-
-          <Route path="/register" exact={true}>
-            <ProtectedRoute>
-              <RegisterPage />
-            </ProtectedRoute>
-          </Route>
-
-          <Route path="/forgot-password" exact={true}>
-            <ProtectedRoute>
-              <ForgotPassPage />
-            </ProtectedRoute>
-          </Route>
-
-          <Route path="/reset-password" exact={true}>
-            <ProtectedRoute>
-              <ResetPassPage />
-            </ProtectedRoute>
-          </Route>
-
-          <Route path="/profile" exact={true}>
-            <ProtectedRoute anonymous={true}>
-              <ProfilePage />
-            </ProtectedRoute>
-          </Route>
-
-          <Route>
-            <NotFound404 />
-          </Route>
-        </Switch>
-
-        {background && (
-          <Switch>
+          <AppHeader />
+          <Switch location={background || location}>
             <Route path="/ingredients/:id">
-              <Modal
-                title="Детали заказа"
-                closeModalEsc={closeModalEsc}
-                closeModal={closeModal}
-              >
+              <div className="mt-30">
                 <IngredientDetails />
-              </Modal>
+              </div>
+            </Route>
+
+            <Route path="/profile/orders/:id" exact={true}>
+            <ProtectedRoute anonymous={true}>
+              <CardDetails notModal={true} />
+              </ProtectedRoute>
+            </Route>
+
+            <Route path="/feed/:id" exact={true}>
+              <CardDetails notModal={true} />
+            </Route>
+
+            <Route path="/" exact={true}>
+              <main className={styles.app}>
+                <DndProvider backend={HTML5Backend}>
+                  <BurgerIngredients />
+                  <BurgerConstructor />
+                </DndProvider>
+              </main>
+            </Route>
+
+            <Route path="/feed" exact={true}>
+              <FeedPage />
+            </Route>
+
+            <Route path="/login" exact={true}>
+              <LoginPage />
+            </Route>
+
+            <Route path="/profile/orders" exact={true}>
+              <ProtectedRoute anonymous={true}>
+                <ProfileOrderPage />
+              </ProtectedRoute>
+            </Route>
+
+            <Route path="/profile" exact={true}>
+              <ProtectedRoute anonymous={true}>
+                <ProfilePage />
+              </ProtectedRoute>
+            </Route>
+
+            <Route path="/register" exact={true}>
+              <ProtectedRoute>
+                <RegisterPage />
+              </ProtectedRoute>
+            </Route>
+
+            <Route path="/forgot-password" exact={true}>
+              <ProtectedRoute>
+                <ForgotPassPage />
+              </ProtectedRoute>
+            </Route>
+
+            <Route path="/reset-password" exact={true}>
+              <ProtectedRoute>
+                <ResetPassPage />
+              </ProtectedRoute>
+            </Route>
+
+            <Route>
+              <NotFound404 />
             </Route>
           </Switch>
-        )}
-      </>
+
+          {background && (
+            <Switch>
+              <Route path="/ingredients/:id">
+                <Modal
+                  title="Детали заказа"
+                  closeModalEsc={closeModalEsc}
+                  closeModal={closeModal}
+                >
+                  <IngredientDetails />
+                </Modal>
+              </Route>
+            </Switch>
+          )}
+
+          {background && (
+            <Switch>
+              <Route path="/profile/orders/:id" exact={true}>
+                <Modal
+                  number="#030030"
+                  closeModalEsc={closeModalEsc}
+                  closeModal={closeModal}
+                >
+                  <CardDetails />
+                </Modal>
+              </Route>
+            </Switch>
+          )}
+
+          {background && (
+            <Switch>
+              <Route path="/feed/:id" exact={true}>
+                <Modal
+                  number="#030030"
+                  closeModalEsc={closeModalEsc}
+                  closeModal={closeModal}
+                >
+                  <CardDetails />
+                </Modal>
+              </Route>
+            </Switch>
+          )}
+        </>
       )}
     </>
   );

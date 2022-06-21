@@ -1,9 +1,19 @@
 import styles from "./OrderCard.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import { IngredientIcon } from "../IngregientIcon/IngredientIcon";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-export function OrderCard() {
+export function OrderCard(props) {
+  const location = useLocation();
   return (
+    <Link
+    to={{
+      pathname: `${props.path}${props.id}`,
+      state: { background: location },
+    }}
+    className={styles.card__link}
+  >
     <li className={styles.card}>
       <div className={styles.header}>
         <p className="text text_type_digits-default">#034535</p>
@@ -26,5 +36,6 @@ export function OrderCard() {
         </p>
       </div>
     </li>
+    </Link>
   );
 }

@@ -1,0 +1,48 @@
+.ingredient {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  box-sizing: content-box;
+  border-radius: 50%;
+  background: linear-gradient(63.18deg, #801ab3 0%, #4c4cff 100%);
+  padding: 2px;
+}
+
+.ingredient__image {
+  display: block;
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 50%;
+  background: #131316;
+}
+
+.list__item{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.list__item:last-child{
+  margin-bottom: 0;
+}
+
+.list__name{
+  display: flex;
+  align-items: center;
+}
+
+.paragraph{
+  width: 380px;
+  flex-wrap: wrap;
+  margin-right: 16px;
+  margin-left: 16px;
+}
+
+
+.price {
+  display: flex;
+  align-items: center;
+}
