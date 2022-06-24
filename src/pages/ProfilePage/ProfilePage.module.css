@@ -1,0 +1,27 @@
+.main{
+  display: flex;
+  justify-content: center;
+  height: 90vh;
+  padding-top: 120px;
+  box-sizing: border-box;
+}
+
+.profile{
+  display: flex;
+  justify-content: space-between;
+  
+}
+
+.input,
+.input div:not(input + div) {
+  width: 100%;
+}
+
+.form{
+  min-width: 480px;
+}
+
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+}

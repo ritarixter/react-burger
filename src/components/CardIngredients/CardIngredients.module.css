@@ -8,6 +8,12 @@
   max-height: 208px;
   cursor:grab;
   position: relative;
+
+}
+
+.card__link{
+  text-decoration: none;
+  color: white;
 }
 
 .card:nth-child(2n) {

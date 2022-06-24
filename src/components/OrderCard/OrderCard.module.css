@@ -1,0 +1,30 @@
+
+.header{
+  display: flex;
+  justify-content: space-between;
+}
+
+.info__burger{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
+
+.list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-right: 8px;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.card__link{
+  text-decoration: none;
+  color: white;
+}

@@ -2,6 +2,8 @@
   background-color: #1c1c21;
   max-width: 1920px;
   margin: 0 auto;
+  padding-top: 16px;
+  padding-bottom: 16px;
 }
 
 .nav {
@@ -18,18 +20,27 @@
   align-items: center;
 }
 
+.menu__name{
+  color:#00CCCC;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
 .menu__item {
   text-align: center;
   display: flex;
   align-items: center;
   text-decoration: none;
   color: #8585ad;
-  transition: color 0.2s ease-in-out;
+
 }
 
 .menu__item_active {
   color: #fff;
 }
+
 
 .navigation__item:hover {
   color: #fff;

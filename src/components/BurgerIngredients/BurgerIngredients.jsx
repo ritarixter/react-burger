@@ -2,13 +2,7 @@ import React from "react";
 import styles from "./BurgerIngredients.module.css";
 import CardIngredients from "../CardIngredients/CardIngredients";
 import PropTypes from "prop-types";
-import Modal from "../Modal/Modal";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  resetIngredientToView,
-  setIngredientToView,
-} from "../../services/actions/indredients";
+import { useSelector } from "react-redux";
 import { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
@@ -16,13 +10,7 @@ function BurgerIngredients() {
   const ingridients = useSelector(
     (state) => state.ingredientsReducer.ingredients
   );
-  const ingredientToView = useSelector(
-    (state) => state.ingredientsReducer.ingredientToView
-  );
-  const ingredientModalOpen = useSelector(
-    (state) => state.ingredientsReducer.ingredientModalOpen
-  );
-  const dispatch = useDispatch();
+
   const bunRef = useRef(null);
   const mainRef = useRef(null);
   const sauceRef = useRef(null);
@@ -46,21 +34,6 @@ function BurgerIngredients() {
     [ingridients]
   );
 
-  function openModal(prop) {
-    dispatch(
-      setIngredientToView(ingridients.find((item) => item._id === prop))
-    );
-  }
-
-  function closeModal() {
-    dispatch(resetIngredientToView());
-  }
-
-  function closeModalEsc(evt) {
-    if (evt.key === "Escape") {
-      dispatch(resetIngredientToView());
-    }
-  }
   function ingredintScroll(e) {
     const scrollPosition = e.target.scrollTop;
     const scrollOffset = 400;
@@ -109,14 +82,14 @@ function BurgerIngredients() {
           </h2>
           <ul className={`${styles.cards}`}>
             {buns.map((bun) => (
-              <CardIngredients
-                key={bun._id}//Я добавила каждому cardIngredients key, но ошибка не исчезает,не могу понять в чем причина
-                image={bun.image}
-                name={bun.name}
-                price={bun.price}
-                openModal={openModal}
-                id={bun._id}
-              />
+              <li key={bun._id}>
+                <CardIngredients
+                  image={bun.image}
+                  name={bun.name}
+                  price={bun.price}
+                  id={bun._id}
+                />
+              </li>
             ))}
           </ul>
         </section>
@@ -126,16 +99,14 @@ function BurgerIngredients() {
           </h2>
           <ul className={styles.cards}>
             {sauces.map((sauce) => (
-              <>
+              <li key={sauce._id}>
                 <CardIngredients
-                  key={sauce._id}
                   image={sauce.image}
                   name={sauce.name}
                   price={sauce.price}
-                  openModal={openModal}
                   id={sauce._id}
                 />
-              </>
+              </li>
             ))}
           </ul>
         </section>
@@ -146,27 +117,18 @@ function BurgerIngredients() {
           </h2>
           <ul className={styles.cards}>
             {mains.map((main) => (
-              <CardIngredients
-                key={main._id}
-                image={main.image}
-                name={main.name}
-                price={main.price}
-                openModal={openModal}
-                id={main._id}
-              />
+              <li key={main._id}>
+                <CardIngredients
+                  image={main.image}
+                  name={main.name}
+                  price={main.price}
+                  id={main._id}
+                />
+              </li>
             ))}
           </ul>
         </section>
       </div>
-      {ingredientModalOpen && (
-        <Modal
-          title="Детали заказа"
-          closeModalEsc={closeModalEsc}
-          closeModal={closeModal}
-        >
-          <IngredientDetails data={ingredientToView} />
-        </Modal>
-      )}
     </section>
   );
 }

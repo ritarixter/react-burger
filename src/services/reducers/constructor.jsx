@@ -1,17 +1,31 @@
-import { ADD_BUN_ELEMENT,ADD_NON_BUN_ELEMENT,DELETE_ELEMENT,UPDATE_ELEMENTS_ORDER } from "../actions/constructor";
-import update from 'immutability-helper';
+import {
+  ADD_BUN_ELEMENT,
+  ADD_NON_BUN_ELEMENT,
+  DELETE_ELEMENT,
+  UPDATE_ELEMENTS_ORDER,
+  RESET_CONSTRUCTOR,
+  ADD_ELEMENT
+} from "../actions/constructor";
+import update from "immutability-helper";
 
 const constructorInitialState = {
   bunElement: {},
   draggableElements: [],
-}
+  elements: []
+};
 
 export function constructorReducer(state = constructorInitialState, action) {
-  switch(action.type) {
-    case ADD_BUN_ELEMENT: {
-      
-      return { ...state, bunElement: action.payload };
+  switch (action.type) {
 
+    case ADD_ELEMENT: {
+      return {
+        ...state,
+        elements: state.elements.concat(action.payload),
+      };
+    }
+
+    case ADD_BUN_ELEMENT: {
+      return { ...state, bunElement: action.payload };
     }
     case ADD_NON_BUN_ELEMENT: {
       return {
@@ -29,6 +43,14 @@ export function constructorReducer(state = constructorInitialState, action) {
       };
     }
 
+    case RESET_CONSTRUCTOR: {
+      return {
+        bunElement: {},
+        draggableElements: [],
+        elements: []
+      };
+    }
+
     case UPDATE_ELEMENTS_ORDER: {
       const oldIndex = state.draggableElements.indexOf(action.draggableElement);
       return {
@@ -42,7 +64,7 @@ export function constructorReducer(state = constructorInitialState, action) {
       };
     }
     default: {
-      return state
+      return state;
     }
   }
 }

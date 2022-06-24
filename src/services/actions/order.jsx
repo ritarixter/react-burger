@@ -1,4 +1,5 @@
 import { dataOrder } from "../../utils/API";
+import { resetConstructor } from "./constructor";
 export const SET_ORDER_NUMBER = "SET_ORDER_NUMBER";
 export const SET_ORDER_NUMBER_FAILED = "SET_ORDER_NUMBER_FAILED";
 export const SET_OPEN = "SET_OPEN";
@@ -24,6 +25,7 @@ export function getOrderData(data) {
     dataOrder(data)
       .then((res) => {
         dispatch(setOrderNumber(res.order.number));
+        dispatch(resetConstructor())
       })
       .catch(() => {
         dispatch(setOrderNumberFailed());
