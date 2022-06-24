@@ -4,7 +4,11 @@
   align-items: center;
 }
 
-.number{
+.success{
+  color: #00CCCC;
+}
+
+.count{
   text-align: center;
   margin-top: 120px;
 }

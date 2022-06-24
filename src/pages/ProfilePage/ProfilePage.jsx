@@ -1,24 +1,15 @@
 import React from "react";
 import styles from "./ProfilePage.module.css";
 import {
-  EmailInput,
-  PasswordInput,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import { NavLink, Route, Switch } from "react-router-dom";
-import { logoutUser } from "../../utils/API";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  getDataUserProfile,
-  logoutProfileUser,
   editData,
 } from "../../services/actions/profile";
 import { checkEmail } from "../../utils/functions";
 import { useEffect } from "react";
-import { OrderCard } from "../../components/OrderCard/OrderCard";
 import { ProfileNav } from "../../components/ProfileNav/ProfileNav";
 
 export function ProfilePage() {
@@ -91,89 +82,89 @@ export function ProfilePage() {
     <section className={styles.main}>
       <div className={styles.profile}>
         <ProfileNav paragraph={'В этом разделе вы можете изменить свои персональные данные'} />
-          <form
-            className={styles.form}
-            onSubmit={(event) => {
-              event.preventDefault();
-              dispatch(editData(valueName, valueEmail));
-            }}
-          >
-            <div className={`${styles.input}`}>
-              <Input
-                type={"text"}
-                placeholder={"Имя"}
-                onChange={(e) => setValueName(e.target.value)}
-                onBlur={() => setDisabledName(true)}
-                icon={"EditIcon"}
-                value={valueName}
-                name={"name"}
-                onIconClick={onIconClickName}
-                error={valueName.length < 1}
-                errorText={"Некорректное имя"}
-                size={"default"}
-                ref={inputRefName}
-                disabled={disabledName}
-              />
-            </div>
-            <div className={`${styles.input} mb-6 mt-6`}>
-              <Input
-                type={"email"}
-                placeholder={"E-mail"}
-                onChange={(e) => setValueEmail(e.target.value)}
-                onBlur={() => setDisabledEmail(true)}
-                icon={"EditIcon"}
-                value={valueEmail}
-                name={"email"}
-                onIconClick={onIconClickEmail}
-                error={emailSuccess}
-                errorText={"Некорректный формат e-mail"}
-                size={"default"}
-                ref={inputRefEmail}
-                disabled={disabledEmail}
-              />
-            </div>
-            <div className={`${styles.input} mb-6`}>
-              <Input
-                type={type}
-                placeholder={"Пароль"}
-                onChange={(e) => setValuePassword(e.target.value)}
-                onBlur={() => {
-                  setDisabledPassword(true);
-                  setType("password");
-                }}
-                icon={"EditIcon"}
-                value={valuePassword}
-                name={"password"}
-                onIconClick={onIconClickPassword}
-                error={valuePassword.length < 6}
-                errorText={"Некорректный пароль"}
-                size={"default"}
-                ref={inputRefPassword}
-                disabled={disabledPassword}
-              />
-            </div>
-            <div className={styles.buttons}>
-              {" "}
-              <Button
-                type="secondary"
-                size="medium"
-                onClick={(e) => {
-                  e.preventDefault();
-                  onClickCancel();
-                }}
-              >
-                Отмена
-              </Button>
-              <Button
-                type="primary"
-                size="medium"
-                htmlType="submit"
-                disabled={btnDisabled}
-              >
-                Сохранить
-              </Button>
-            </div>
-          </form>       
+        <form
+          className={styles.form}
+          onSubmit={(event) => {
+            event.preventDefault();
+            dispatch(editData(valueName, valueEmail));
+          }}
+        >
+          <div className={`${styles.input}`}>
+            <Input
+              type={"text"}
+              placeholder={"Имя"}
+              onChange={(e) => setValueName(e.target.value)}
+              onBlur={() => setDisabledName(true)}
+              icon={"EditIcon"}
+              value={valueName}
+              name={"name"}
+              onIconClick={onIconClickName}
+              error={valueName.length < 1}
+              errorText={"Некорректное имя"}
+              size={"default"}
+              ref={inputRefName}
+              disabled={disabledName}
+            />
+          </div>
+          <div className={`${styles.input} mb-6 mt-6`}>
+            <Input
+              type={"email"}
+              placeholder={"E-mail"}
+              onChange={(e) => setValueEmail(e.target.value)}
+              onBlur={() => setDisabledEmail(true)}
+              icon={"EditIcon"}
+              value={valueEmail}
+              name={"email"}
+              onIconClick={onIconClickEmail}
+              error={emailSuccess}
+              errorText={"Некорректный формат e-mail"}
+              size={"default"}
+              ref={inputRefEmail}
+              disabled={disabledEmail}
+            />
+          </div>
+          <div className={`${styles.input} mb-6`}>
+            <Input
+              type={type}
+              placeholder={"Пароль"}
+              onChange={(e) => setValuePassword(e.target.value)}
+              onBlur={() => {
+                setDisabledPassword(true);
+                setType("password");
+              }}
+              icon={"EditIcon"}
+              value={valuePassword}
+              name={"password"}
+              onIconClick={onIconClickPassword}
+              error={valuePassword.length < 6}
+              errorText={"Некорректный пароль"}
+              size={"default"}
+              ref={inputRefPassword}
+              disabled={disabledPassword}
+            />
+          </div>
+          <div className={styles.buttons}>
+            {" "}
+            <Button
+              type="secondary"
+              size="medium"
+              onClick={(e) => {
+                e.preventDefault();
+                onClickCancel();
+              }}
+            >
+              Отмена
+            </Button>
+            <Button
+              type="primary"
+              size="medium"
+              htmlType="submit"
+              disabled={btnDisabled}
+            >
+              Сохранить
+            </Button>
+          </div>
+        </form>
       </div>
     </section>
   );

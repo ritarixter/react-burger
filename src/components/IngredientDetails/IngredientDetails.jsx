@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 
-function IngredientDetails(data) {
+function IngredientDetails() {
   const ingredients = useSelector(
     (state) => state.ingredientsReducer.ingredients
   );

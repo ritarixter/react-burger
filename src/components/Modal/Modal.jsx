@@ -5,9 +5,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
 import PropTypes from "prop-types";
+import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Modal(props) {
   const modal = document.getElementById("modal");
+  const param = useParams();
+  const id = param.id;
+
 
   React.useEffect(() => {
     document.addEventListener("keydown", props.closeModalEsc);
@@ -20,16 +25,14 @@ function Modal(props) {
     <section className={styles.modal}>
       <div className={`${styles.modalContainer} pt-15 pl-10 pr-10 `}>
         <div className={styles.headerModal}>
-          {props.title &&
-          <h2 className="text text_type_main-large">
-          {props.title}
-        </h2>}
-        {props.number &&
-        <p className={`text text_type_digits-default`}>
-        {props.number}
-        </p>       
-}
-          
+          {props.title ? (
+            <h2 className="text text_type_main-large">{props.title}</h2>
+          ) : (
+            id && (
+              <p className={`text text_type_digits-default`}>#{id}</p>
+            )
+          )}
+
           <button className={`${styles.closeModal}`} onClick={props.closeModal}>
             <CloseIcon type="primary" />
           </button>

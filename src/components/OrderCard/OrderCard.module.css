@@ -4,15 +4,6 @@
   justify-content: space-between;
 }
 
-.card{
-  min-width: 584px;
-  box-sizing: border-box;
-  padding: 24px;
-  background: #1C1C21;
-  border-radius: 40px;
-  margin-bottom: 16px;
-}
-
 .info__burger{
   display: flex;
   justify-content: space-between;

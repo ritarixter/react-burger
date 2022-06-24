@@ -3,16 +3,27 @@ import {
   ADD_NON_BUN_ELEMENT,
   DELETE_ELEMENT,
   UPDATE_ELEMENTS_ORDER,
+  RESET_CONSTRUCTOR,
+  ADD_ELEMENT
 } from "../actions/constructor";
 import update from "immutability-helper";
 
 const constructorInitialState = {
   bunElement: {},
   draggableElements: [],
+  elements: []
 };
 
 export function constructorReducer(state = constructorInitialState, action) {
   switch (action.type) {
+
+    case ADD_ELEMENT: {
+      return {
+        ...state,
+        elements: state.elements.concat(action.payload),
+      };
+    }
+
     case ADD_BUN_ELEMENT: {
       return { ...state, bunElement: action.payload };
     }
@@ -29,6 +40,14 @@ export function constructorReducer(state = constructorInitialState, action) {
         draggableElements: state.draggableElements.filter(
           (item) => item.uid !== action.uid
         ),
+      };
+    }
+
+    case RESET_CONSTRUCTOR: {
+      return {
+        bunElement: {},
+        draggableElements: [],
+        elements: []
       };
     }
 

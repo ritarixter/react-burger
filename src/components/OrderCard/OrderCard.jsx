@@ -3,39 +3,85 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { IngredientIcon } from "../IngregientIcon/IngredientIcon";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { useMemo } from "react";
+import formatDate from "../../utils/formatDate";
 
-export function OrderCard(props) {
+export function OrderCard(data) {
   const location = useLocation();
+  const ingredients = useSelector(
+    (state) => state.ingredientsReducer.ingredients
+  );
+
+  const ingredientsInOrder = ingredients.filter((ingredient) => {
+    return data.data.ingredients.find((ingre) => {
+      return ingredient._id === ingre;
+    });
+  });
+
+  const ingredientsInOrderBuns = useMemo(
+    () => ingredientsInOrder.filter((ingredient) => ingredient.type === "bun"),
+    [ingredientsInOrder]
+  );
+
+  const ingredientsInOrderNonBuns = useMemo(
+    () => ingredientsInOrder.filter((ingredient) => ingredient.type !== "bun"),
+    [ingredientsInOrder]
+  );
+
+  const getCount = (id) => {
+    let count = 0;
+    ingredientsInOrder.forEach((ingredient) => {
+      if (ingredient._id === id) count += 1;
+    });
+    return count;
+  };
+
+  const makeUniq = (arr) => [...new Set(arr)];
+  const uniqIngredientsOrder = makeUniq(ingredientsInOrder)
+
+  const totalPrice = uniqIngredientsOrder.reduce((acc, ingredient) =>
+    acc + ingredient.price * (ingredient.type === 'bun' ? 2 : getCount(ingredient._id)), 0
+  )
+
   return (
     <Link
-    to={{
-      pathname: `${props.path}${props.id}`,
-      state: { background: location },
-    }}
-    className={styles.card__link}
-  >
-    <li className={styles.card}>
+      to={{
+        pathname: `${data.path}${data.data.number}`,
+        state: { background: location },
+      }}
+      className={styles.card__link}
+    >
       <div className={styles.header}>
-        <p className="text text_type_digits-default">#034535</p>
-        <p className="text text_type_main-default text_color_inactive">
-          Сегодня, 16:20 i-GMT+3
-        </p>
+        <p className="text text_type_digits-default">#{data.data.number}</p>
+        <time className="text text_type_main-default text_color_inactive">
+          {formatDate(data.data.createdAt)} i-GMT+3
+        </time>
       </div>
       <h2 className="text text_type_main-medium mt-6 mb-6">
-        Death Star Starship Main бургер
+        {data.data.name}
       </h2>
       <div className={styles.info__burger}>
         <ul className={styles.list}>
-         <IngredientIcon/>
-         <IngredientIcon/>
-         <IngredientIcon/>
+          {ingredientsInOrderNonBuns.length > 4 && (
+            <IngredientIcon
+              img={ingredients[ingredients.length - 5].image_mobile}
+              extra={ingredients.length - 4}
+            />
+          )}
+          {ingredientsInOrderNonBuns.slice(-4).map((ing, i) => {
+            return <IngredientIcon img={ing.image} key={i} count={ing.qty} />;
+          })}
+          <IngredientIcon
+            img={ingredientsInOrderBuns[0].image}
+            key={ingredientsInOrderBuns[0]._id}
+          />
         </ul>
         <p className={`${styles.price} text text_type_digits-default`}>
-          <span className="mr-2">510</span>
+          <span className="mr-2">{totalPrice}</span>
           <CurrencyIcon type="primary" />
         </p>
       </div>
-    </li>
     </Link>
   );
 }

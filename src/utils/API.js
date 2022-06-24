@@ -20,6 +20,7 @@ export function dataOrder(data) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization:  getCookie('accessToken')
     },
     body: JSON.stringify({
       ingredients: data.map((item) => item._id),
@@ -27,6 +28,17 @@ export function dataOrder(data) {
   })
     .then(responseCheck)
 }
+ 
+export function getOrderId(id) {
+ return fetch(`${url}/orders/${id}`, {
+  method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  })
+  .then(responseCheck)
+}
+
 
 export function canPasswordReset(valueEmail) {
   return fetch(`${url}/password-reset`, {

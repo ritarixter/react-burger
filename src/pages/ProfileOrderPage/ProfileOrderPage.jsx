@@ -1,42 +1,57 @@
-import { ProfileNav } from "../../components/ProfileNav/ProfileNav"
-import React from "react";
-import styles from './ProfileOrderPage.module.css'
-import { OrderCard } from "../../components/OrderCard/OrderCard"
+import { ProfileNav } from "../../components/ProfileNav/ProfileNav";
+import styles from "./ProfileOrderPage.module.css";
+import { OrderCard } from "../../components/OrderCard/OrderCard";
 import { useDispatch } from "react-redux";
-import { WS_AUTH_CONNECTION_START, WS_AUTH_CONNECTION_CLOSED } from "../../services/actions/wsActionTypes";
+import {
+  WS_AUTH_CONNECTION_START,
+  WS_AUTH_CONNECTION_CLOSED,
+} from "../../services/actions/wsActionTypes";
 import { getCookie } from "../../utils/getCookie";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
+import Preloader from "../../components/Preloader/Preloader";
 
-
-export function ProfileOrderPage(){
+export function ProfileOrderPage() {
   const dispatch = useDispatch();
-  const { wsConnectedAuth, orders, error } = useSelector(store => store.wsReducer);
-
   useEffect(() => {
-      dispatch({ type: WS_AUTH_CONNECTION_START, payload: `?token=${getCookie('accessToken').slice(7)}` });
+    dispatch({
+      type: WS_AUTH_CONNECTION_START,
+      payload: `?token=${getCookie("accessToken").slice(7)}`,
+    });
 
-      return () => {
-          dispatch({ type: WS_AUTH_CONNECTION_CLOSED });
-      }
+    return () => {
+      dispatch({ type: WS_AUTH_CONNECTION_CLOSED });
+    };
   }, [dispatch]);
 
-  console.log(wsConnectedAuth)
-return (
-  <section className={styles.main}>
-  <div className={styles.profile}>
-    <div className="pt-30">    <ProfileNav paragraph={'В этом разделе вы можете просмотреть свою историю заказов'} /></div>
+  const { wsConnectedAuth, orders } = useSelector((store) => store.wsReducer);
 
-    <div className={styles.scrollbar}>
-          <ul className={styles.list}>
-            
-            <OrderCard id={1} path="orders/"/>
-            <OrderCard id={2} path="orders/"/>
-            <OrderCard id={3} path="orders/"/>
-            <OrderCard id={4} path="orders/"/>
-          </ul>
+  return wsConnectedAuth ? (
+    <section className={styles.main}>
+      <div className={styles.profile}>
+        <div className="pt-30">
+          <ProfileNav
+            paragraph={
+              "В этом разделе вы можете просмотреть свою историю заказов"
+            }
+          />
         </div>
-  </div>
-</section>
-)
+        {orders.length > 0 ? (
+          <div className={styles.scrollbar}>
+            <ul className={styles.list}>
+              {orders.map((data) => (
+                <li key={data._id} className={styles.card}>
+                  <OrderCard path="orders/" data={data} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p className="text text text_type_main-medium text_color_inactive pt-30 mt-5">Вы пока не сделали ни одного заказа</p>
+        )}
+      </div>
+    </section>
+  ) : (
+    <Preloader />
+  );
 }

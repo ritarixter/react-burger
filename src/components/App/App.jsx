@@ -57,7 +57,7 @@ function App() {
     } else {
       dispatch(authorizationChecked());
     }
-  }, [dispatch]);
+  }, []);
 
   const background = location.state && location.state?.background;
 
@@ -76,8 +76,8 @@ function App() {
             </Route>
 
             <Route path="/profile/orders/:id" exact={true}>
-            <ProtectedRoute anonymous={true}>
-              <CardDetails notModal={true} />
+              <ProtectedRoute anonymous={true}>
+                <CardDetails notModal={true} />
               </ProtectedRoute>
             </Route>
 
@@ -154,13 +154,14 @@ function App() {
           {background && (
             <Switch>
               <Route path="/profile/orders/:id" exact={true}>
+              <ProtectedRoute anonymous={true}>
                 <Modal
-                  number="#030030"
                   closeModalEsc={closeModalEsc}
                   closeModal={closeModal}
                 >
-                  <CardDetails />
+                  <CardDetails />    
                 </Modal>
+                </ProtectedRoute>
               </Route>
             </Switch>
           )}
@@ -169,7 +170,6 @@ function App() {
             <Switch>
               <Route path="/feed/:id" exact={true}>
                 <Modal
-                  number="#030030"
                   closeModalEsc={closeModalEsc}
                   closeModal={closeModal}
                 >

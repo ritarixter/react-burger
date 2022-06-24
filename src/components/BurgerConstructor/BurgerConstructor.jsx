@@ -4,7 +4,7 @@ import {
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./BurgerConstructor.module.css";
 import Modal from "../Modal/Modal";
@@ -24,10 +24,12 @@ import {
 import { useCallback } from "react";
 import DraggableItem from "../draggableItem/draggableItem";
 import { useHistory } from "react-router-dom";
+import { resetConstructor,addElement } from "../../services/actions/constructor";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const [elements, setElements] = useState([])
   const isAuth = useSelector((state) => state.profileReducer.isAuth);
   const data = useSelector((state) => state.ingredientsReducer.ingredients);
   const openOrder = useSelector((state) => state.orderReducer.orderOpen);
@@ -53,11 +55,13 @@ function BurgerConstructor() {
     const draggedItem = data.find((item) => item._id === id);
     if (draggedItem.type === "bun") {
       dispatch(addBunElement({ ...draggedItem, uid: uuidv4() }));
+      setElements(draggedItem)
+
     } else if (bunElement._id) {
       dispatch(addNonBunElement({ ...draggedItem, uid: uuidv4() }));
+   
     }
   };
-
   const [, dropTarget] = useDrop({
     accept: "BurgerIngredient",
     drop(itemId) {
@@ -96,8 +100,9 @@ function BurgerConstructor() {
 
   function openModal() {
     if (isAuth) {
-      dispatch(getOrderData(data));
+      dispatch(getOrderData(draggableElements.concat(elements)));
       dispatch(setOrderOpen());
+      dispatch(resetConstructor())
     } else {
       history.replace({ pathname: "/login" });
     }
@@ -199,6 +204,7 @@ function BurgerConstructor() {
           closeModalEsc={closeModalEsc}
           closeModal={closeModal}
         >
+          
           <OrderDetails orderNumber={orderNumber} />
         </Modal>
       )}
