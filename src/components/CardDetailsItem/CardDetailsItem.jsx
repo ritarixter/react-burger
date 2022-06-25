@@ -3,7 +3,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 export function CardDetailsItem({ data, count }) {
   return (
-    <li className={styles.list__item}>
+    <>
       <div className={styles.list__name}>
         <div className={styles.ingredient}>
           <img
@@ -18,6 +18,6 @@ export function CardDetailsItem({ data, count }) {
         <span className="mr-2">{count} x {data.price}</span>
         <CurrencyIcon type="primary" />
       </p>
-    </li>
+      </>
   )
 }

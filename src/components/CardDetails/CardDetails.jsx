@@ -104,7 +104,9 @@ export function CardDetails(props) {
         <div className={styles.scrollbar}>
           <ul className={styles.list}>
             {uniqIngredientsOrder.map((indredient, index) => (
+              <li className={styles.list__item} key={indredient._id}>
               <CardDetailsItem data={indredient} count={indredient.type === 'bun' ? 2 : getCount(indredient._id)} />
+              </li>
             ))}
           </ul>
         </div>

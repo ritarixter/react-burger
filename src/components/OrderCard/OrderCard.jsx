@@ -65,19 +65,24 @@ export function OrderCard(data) {
       <div className={styles.info__burger}>
         <ul className={styles.list}>
           {ingredientsInOrderNonBuns.length > 4 && (
+            <li className={styles.ingredient} key={ingredients[ingredients.length - 5]._id}>
             <IngredientIcon
               img={ingredients[ingredients.length - 5].image_mobile}
               extra={ingredients.length - 4}
             />
+            </li>
           )}
           {ingredientsInOrderNonBuns.slice(-4).map((ing, i) => {
-            return <IngredientIcon img={ing.image} key={i} count={ing.qty} />;
+          return <li className={styles.ingredient} key={ing._id}>
+             <IngredientIcon img={ing.image} />
+            </li>
           })}
           {ingredientsInOrderBuns.map((bun)=>{
-            return  <IngredientIcon
+             return <li className={styles.ingredient} key={bun._id}>
+             <IngredientIcon
             img={bun.image}
-            key={bun._id}
           />
+          </li>
           })
             }
         

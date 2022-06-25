@@ -53,7 +53,7 @@ export function FeedPage() {
                   done.map((i) => (
                     <li
                       className={`"text text_type_digits-default mb-2  ${styles.success} ${styles.order__list_item}`}
-                      id={i.number}
+                      id={i.number} key={i.number}
                     >
                       {i.number}
                     </li>
@@ -67,7 +67,7 @@ export function FeedPage() {
                 {pending && pending.map((i) => (
                   <li
                     className={`"text text_type_digits-default mb-2  ${styles.order__list_item}`}
-                    id={i.number}
+                    id={i.number} key={i.number}
                   >
                     {i.number}
                   </li>
