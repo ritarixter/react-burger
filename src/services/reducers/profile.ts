@@ -6,27 +6,40 @@ import {
   AUTHORIZATION_FAILED,
   FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_UNSUCCESS,
-  AUTH_CHECKED
+  AUTH_CHECKED,
+  TProfileActions
 } from "../actions/profile";
 
-const profileInitialState = {
+type TProfileInitialState = {
+  name: string;
+  email: string;
+  password: string;
+  isAuth: boolean;
+  wasOnPageForgotPassword: boolean;
+  isAuthChecked: boolean;
+  isAuthFailed:boolean;
+};
+
+const profileInitialState:TProfileInitialState = {
   name: "",
   email: "",
   password: "",
   isAuth: false,
   wasOnPageForgotPassword: false,
-  isAuthChecked: false
+  isAuthChecked: false,
+  isAuthFailed:false,
 };
 
-export const profileReducer = (state = profileInitialState, action) => {
+export const profileReducer = (state = profileInitialState, action:TProfileActions):TProfileInitialState => {
   switch (action.type) {
     case GET_DATA_USER: {
       return {
         ...state,
         name: action.data.name,
         email: action.data.email,
-        password: "1234567",
+        password: '1234567',
         isAuth: true,
+        isAuthFailed:false
       };
     }
 
@@ -39,7 +52,7 @@ export const profileReducer = (state = profileInitialState, action) => {
         isAuth: false,
       };
     }
-
+    
     case EDIT_DATA_USER: {
       return {
         ...state,
@@ -52,13 +65,15 @@ export const profileReducer = (state = profileInitialState, action) => {
       return {
         ...state,
         isAuth: true,
+        isAuthFailed:false
       };
     }
 
     case AUTHORIZATION_FAILED: {
       return {
         ...state,
-        isAuth: true,
+        isAuth: false,
+        isAuthFailed:true
       };
     }
 
@@ -75,8 +90,7 @@ export const profileReducer = (state = profileInitialState, action) => {
         wasOnPageForgotPassword: false,
       };
     }
-
-    
+ 
     case AUTH_CHECKED: {
       return {
         ...state,

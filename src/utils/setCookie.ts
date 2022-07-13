@@ -1,4 +1,14 @@
-export const setCookie = (name, value, props) => {
+interface ISetCookie {
+  name: string;
+  value: any;
+  props?: { [x: string]: any; expires?: any; } | undefined
+}
+
+const printIdGeneric = <T extends number | string>(id: T) => {
+  console.log(`ID = ${id}`);
+}
+
+export const setCookie = (name: string, value: any,  props?: { [x: string]: any; expires?: any; } | undefined) => {
   props = props || {};
   let exp = props.expires;
 

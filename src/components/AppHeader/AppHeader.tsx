@@ -6,9 +6,10 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink, useRouteMatch } from "react-router-dom";
 import styles from "./AppHeader.module.css";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
+import { FC } from "react";
 
-function AppHeader() {
+const AppHeader:FC = () => {
   const matchProfile = useRouteMatch("/profile");
   const matchProfileOrder = useRouteMatch("/profile/orders");
   const matchProfileOrderId = useRouteMatch("/profile/orders/:id");
@@ -48,8 +49,7 @@ function AppHeader() {
           <li className={styles.m_center}>
           <NavLink
               to="/"
-              className={styles.menu__item}
-            
+              className={styles.menu__item}  
             >
               <Logo />
               </NavLink>

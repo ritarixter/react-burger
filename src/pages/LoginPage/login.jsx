@@ -7,19 +7,16 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { authorizationUser } from "../../utils/API";
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "../../utils/hooks";
 import {
   authorizationFailed,
-  getDataUserProfile,
+  getDataUserProfile  
 } from "../../services/actions/profile";
 import { Redirect } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { checkEmail } from "../../utils/functions";
 import { useState } from "react";
-import { useEffect } from "react";
 import { setCookie } from "../../utils/setCookie";
-import { getCookie } from "../../utils/getCookie";
 
 export function LoginPage() {
   const dispatch = useDispatch();
@@ -28,6 +25,7 @@ export function LoginPage() {
   const [valueEmail, setValueEmail] = useState("");
   const [valuePassword, setValuePassword] = useState("");
   const isAuth = useSelector((state) => state.profileReducer.isAuth);
+  const isAuthFailed = useSelector((state) => state.profileReducer.isAuthFailed);
   const canAuthorizationUser = useCallback((valueEmail, passwordValue) => {
     authorizationUser(valueEmail, passwordValue).then((res) => {
       localStorage.setItem("token", res.refreshToken);
@@ -76,6 +74,9 @@ export function LoginPage() {
               value={valuePassword}
             />
           </div>
+          {isAuthFailed && 
+          <p className={` text text_type_main-default ${styles.failed}`}>Неверный логин или пароль</p>
+          }
 
           <Button type="primary" size="medium" htmlType="submit">
             Войти

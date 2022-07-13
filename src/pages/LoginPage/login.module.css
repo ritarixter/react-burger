@@ -24,6 +24,10 @@ p{
   padding-bottom: 0;
 }
 
+.failed{
+  color: red
+}
+
 .input,
 .input div:not(input + div) {
   width: 100%;

@@ -1,6 +1,6 @@
 import styles from "./IngredientDetails.module.css";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import { useParams } from "react-router-dom";
 
 function IngredientDetails() {

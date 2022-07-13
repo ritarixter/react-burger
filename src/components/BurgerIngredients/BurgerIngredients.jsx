@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./BurgerIngredients.module.css";
 import CardIngredients from "../CardIngredients/CardIngredients";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 

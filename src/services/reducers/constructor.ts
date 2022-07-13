@@ -4,26 +4,37 @@ import {
   DELETE_ELEMENT,
   UPDATE_ELEMENTS_ORDER,
   RESET_CONSTRUCTOR,
-  ADD_ELEMENT
 } from "../actions/constructor";
 import update from "immutability-helper";
+import { TConstructorActions } from "../actions/constructor";
+import { IElement } from "../../utils/types";
 
-const constructorInitialState = {
-  bunElement: {},
+type TConstructorInitialState = {
+  bunElement: IElement;
+  draggableElements: Array<IElement>;
+} 
+
+const constructorInitialState:TConstructorInitialState = {
+  bunElement: {
+    _id: 0,
+    name: '',
+    type: 'bun',
+    proteins: 0,
+    fat: 0,
+    carbohydrates: 0,
+    calories: 0,
+    price: 0,
+    image: '',
+    image_mobile: '',
+    image_large: '',
+    __v: 0,
+    uid: '',
+  },
   draggableElements: [],
-  elements: []
 };
 
-export function constructorReducer(state = constructorInitialState, action) {
+export function constructorReducer(state = constructorInitialState, action: TConstructorActions):TConstructorInitialState {
   switch (action.type) {
-
-    case ADD_ELEMENT: {
-      return {
-        ...state,
-        elements: state.elements.concat(action.payload),
-      };
-    }
-
     case ADD_BUN_ELEMENT: {
       return { ...state, bunElement: action.payload };
     }
@@ -45,9 +56,22 @@ export function constructorReducer(state = constructorInitialState, action) {
 
     case RESET_CONSTRUCTOR: {
       return {
-        bunElement: {},
+        bunElement: {
+          _id: 0,
+          name: '',
+          type: 'bun',
+          proteins: 0,
+          fat: 0,
+          carbohydrates: 0,
+          calories: 0,
+          price: 0,
+          image: '',
+          image_mobile: '',
+          image_large: '',
+          __v: 0,
+          uid: '',
+        },
         draggableElements: [],
-        elements: []
       };
     }
 

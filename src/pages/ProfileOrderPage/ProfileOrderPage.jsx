@@ -1,14 +1,13 @@
 import { ProfileNav } from "../../components/ProfileNav/ProfileNav";
 import styles from "./ProfileOrderPage.module.css";
 import { OrderCard } from "../../components/OrderCard/OrderCard";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "../../utils/hooks";
 import {
   WS_AUTH_CONNECTION_START,
   WS_AUTH_CONNECTION_CLOSED,
 } from "../../services/actions/wsActionTypes";
 import { getCookie } from "../../utils/getCookie";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import Preloader from "../../components/Preloader/Preloader";
 
 export function ProfileOrderPage() {

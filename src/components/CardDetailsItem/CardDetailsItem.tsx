@@ -1,21 +1,22 @@
 import styles from './CardDetailsItem.module.css'
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+import { IElement } from '../../utils/types';
 
-export function CardDetailsItem({ data, count }) {
+export function CardDetailsItem(data: { data: IElement; count: number }) {
   return (
     <>
       <div className={styles.list__name}>
         <div className={styles.ingredient}>
           <img
             className={styles.ingredient__image}
-            src={data.image}
-            alt={data.name}
+            src={data.data.image}
+            alt={data.data.name}
           />
         </div>
-        <p className={`text text_type_main-default ${styles.paragraph}`}>{data.name}</p>
+        <p className={`text text_type_main-default ${styles.paragraph}`}>{data.data.name}</p>
       </div>
       <p className={`${styles.price} text text_type_digits-default`}>
-        <span className="mr-2">{count} x {data.price}</span>
+        <span className="mr-2">{data.count} x {data.data.price}</span>
         <CurrencyIcon type="primary" />
       </p>
       </>

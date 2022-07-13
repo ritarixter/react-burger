@@ -8,18 +8,41 @@ import {
   GET_ORDER_ID,
   CLOSED_ORDER_ID
 } from '../actions/wsActionTypes';
+import { IElement } from '../../utils/types';
+import { TWsActions,IData } from '../actions/wsActionTypes';
 
-const initialState = {
+
+type TInitialState = {
+  wsConnected: boolean;
+  error: undefined | string,
+  wsConnectedAuth: boolean;
+  orders: Array<IElement>,
+  total: number;
+  totalToday: number;
+  orderId: IData
+};
+
+const initialState:TInitialState = {
   wsConnected: false,
   error: undefined,
   wsConnectedAuth: false,
   orders: [],
   total: 0,
   totalToday: 0,
-  orderId: []
+  orderId: {  
+    createdAt: '',
+    ingredients: [],
+    name: '',
+    number: 0,
+    owner: '',
+    status: '',
+    updatedAt: '',
+    __v: 0,
+    _id: ''
+  }
 };
 
-export const wsReducer = (state = initialState, action) => {
+export const wsReducer = (state = initialState, action:TWsActions):TInitialState => {
   switch (action.type) {
     case WS_AUTH_CONNECTION_SUCCESS:
       return {
@@ -54,7 +77,17 @@ export const wsReducer = (state = initialState, action) => {
         ...state,
         error: undefined,
         wsConnected: false,
-        orderId: []
+        orderId: {  
+          createdAt: '',
+          ingredients: [],
+          name: '',
+          number: 0,
+          owner: '',
+          status: '',
+          updatedAt: '',
+          __v: 0,
+          _id: ''
+        }
       };
 
     case GET_ORDER_ID:
@@ -66,7 +99,17 @@ export const wsReducer = (state = initialState, action) => {
     case CLOSED_ORDER_ID:
       return {
         ...state,
-        orderId: []
+        orderId: {  
+          createdAt: '',
+          ingredients: [],
+          name: '',
+          number: 0,
+          owner: '',
+          status: '',
+          updatedAt: '',
+          __v: 0,
+          _id: ''
+        }
       };
 
     case WS_GET_MESSAGE:

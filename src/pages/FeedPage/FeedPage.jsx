@@ -1,8 +1,7 @@
 import styles from "./FeedPage.module.css";
 import { OrderCard } from "../../components/OrderCard/OrderCard";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "../../utils/hooks";
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_CLOSED,

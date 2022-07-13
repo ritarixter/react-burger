@@ -1,5 +1,4 @@
-import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import { useLocation } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";

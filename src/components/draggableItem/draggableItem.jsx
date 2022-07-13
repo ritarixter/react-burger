@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { useDrag, useDrop } from "react-dnd";
 import PropTypes from "prop-types";
 import {
@@ -7,6 +7,15 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./draggableItem.module.css";
 import { deleteElement } from "../../services/actions/constructor";
+/*interface IDraggableItem {
+  id: string,
+  uid: string,
+  name: string,
+  price: number,
+  image: string,
+  findDraggableElement: any,
+  moveDraggableElement:any
+}*/
 
 function DraggableItem({
   id,
@@ -16,7 +25,7 @@ function DraggableItem({
   image,
   findDraggableElement,
   moveDraggableElement,
-}) {
+}/*:IDraggableItem*/) {
   const dispatch = useDispatch();
 
   const originalIndex = findDraggableElement(uid).draggableElementIndex;

@@ -1,34 +1,52 @@
 import styles from "./CardDetails.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "../../utils/hooks";
 import { useParams } from "react-router-dom";
-import Preloader from "../Preloader/Preloader";
 import { CardDetailsItem } from "../CardDetailsItem/CardDetailsItem";
-import { useMemo } from "react";
+import { useRouteMatch } from "react-router-dom";
 import formatDate from "../../utils/formatDate";
-import { useDispatch } from "react-redux";
 import {
   WS_CONNECTION_START,
+  WS_AUTH_CONNECTION_START,
   CLOSED_ORDER_ID
 } from "../../services/actions/wsActionTypes";
 import { useEffect } from "react";
 import { getOrderIdData } from "../../services/actions/wsActionTypes";
+import { getCookie } from "../../utils/getCookie";
+import { IElement } from "../../utils/types";
+import { IParams } from "../../utils/types";
 
-export function CardDetails(props) {
+
+export const CardDetails = (props: { notModal?: boolean; }) => {
   const {
     wsConnected,
     wsConnectedAuth,
     orderId,
   } = useSelector((store) => store.wsReducer);
-  const param = useParams();
+  
+  const param = useParams() as IParams;
   const dispatch = useDispatch();
   const id = param.id;
 
   const ingredients = useSelector(
     (state) => state.ingredientsReducer.ingredients
   );
+
+  const match = useRouteMatch({
+    path: '/profile/orders/:id',
+  });
+
   useEffect(() => {
-    dispatch({ type: WS_CONNECTION_START, payload: "/all" });
+    if(match){
+      dispatch({
+        type: WS_AUTH_CONNECTION_START,
+        payload: `?token=${getCookie("accessToken").slice(7)}`,
+      });
+    }
+    else{
+      dispatch({ type: WS_CONNECTION_START, payload: "/all" });
+    }
+    
     return () => {
       dispatch({ type: CLOSED_ORDER_ID });
     };
@@ -38,12 +56,12 @@ export function CardDetails(props) {
     dispatch(getOrderIdData(id));
   }, []);
 
-  const ingredientsOrder = [];
+  const ingredientsOrder: Array<IElement> = [];
 
   if (orderId.ingredients) {
     for (let i = 0; i < orderId.ingredients.length; i++) {
       const element = ingredients.find(
-        (item) => item._id === orderId.ingredients[i]
+        (item: { _id: any; }) => item._id === orderId.ingredients[i]
       );
       if (element) {
         ingredientsOrder.push(element);
@@ -51,7 +69,7 @@ export function CardDetails(props) {
     }
   }
 
-  const getCount = (id) => {
+  const getCount = (id: number) => {
     let count = 0;
     ingredientsOrder.forEach((ingredient) => {
       if (ingredient._id === id) count += 1;
@@ -59,10 +77,10 @@ export function CardDetails(props) {
     return count;
   };
 
-  const makeUniq = (arr) => [...new Set(arr)];
-  const uniqIngredientsOrder = makeUniq(ingredientsOrder)
+  const makeUniq = (arr:any) => [...new Set(arr)];
+  const uniqIngredientsOrder:any = makeUniq(ingredientsOrder)
 
-  const totaPrice = uniqIngredientsOrder.reduce((acc, ingredient) =>
+  const totaPrice = uniqIngredientsOrder.reduce((acc:number, ingredient:IElement) => 
     acc + ingredient.price * (ingredient.type === 'bun' ? 2 : getCount(ingredient._id)), 0
   )
 
@@ -83,7 +101,7 @@ export function CardDetails(props) {
     return null;
   }
 
-  return (wsConnectedAuth || wsConnected) && (
+  return (wsConnectedAuth || wsConnected) ? (
     <section className={styles.main}>
       <div className={styles.card}>
         {props.notModal && (
@@ -103,11 +121,10 @@ export function CardDetails(props) {
         <h2 className="text text_type_main-medium mb-6">Состав:</h2>
         <div className={styles.scrollbar}>
           <ul className={styles.list}>
-            {uniqIngredientsOrder.map((indredient, index) => (
-              <li className={styles.list__item} key={indredient._id}>
-              <CardDetailsItem data={indredient} count={indredient.type === 'bun' ? 2 : getCount(indredient._id)} />
-              </li>
-            ))}
+            {uniqIngredientsOrder.map((indredient:IElement) => {
+            return <li className={styles.list__item} key={indredient._id}>
+              <CardDetailsItem data={indredient} count={indredient.type === 'bun' ? 2 : getCount(indredient._id)}/>
+              </li>})}
           </ul>
         </div>
 
@@ -122,5 +139,7 @@ export function CardDetails(props) {
         </div>
       </div>
     </section>
-  );
+  ) : (
+    <p>Произошла ошибка.</p>
+  )
 }

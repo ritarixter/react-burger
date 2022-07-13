@@ -2,7 +2,7 @@ import { logoutProfileUser } from "../../services/actions/profile";
 import { useHistory } from "react-router-dom";
 import { deleteCookie } from "../../utils/deleteCookie";
 import styles from './ProfileNav.module.css'
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import { NavLink } from "react-router-dom";
 import { logoutUser } from "../../utils/API";
 

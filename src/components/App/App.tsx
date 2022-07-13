@@ -1,15 +1,9 @@
 import styles from "./App.module.css";
 import AppHeader from "../AppHeader/AppHeader";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  useHistory,
-} from "react-router-dom";
+import * as reactRouterDom from "react-router-dom";
 import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { getIngredientsData } from "../../services/actions/indredients";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -30,24 +24,13 @@ import { authorizationChecked } from "../../services/actions/profile";
 import Preloader from "../Preloader/Preloader";
 import { ProfileOrderPage } from "../../pages/ProfileOrderPage/ProfileOrderPage";
 import { CardDetails } from "../CardDetails/CardDetails";
+import { useDispatch, useSelector } from "../../utils/hooks";
+import { Location } from 'history';
+
 
 function App() {
-  const dispatch = useDispatch();
-  const location = useLocation();
-  const history = useHistory();
-
-  function closeModal() {
-    history.goBack();
-  }
-
-  function closeModalEsc(evt) {
-    if (evt.key === "Escape") {
-      history.goBack();
-    }
-  }
-
   const error = useSelector(
-    (state) => state.ingredientsReducer.ingredientsFailed
+    (state) => state.ingredientsReducer.ingredientsFailed 
   );
 
   useEffect(() => {
@@ -59,6 +42,19 @@ function App() {
     }
   }, []);
 
+ interface ILocationState extends Location {
+    from: {
+      pathname: string;
+      state: object;
+      search: string;
+      hash: string;
+      key: string;
+    };
+    background?: Location;
+  }
+  const dispatch = useDispatch();
+  const location = useLocation<ILocationState>()
+
   const background = location.state && location.state?.background;
 
   return (
@@ -68,115 +64,109 @@ function App() {
       ) : (
         <>
           <AppHeader />
-          <Switch location={background || location}>
-            <Route path="/ingredients/:id">
+          <reactRouterDom.Switch location={background || location}>
+            <reactRouterDom.Route path="/ingredients/:id">
               <div className="mt-30">
                 <IngredientDetails />
               </div>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/profile/orders/:id" exact={true}>
+            <reactRouterDom.Route path="/profile/orders/:id" exact={true}>
               <ProtectedRoute anonymous={true}>
                 <CardDetails notModal={true} />
               </ProtectedRoute>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/feed/:id" exact={true}>
+            <reactRouterDom.Route path="/feed/:id" exact={true}>
               <CardDetails notModal={true} />
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/" exact={true}>
+            <reactRouterDom.Route path="/" exact={true}>
               <main className={styles.app}>
                 <DndProvider backend={HTML5Backend}>
                   <BurgerIngredients />
                   <BurgerConstructor />
                 </DndProvider>
               </main>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/feed" exact={true}>
+            <reactRouterDom.Route path="/feed" exact={true}>
               <FeedPage />
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/login" exact={true}>
+            <reactRouterDom.Route path="/login" exact={true}>
               <LoginPage />
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/profile/orders" exact={true}>
+            <reactRouterDom.Route path="/profile/orders" exact={true}>
               <ProtectedRoute anonymous={true}>
                 <ProfileOrderPage />
               </ProtectedRoute>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/profile" exact={true}>
+            <reactRouterDom.Route path="/profile" exact={true}>
               <ProtectedRoute anonymous={true}>
                 <ProfilePage />
               </ProtectedRoute>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/register" exact={true}>
+            <reactRouterDom.Route path="/register" exact={true}>
               <ProtectedRoute>
                 <RegisterPage />
               </ProtectedRoute>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/forgot-password" exact={true}>
+            <reactRouterDom.Route path="/forgot-password" exact={true}>
               <ProtectedRoute>
                 <ForgotPassPage />
               </ProtectedRoute>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route path="/reset-password" exact={true}>
+            <reactRouterDom.Route path="/reset-password" exact={true}>
               <ProtectedRoute>
                 <ResetPassPage />
               </ProtectedRoute>
-            </Route>
+            </reactRouterDom.Route>
 
-            <Route>
+            <reactRouterDom.Route>
               <NotFound404 />
-            </Route>
-          </Switch>
+            </reactRouterDom.Route>
+          </reactRouterDom.Switch>
 
           {background && (
-            <Switch>
-              <Route path="/ingredients/:id">
+            <reactRouterDom.Switch>
+              <reactRouterDom.Route path="/ingredients/:id">
                 <Modal
                   title="Детали заказа"
-                  closeModalEsc={closeModalEsc}
-                  closeModal={closeModal}
                 >
                   <IngredientDetails />
                 </Modal>
-              </Route>
-            </Switch>
+              </reactRouterDom.Route>
+            </reactRouterDom.Switch>
           )}
 
           {background && (
-            <Switch>
-              <Route path="/profile/orders/:id" exact={true}>
+            <reactRouterDom.Switch>
+              <reactRouterDom.Route path="/profile/orders/:id" exact={true}>
               <ProtectedRoute anonymous={true}>
                 <Modal
-                  closeModalEsc={closeModalEsc}
-                  closeModal={closeModal}
                 >
                   <CardDetails />    
                 </Modal>
                 </ProtectedRoute>
-              </Route>
-            </Switch>
+              </reactRouterDom.Route>
+            </reactRouterDom.Switch>
           )}
 
           {background && (
-            <Switch>
-              <Route path="/feed/:id" exact={true}>
+            <reactRouterDom.Switch>
+              <reactRouterDom.Route path="/feed/:id" exact={true}>
                 <Modal
-                  closeModalEsc={closeModalEsc}
-                  closeModal={closeModal}
                 >
                   <CardDetails />
                 </Modal>
-              </Route>
-            </Switch>
+              </reactRouterDom.Route>
+            </reactRouterDom.Switch>
           )}
         </>
       )}

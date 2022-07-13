@@ -3,7 +3,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 import { IngredientIcon } from "../IngregientIcon/IngredientIcon";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector } from "../../utils/hooks";
 import { useMemo } from "react";
 import formatDate from "../../utils/formatDate";
 
@@ -72,7 +72,7 @@ export function OrderCard(data) {
             />
             </li>
           )}
-          {ingredientsInOrderNonBuns.slice(-4).map((ing, i) => {
+          {ingredientsInOrderNonBuns.slice(-4).map((ing) => {
           return <li className={styles.ingredient} key={ing._id}>
              <IngredientIcon img={ing.image} />
             </li>

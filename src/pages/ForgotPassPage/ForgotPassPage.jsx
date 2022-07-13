@@ -5,7 +5,7 @@ import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { canPasswordReset } from "../../utils/API";
-import { useDispatch } from "react-redux";
+import { useDispatch } from "../../utils/hooks";
 import {
   wasOnPageForgotPassword,
   wasNotOnPageForgotPassword,

@@ -1,6 +1,6 @@
 import day from "dayjs";
 
-const formatDate = (data) => {
+const formatDate = (data: string) => {
   const date = day(data);
   if (day().startOf("day").isSame(date, "day")) {
     return "Сегодня, " + date.format("HH:mm");

@@ -6,9 +6,9 @@ import { Link } from "react-router-dom";
 import { resetPassword } from "../../utils/API";
 import { useHistory } from "react-router-dom";
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch,useSelector } from "../../utils/hooks";
 import { wasNotOnPageForgotPassword } from "../../services/actions/profile";
-import { useSelector } from "react-redux";
+
 export function ResetPassPage() {
   const history = useHistory();
   const dispatch = useDispatch();

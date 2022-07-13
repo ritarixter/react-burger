@@ -1,6 +1,15 @@
 import { SET_ORDER_NUMBER,SET_ORDER_NUMBER_FAILED,SET_OPEN,SET_CLOSE } from "../actions/order"
+import { TOrderActions } from "../actions/order";
 
-const orderInitialState = {
+type TOrderInitialState = {
+  orderNumber: number | null,
+  orderRequest: boolean,
+  orderFailed: boolean,
+  orderOpen:boolean,
+  orderClearIngredient:boolean
+};
+
+const orderInitialState:TOrderInitialState = {
   orderNumber: null,
   orderRequest: false,
   orderFailed: false,
@@ -8,7 +17,7 @@ const orderInitialState = {
   orderClearIngredient:false
 };
 
-export const orderReducer = (state = orderInitialState,action) => {
+export const orderReducer = (state = orderInitialState,action:TOrderActions):TOrderInitialState => {
   switch(action.type){
     case SET_ORDER_NUMBER:{
       return {...state, orderNumber:action.payload, orderRequest: true}

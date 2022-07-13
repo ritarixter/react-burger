@@ -2,7 +2,7 @@ import { getCookie } from "./getCookie";
 import { setCookie } from "./setCookie";
 const url = "https://norma.nomoreparties.space/api";
 
-const responseCheck = (res) => {
+const responseCheck = (res: { ok: boolean; json: () => any; status: number; }) => {
   if (res.ok) {
     return res.json();
   } else {
@@ -15,7 +15,7 @@ export function getData(){
   .then(responseCheck)
  }
 
-export function dataOrder(data) {
+export function dataOrder(data: {_id: string;}[]) {
   return fetch(`${url}/orders`, {
     method: "POST",
     headers: {
@@ -29,7 +29,7 @@ export function dataOrder(data) {
     .then(responseCheck)
 }
  
-export function getOrderId(id) {
+export function getOrderId(id:string) {
  return fetch(`${url}/orders/${id}`, {
   method: "GET",
     headers: {
@@ -40,7 +40,7 @@ export function getOrderId(id) {
 }
 
 
-export function canPasswordReset(valueEmail) {
+export function canPasswordReset(valueEmail:string) {
   return fetch(`${url}/password-reset`, {
     method: "POST",
     headers: {
@@ -53,7 +53,7 @@ export function canPasswordReset(valueEmail) {
   .then(responseCheck)
 }
 
-export function resetPassword(passwordValue, codeValue) {
+export function resetPassword(passwordValue:string, codeValue:string) {
   return fetch(`${url}/password-reset/reset`, {
     method: "POST",
     headers: {
@@ -67,7 +67,7 @@ export function resetPassword(passwordValue, codeValue) {
   .then(responseCheck)
 }
 
-export function registerUser(nameValue, emailValue, passwordValue) {
+export function registerUser(nameValue:string, emailValue:string, passwordValue:string) {
   return fetch(`${url}/auth/register`, {
     method: "POST",
     headers: {
@@ -81,24 +81,6 @@ export function registerUser(nameValue, emailValue, passwordValue) {
   })
   .then(responseCheck)
 }
-
-/*const cookieCheck = (res) => {
-  if (res.ok) {
-    let authToken;
-    console.log(res);
-    res.headers.forEach((header) => {
-      if (header.indexOf("Bearer") === 0) {
-        authToken = header.split("Bearer ")[1];
-      }
-    });
-    if (authToken) {
-      setCookie("token", authToken);
-    }
-    return res.json();
-  } else {
-    return Promise.reject(`Ошибка: ${res.status}`);
-  }
-};*/
 
 export function refreshToken() {
   return fetch(`${url}/auth/token `, {
@@ -116,14 +98,13 @@ export function refreshToken() {
         return Promise.reject(refreshData);
       }
       localStorage.setItem("token", refreshData.refreshToken);
-     // document.cookie = refreshData.accessToken;
       setCookie('accessToken', refreshData.accessToken)
       return refreshData;
     });
 }
 
 
-export function authorizationUser(emailValue, passwordValue) {
+export function authorizationUser(emailValue:string, passwordValue:string) {
    return fetch(`${url}/auth/login`, {
     method: "POST",
     headers: {
@@ -178,7 +159,7 @@ export function getDataUser() {
   }})
 }
 
-export function editProfile(accessToken, nameValue, emailValue) {
+export function editProfile(nameValue:string, emailValue:string) {
     return fetch(`${url}/auth/user`, {
       method: "PATCH",
       headers: {
