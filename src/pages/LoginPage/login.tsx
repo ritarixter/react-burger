@@ -6,37 +6,40 @@ import {
   PasswordInput,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { authorizationUser } from "../../utils/API";
-import { useCallback } from "react";
+import { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "../../utils/hooks";
 import {
   authorizationFailed,
-  getDataUserProfile  
+  getDataUserProfile,
 } from "../../services/actions/profile";
 import { Redirect } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { checkEmail } from "../../utils/functions";
 import { useState } from "react";
 import { setCookie } from "../../utils/setCookie";
+import { ILocationState } from "../../utils/types";
 
-export function LoginPage() {
+export const LoginPage: FC = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
-
+  const location = useLocation<ILocationState>();
   const [valueEmail, setValueEmail] = useState("");
   const [valuePassword, setValuePassword] = useState("");
   const isAuth = useSelector((state) => state.profileReducer.isAuth);
-  const isAuthFailed = useSelector((state) => state.profileReducer.isAuthFailed);
+  const isAuthFailed = useSelector(
+    (state) => state.profileReducer.isAuthFailed
+  );
+
   const canAuthorizationUser = useCallback((valueEmail, passwordValue) => {
     authorizationUser(valueEmail, passwordValue).then((res) => {
       localStorage.setItem("token", res.refreshToken);
-      setCookie('accessToken', res.accessToken);
+      setCookie("accessToken", res.accessToken);
       if (res.success) {
         dispatch(getDataUserProfile());
       } else {
         dispatch(authorizationFailed());
       }
     });
-  });
+  }, []);
 
   if (isAuth) {
     return <Redirect to={location.state?.from || "/"} />;
@@ -72,11 +75,14 @@ export function LoginPage() {
             <PasswordInput
               onChange={(e) => setValuePassword(e.target.value)}
               value={valuePassword}
+              name={"password"}
             />
           </div>
-          {isAuthFailed && 
-          <p className={` text text_type_main-default ${styles.failed}`}>Неверный логин или пароль</p>
-          }
+          {isAuthFailed && (
+            <p className={` text text_type_main-default ${styles.failed}`}>
+              Неверный логин или пароль
+            </p>
+          )}
 
           <Button type="primary" size="medium" htmlType="submit">
             Войти
@@ -104,4 +110,4 @@ export function LoginPage() {
       </div>
     </div>
   );
-}
+};

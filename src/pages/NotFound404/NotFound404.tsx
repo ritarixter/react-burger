@@ -1,8 +1,9 @@
 import styles from "./NotFound404.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useHistory } from "react-router-dom";
+import { FC } from "react";
 
-export function NotFound404() {
+export const NotFound404: FC = () => {
   const history = useHistory();
   return (
     <div className={styles.main}>
@@ -26,4 +27,4 @@ export function NotFound404() {
       </div>
     </div>
   );
-}
+};

@@ -2,16 +2,20 @@ import { useSelector } from "../../utils/hooks";
 import { useLocation } from "react-router-dom";
 import { Redirect } from "react-router-dom";
 import Preloader from "../Preloader/Preloader";
+import { FC } from "react";
+import { IProtectedRoute } from "../../utils/types";
 
-export default function ProtectedRoute({
+const ProtectedRoute: FC<IProtectedRoute> = ({
   anonymous = false,
-  children
-}) {
+  children,
+}) => {
   const location = useLocation();
   const isAuth = useSelector((state) => state.profileReducer.isAuth);
-  const isAuthChecked = useSelector((state) => state.profileReducer.isAuthChecked);
+  const isAuthChecked = useSelector(
+    (state) => state.profileReducer.isAuthChecked
+  );
   if (!isAuthChecked) {
-    return <Preloader />; 
+    return <Preloader />;
   }
   if (anonymous && !isAuth) {
     return (
@@ -28,4 +32,6 @@ export default function ProtectedRoute({
     return <Redirect to="/" />;
   }
   return <>{children}</>;
-}
+};
+
+export default ProtectedRoute;

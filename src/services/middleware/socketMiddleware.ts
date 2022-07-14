@@ -1,10 +1,12 @@
+import { IWsActionsWithAuth } from '../store';
+import { Middleware, MiddlewareAPI } from 'redux';
 
-export const socketMiddleware = (wsUrl, wsActions) => {
-  return store => {
-      let socket = null;
+export const socketMiddleware = (wsUrl:string, wsActions:IWsActionsWithAuth): Middleware => {
+  return (store: MiddlewareAPI) => {
+    let socket: WebSocket | null = null;
 
   return next => action => {
-    const { dispatch, getState } = store;
+    const { dispatch } = store;
     const { type, payload } = action;
 
     if (type === wsActions.wsInit) {
@@ -38,8 +40,8 @@ export const socketMiddleware = (wsUrl, wsActions) => {
         socket.close();
       }
     }
-
     next(action);
   };
   };
 };
+

@@ -3,18 +3,12 @@ import {
   CurrencyIcon,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import styles from "./BurgerConstructor.module.css";
-import Modal from "../Modal/Modal";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import { useDispatch, useSelector } from "../../utils/hooks";
-import {
-  getOrderData,
-  setOrderClose,
-  setOrderOpen,
-} from "../../services/actions/order";
+import { getOrderData, setOrderOpen } from "../../services/actions/order";
 import { useDrop } from "react-dnd";
 import {
   addBunElement,
@@ -25,16 +19,18 @@ import { useCallback } from "react";
 import DraggableItem from "../draggableItem/draggableItem";
 import { useHistory } from "react-router-dom";
 import { IElement } from "../../utils/types";
+import { IHandleIngredientDrop } from "../../utils/types";
+import ModalOrder from "../Modal/ModalOrder/ModalOrder";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [elements, setElements] = useState([])
+  const [elements, setElements] = useState([]);
   const isAuth = useSelector((state) => state.profileReducer.isAuth);
   const data = useSelector((state) => state.ingredientsReducer.ingredients);
   const openOrder = useSelector((state) => state.orderReducer.orderOpen);
   const orderNumber = useSelector((state) => state.orderReducer.orderNumber);
-  
+
   const bunElement = useSelector(
     (state) => state.constructorReducer.bunElement
   );
@@ -51,20 +47,18 @@ function BurgerConstructor() {
     return bunsPrice + nonBunElementsPrice;
   }, [bunElement, draggableElements]);
 
-  const handleIngredientDrop = (id:number) => {
-    const draggedItem = data.find((item:IElement) => item._id === id);
+  const handleIngredientDrop = ({ id }: IHandleIngredientDrop) => {
+    const draggedItem: any = data.find((item: IElement) => item._id === id);
     if (draggedItem.type === "bun") {
       dispatch(addBunElement({ ...draggedItem, uid: uuidv4() }));
-      setElements(draggedItem)
-
+      setElements(draggedItem);
     } else if (bunElement._id) {
       dispatch(addNonBunElement({ ...draggedItem, uid: uuidv4() }));
-   
     }
   };
   const [, dropTarget] = useDrop({
     accept: "BurgerIngredient",
-    drop(itemId:number) {
+    drop(itemId: IHandleIngredientDrop) {
       handleIngredientDrop(itemId);
     },
   });
@@ -74,7 +68,8 @@ function BurgerConstructor() {
   });
   const findDraggableElement = useCallback(
     (uid) => {
-      const draggableElement = draggableElements.find(
+      const draggableElement: any = draggableElements.find(
+        //Если убрать any, то ошибка,и я не могу понять почему
         (item) => item.uid === uid
       );
       return {
@@ -86,7 +81,7 @@ function BurgerConstructor() {
   );
 
   const moveDraggableElement = useCallback(
-    (uid, newIndex) => {
+    (uid: string, newIndex: number) => {
       const { draggableElement } = findDraggableElement(uid);
       dispatch(
         udpadeElementsOrder({
@@ -102,7 +97,6 @@ function BurgerConstructor() {
     if (isAuth) {
       dispatch(getOrderData(draggableElements.concat(elements)));
       dispatch(setOrderOpen());
-      
     } else {
       history.replace({ pathname: "/login" });
     }
@@ -191,23 +185,12 @@ function BurgerConstructor() {
         </Button>
       </article>
       {openOrder && (
-        <Modal
-          title="Детали заказа"
-        >
-          
+        <ModalOrder title="Детали заказа">
           <OrderDetails orderNumber={orderNumber} />
-        </Modal>
+        </ModalOrder>
       )}
     </section>
   );
 }
-
-BurgerConstructor.propTypes = {
-  _id: PropTypes.string,
-  name: PropTypes.string,
-  price: PropTypes.number,
-  image: PropTypes.string,
-  data: PropTypes.array,
-};
 
 export default BurgerConstructor;

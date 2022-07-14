@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { FC, useCallback } from "react";
 import styles from "./ForgotPassPage.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Input } from "@ya.praktikum/react-developer-burger-ui-components";
@@ -12,7 +12,7 @@ import {
 } from "../../services/actions/profile";
 import { checkEmail } from "../../utils/functions";
 
-export function ForgotPassPage() {
+export const ForgotPassPage: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const [valueEmail, setValueEmail] = React.useState("");
@@ -30,7 +30,6 @@ export function ForgotPassPage() {
     },
     [history]
   );
-
   return (
     <div className={styles.main}>
       <div className={styles.login}>
@@ -76,4 +75,4 @@ export function ForgotPassPage() {
       </div>
     </div>
   );
-}
+};

@@ -1,29 +1,26 @@
-import styles from "./Modal.module.css";
+import styles from "../Modal.module.css";
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import { FC} from "react";
+import { FC } from "react";
 import React from "react";
 import ReactDOM from "react-dom";
-import ModalOverlay from "../ModalOverlay/ModalOverlay";
-import { useHistory, useParams } from "react-router-dom";
-import { useDispatch } from "../../utils/hooks";
-import { setOrderClose } from "../../services/actions/order";
-import { IModal, IParams } from "../../utils/types";
+import ModalOverlay from "../../ModalOverlay/ModalOverlay";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "../../../utils/hooks";
+import { setOrderClose } from "../../../services/actions/order";
+import { IModal, IParams } from "../../../utils/types";
 
-export const Modal: FC<IModal> = (props) => {
+export const ModalOrder: FC<IModal> = (props) => {
   const dispatch = useDispatch();
   const modal: HTMLElement | any = document.getElementById("modal");
   const param = useParams() as IParams;
   const id = param.id;
-  const history = useHistory();
 
   function closeModal() {
-    history.goBack();
     dispatch(setOrderClose());
   }
 
   function closeModalEsc(evt: { key: string }) {
     if (evt.key === "Escape") {
-      history.goBack();
       dispatch(setOrderClose());
     }
   }
@@ -56,4 +53,4 @@ export const Modal: FC<IModal> = (props) => {
   );
 };
 
-export default Modal;
+export default ModalOrder;

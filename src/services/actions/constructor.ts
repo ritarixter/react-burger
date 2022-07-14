@@ -1,14 +1,15 @@
 import { IElement } from "../../utils/types";
-export const ADD_BUN_ELEMENT:"ADD_BUN_ELEMENT" = "ADD_BUN_ELEMENT";
-export const ADD_NON_BUN_ELEMENT:"ADD_NON_BUN_ELEMENT" = "ADD_NON_BUN_ELEMENT";
-export const DELETE_ELEMENT:"DELETE_ELEMENT" = "DELETE_ELEMENT";
-export const UPDATE_ELEMENTS_ORDER:"UPDATE_ELEMENTS_ORDER" = "UPDATE_ELEMENTS_ORDER";
-export const RESET_CONSTRUCTOR:"RESET_CONSTRUCTOR" = "RESET_CONSTRUCTOR";
+export const ADD_BUN_ELEMENT: "ADD_BUN_ELEMENT" = "ADD_BUN_ELEMENT";
+export const ADD_NON_BUN_ELEMENT: "ADD_NON_BUN_ELEMENT" = "ADD_NON_BUN_ELEMENT";
+export const DELETE_ELEMENT: "DELETE_ELEMENT" = "DELETE_ELEMENT";
+export const UPDATE_ELEMENTS_ORDER: "UPDATE_ELEMENTS_ORDER" =
+  "UPDATE_ELEMENTS_ORDER";
+export const RESET_CONSTRUCTOR: "RESET_CONSTRUCTOR" = "RESET_CONSTRUCTOR";
 
 interface IElementWithIndex {
-  draggableElement:IElement;
+  draggableElement: IElement | any;
   newIndex: number;
- } 
+}
 
 interface IAddBunElement {
   readonly type: typeof ADD_BUN_ELEMENT;
@@ -25,43 +26,43 @@ interface IDeleteElement {
   readonly uid: string;
 }
 
-export interface IResetConstructor{
+export interface IResetConstructor {
   readonly type: typeof RESET_CONSTRUCTOR;
 }
 
 interface IUdpadeElementsOrder {
   readonly type: typeof UPDATE_ELEMENTS_ORDER;
-  readonly draggableElement: IElement;
-  readonly newIndex: number;
+  draggableElement: IElement | any;
+  newIndex: number;
 }
 
-
-export type TConstructorActions = 
+export type TConstructorActions =
   | IAddBunElement
   | IAddNonBunElement
   | IDeleteElement
   | IResetConstructor
   | IUdpadeElementsOrder;
 
-
-export function addBunElement(element: IElement):IAddBunElement {
+export function addBunElement(element: IElement): IAddBunElement {
   return { type: ADD_BUN_ELEMENT, payload: element };
 }
 
-export function resetConstructor():IResetConstructor {
+export function resetConstructor(): IResetConstructor {
   return { type: RESET_CONSTRUCTOR };
 }
 
-
-export function addNonBunElement(element: IElement):IAddNonBunElement {
+export function addNonBunElement(element: IElement): IAddNonBunElement {
   return { type: ADD_NON_BUN_ELEMENT, payload: element };
 }
 
-export function deleteElement(elementUid: string):IDeleteElement {
+export function deleteElement(elementUid: string): IDeleteElement {
   return { type: DELETE_ELEMENT, uid: elementUid };
 }
 
-export function udpadeElementsOrder({ draggableElement, newIndex }:IElementWithIndex):IUdpadeElementsOrder {
+export function udpadeElementsOrder({
+  draggableElement,
+  newIndex,
+}: IElementWithIndex): IUdpadeElementsOrder {
   return {
     type: UPDATE_ELEMENTS_ORDER,
     draggableElement,

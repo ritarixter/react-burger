@@ -2,7 +2,11 @@ import { getCookie } from "./getCookie";
 import { setCookie } from "./setCookie";
 const url = "https://norma.nomoreparties.space/api";
 
-const responseCheck = (res: { ok: boolean; json: () => any; status: number; }) => {
+const responseCheck = (res: {
+  ok: boolean;
+  json: () => any;
+  status: number;
+}) => {
   if (res.ok) {
     return res.json();
   } else {
@@ -10,37 +14,33 @@ const responseCheck = (res: { ok: boolean; json: () => any; status: number; }) =
   }
 };
 
-export function getData(){
-  return fetch(`${url}/ingredients`)
-  .then(responseCheck)
- }
+export function getData() {
+  return fetch(`${url}/ingredients`).then(responseCheck);
+}
 
-export function dataOrder(data: {_id: string;}[]) {
+export function dataOrder(data: { _id: string }[]) {
   return fetch(`${url}/orders`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization:  getCookie('accessToken')
+      Authorization: getCookie("accessToken"),
     },
     body: JSON.stringify({
       ingredients: data.map((item) => item._id),
     }),
-  })
-    .then(responseCheck)
+  }).then(responseCheck);
 }
- 
-export function getOrderId(id:string) {
- return fetch(`${url}/orders/${id}`, {
-  method: "GET",
+
+export function getOrderId(id: string) {
+  return fetch(`${url}/orders/${id}`, {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
-  })
-  .then(responseCheck)
+  }).then(responseCheck);
 }
 
-
-export function canPasswordReset(valueEmail:string) {
+export function canPasswordReset(valueEmail: string) {
   return fetch(`${url}/password-reset`, {
     method: "POST",
     headers: {
@@ -49,11 +49,10 @@ export function canPasswordReset(valueEmail:string) {
     body: JSON.stringify({
       email: valueEmail,
     }),
-  })
-  .then(responseCheck)
+  }).then(responseCheck);
 }
 
-export function resetPassword(passwordValue:string, codeValue:string) {
+export function resetPassword(passwordValue: string, codeValue: string) {
   return fetch(`${url}/password-reset/reset`, {
     method: "POST",
     headers: {
@@ -63,11 +62,14 @@ export function resetPassword(passwordValue:string, codeValue:string) {
       password: passwordValue,
       token: codeValue,
     }),
-  })
-  .then(responseCheck)
+  }).then(responseCheck);
 }
 
-export function registerUser(nameValue:string, emailValue:string, passwordValue:string) {
+export function registerUser(
+  nameValue: string,
+  emailValue: string,
+  passwordValue: string
+) {
   return fetch(`${url}/auth/register`, {
     method: "POST",
     headers: {
@@ -78,8 +80,7 @@ export function registerUser(nameValue:string, emailValue:string, passwordValue:
       password: passwordValue,
       name: nameValue,
     }),
-  })
-  .then(responseCheck)
+  }).then(responseCheck);
 }
 
 export function refreshToken() {
@@ -98,14 +99,13 @@ export function refreshToken() {
         return Promise.reject(refreshData);
       }
       localStorage.setItem("token", refreshData.refreshToken);
-      setCookie('accessToken', refreshData.accessToken)
+      setCookie("accessToken", refreshData.accessToken);
       return refreshData;
     });
 }
 
-
-export function authorizationUser(emailValue:string, passwordValue:string) {
-   return fetch(`${url}/auth/login`, {
+export function authorizationUser(emailValue: string, passwordValue: string) {
+  return fetch(`${url}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -114,9 +114,7 @@ export function authorizationUser(emailValue:string, passwordValue:string) {
       email: emailValue,
       password: passwordValue,
     }),
-  })
-  .then(responseCheck)
-  
+  }).then(responseCheck);
 }
 
 export async function logoutUser() {
@@ -128,8 +126,7 @@ export async function logoutUser() {
     body: JSON.stringify({
       token: localStorage.getItem("token"),
     }),
-  })
-  .then(responseCheck)
+  }).then(responseCheck);
 }
 
 export function getDataUser() {
@@ -137,63 +134,60 @@ export function getDataUser() {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: getCookie('accessToken'),
+      Authorization: getCookie("accessToken"),
     },
-    })
+  })
     .then(responseCheck)
-    .catch ((err) =>{    
+    .catch((err) => {
       if (err === 403) {
-     refreshToken()
-     .then((refreshData)=>{
-      return fetch(`${url}/auth/user`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: refreshData.accessToken, 
-        },
-      })
-      .then(responseCheck)
-    })   
-  } else {
-    return Promise.reject(`Ошибка: ${err.status}`);
-  }})
+        refreshToken().then((refreshData) => {
+          return fetch(`${url}/auth/user`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: refreshData.accessToken,
+            },
+          }).then(responseCheck);
+        });
+      } else {
+        return Promise.reject(`Ошибка: ${err.status}`);
+      }
+    });
 }
 
-export function editProfile(nameValue:string, emailValue:string) {
-    return fetch(`${url}/auth/user`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: getCookie('accessToken'),
-      },
-      body: JSON.stringify({
-        name: nameValue,
-        email: emailValue,
-      }),
-    })
+export function editProfile(nameValue: string, emailValue: string) {
+  return fetch(`${url}/auth/user`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: getCookie("accessToken"),
+    },
+    body: JSON.stringify({
+      name: nameValue,
+      email: emailValue,
+    }),
+  })
     .then(responseCheck)
-     .catch ((err) =>{
+    .catch((err) => {
       if (err === 403) {
-      refreshToken()
-      .then((refreshData)=>{
-        return fetch(`${url}/auth/user`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: getCookie('accessToken'),
-          },
-          body: JSON.stringify({
-            name: nameValue,
-            email: emailValue,
-          }),
-        })
-        .then(responseCheck)
-      })   
-    } else {
-      return Promise.reject(`Ошибка: ${err.status}`);
-    }})
-  }
-
+        refreshToken().then((refreshData) => {
+          return fetch(`${url}/auth/user`, {
+            method: "PATCH",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: getCookie("accessToken"),
+            },
+            body: JSON.stringify({
+              name: refreshData.nameValue,
+              email: refreshData.emailValue,
+            }),
+          }).then(responseCheck);
+        });
+      } else {
+        return Promise.reject(`Ошибка: ${err.status}`);
+      }
+    });
+}
 
 /*const fetchWithRefresh = async (url, options) => {
   try {

@@ -7,27 +7,19 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import styles from "./draggableItem.module.css";
 import { deleteElement } from "../../services/actions/constructor";
-/*interface IDraggableItem {
-  id: string,
-  uid: string,
-  name: string,
-  price: number,
-  image: string,
-  findDraggableElement: any,
-  moveDraggableElement:any
-}*/
+import { IDraggableItem } from "../../utils/types";
+import { FC } from "react";
 
-function DraggableItem({
+export const DraggableItem: FC<IDraggableItem> = ({
   id,
   uid,
-  name,
   price,
+  name,
   image,
   findDraggableElement,
   moveDraggableElement,
-}/*:IDraggableItem*/) {
+}) => {
   const dispatch = useDispatch();
-
   const originalIndex = findDraggableElement(uid).draggableElementIndex;
 
   const [{ isDragging }, dragRef] = useDrag(
@@ -47,23 +39,22 @@ function DraggableItem({
   );
 
   const [, dropTarget] = useDrop(
-    () => ({
+    {
       accept: "DraggableItem",
-      hover({ uid: draggedUid }) {
+      hover({ uid: draggedUid }: any) {
         if (draggedUid !== uid) {
-          const { draggableElementIndex: overIndex } = findDraggableElement(
-            uid
-          );
+          const { draggableElementIndex: overIndex } =
+            findDraggableElement(uid);
           moveDraggableElement(draggedUid, overIndex);
         }
       },
-    }),
+    },
     [findDraggableElement, moveDraggableElement]
   );
 
-  const handleIngredientDelete = (e) => {
-    const itemToDeleteUid = e.target.closest("li").dataset.uid;
-    dispatch(deleteElement(itemToDeleteUid));
+  const handleIngredientDelete = (/*e*/) => {
+    //const itemToDeleteUid = item.target.closest("li").dataset.uid;
+    dispatch(deleteElement(uid));
   };
 
   return (
@@ -87,16 +78,6 @@ function DraggableItem({
       />
     </li>
   );
-}
-
-DraggableItem.propTypes = {
-  id: PropTypes.string.isRequired,
-  uid: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  findDraggableElement: PropTypes.func.isRequired,
-  moveDraggableElement: PropTypes.func.isRequired,
 };
 
 export default DraggableItem;

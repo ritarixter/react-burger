@@ -1,41 +1,55 @@
-import React from "react";
+import React, { FC, MutableRefObject, SetStateAction } from "react";
 import styles from "./BurgerIngredients.module.css";
 import CardIngredients from "../CardIngredients/CardIngredients";
-import PropTypes from "prop-types";
 import { useSelector } from "../../utils/hooks";
 import { useRef } from "react";
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import { IElement } from "../../utils/types";
 
-function BurgerIngredients() {
+const BurgerIngredients: FC = () => {
   const ingridients = useSelector(
     (state) => state.ingredientsReducer.ingredients
   );
-
-  const bunRef = useRef(null);
-  const mainRef = useRef(null);
-  const sauceRef = useRef(null);
+  const bunRef: MutableRefObject<HTMLDivElement | null> =
+    useRef<HTMLDivElement>(null);
+  const mainRef: MutableRefObject<HTMLDivElement | any> =
+    useRef<HTMLDivElement>(null);
+  const sauceRef: MutableRefObject<HTMLDivElement | any> =
+    useRef<HTMLDivElement>(null);
   const [current, setCurrent] = React.useState("Булки");
 
-  const handleTabClick = (e, ref) => {
+  const handleTabClick = (
+    e: SetStateAction<string>,
+    ref: MutableRefObject<any>
+  ) => {
     setCurrent(e);
     ref.current.scrollIntoView({ behavior: "smooth" });
   };
 
   const buns = React.useMemo(
-    () => ingridients.filter((ingredient) => ingredient.type === "bun"),
+    () =>
+      ingridients.filter(
+        (ingredient: { type: string }) => ingredient.type === "bun"
+      ),
     [ingridients]
   );
   const sauces = React.useMemo(
-    () => ingridients.filter((ingredient) => ingredient.type === "sauce"),
+    () =>
+      ingridients.filter(
+        (ingredient: { type: string }) => ingredient.type === "sauce"
+      ),
     [ingridients]
   );
   const mains = React.useMemo(
-    () => ingridients.filter((ingredient) => ingredient.type === "main"),
+    () =>
+      ingridients.filter(
+        (ingredient: { type: string }) => ingredient.type === "main"
+      ),
     [ingridients]
   );
 
-  function ingredintScroll(e) {
-    const scrollPosition = e.target.scrollTop;
+  function ingredintScroll(e: React.UIEvent<HTMLDivElement>) {
+    const scrollPosition = e.currentTarget.scrollTop;
     const scrollOffset = 400;
     const positionOfSauseSection = sauceRef.current.offsetTop;
     const positionOfMainSection = mainRef.current.offsetTop;
@@ -76,12 +90,12 @@ function BurgerIngredients() {
       </div>
 
       <div className={styles.scrollbar} onScroll={ingredintScroll}>
-        <section ref={bunRef}>
+        <div ref={bunRef}>
           <h2 className="text text_type_main-medium mb-6" id="buns">
             Булки
           </h2>
           <ul className={`${styles.cards}`}>
-            {buns.map((bun) => (
+            {buns.map((bun: IElement) => (
               <li key={bun._id}>
                 <CardIngredients
                   image={bun.image}
@@ -92,13 +106,13 @@ function BurgerIngredients() {
               </li>
             ))}
           </ul>
-        </section>
-        <section ref={sauceRef}>
+        </div>
+        <div ref={sauceRef}>
           <h2 className="text text_type_main-medium mb-6" id="sauces">
             Соусы
           </h2>
           <ul className={styles.cards}>
-            {sauces.map((sauce) => (
+            {sauces.map((sauce: IElement) => (
               <li key={sauce._id}>
                 <CardIngredients
                   image={sauce.image}
@@ -109,14 +123,14 @@ function BurgerIngredients() {
               </li>
             ))}
           </ul>
-        </section>
+        </div>
 
-        <section ref={mainRef}>
+        <div ref={mainRef}>
           <h2 className="text text_type_main-medium mb-6" id="mains">
             Начинки
           </h2>
           <ul className={styles.cards}>
-            {mains.map((main) => (
+            {mains.map((main: IElement) => (
               <li key={main._id}>
                 <CardIngredients
                   image={main.image}
@@ -127,17 +141,10 @@ function BurgerIngredients() {
               </li>
             ))}
           </ul>
-        </section>
+        </div>
       </div>
     </section>
   );
-}
-
-BurgerIngredients.propTypes = {
-  _id: PropTypes.string,
-  name: PropTypes.string,
-  price: PropTypes.number,
-  image: PropTypes.string,
 };
 
 export default BurgerIngredients;

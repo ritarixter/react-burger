@@ -7,7 +7,7 @@ import {
   FORGOT_PASSWORD_SUCCESS,
   FORGOT_PASSWORD_UNSUCCESS,
   AUTH_CHECKED,
-  TProfileActions
+  TProfileActions,
 } from "../actions/profile";
 
 type TProfileInitialState = {
@@ -17,29 +17,32 @@ type TProfileInitialState = {
   isAuth: boolean;
   wasOnPageForgotPassword: boolean;
   isAuthChecked: boolean;
-  isAuthFailed:boolean;
+  isAuthFailed: boolean;
 };
 
-const profileInitialState:TProfileInitialState = {
+const profileInitialState: TProfileInitialState = {
   name: "",
   email: "",
   password: "",
   isAuth: false,
   wasOnPageForgotPassword: false,
   isAuthChecked: false,
-  isAuthFailed:false,
+  isAuthFailed: false,
 };
 
-export const profileReducer = (state = profileInitialState, action:TProfileActions):TProfileInitialState => {
+export const profileReducer = (
+  state = profileInitialState,
+  action: TProfileActions
+): TProfileInitialState => {
   switch (action.type) {
     case GET_DATA_USER: {
       return {
         ...state,
         name: action.data.name,
         email: action.data.email,
-        password: '1234567',
+        password: "1234567",
         isAuth: true,
-        isAuthFailed:false
+        isAuthFailed: false,
       };
     }
 
@@ -52,7 +55,7 @@ export const profileReducer = (state = profileInitialState, action:TProfileActio
         isAuth: false,
       };
     }
-    
+
     case EDIT_DATA_USER: {
       return {
         ...state,
@@ -65,7 +68,7 @@ export const profileReducer = (state = profileInitialState, action:TProfileActio
       return {
         ...state,
         isAuth: true,
-        isAuthFailed:false
+        isAuthFailed: false,
       };
     }
 
@@ -73,7 +76,7 @@ export const profileReducer = (state = profileInitialState, action:TProfileActio
       return {
         ...state,
         isAuth: false,
-        isAuthFailed:true
+        isAuthFailed: true,
       };
     }
 
@@ -90,11 +93,11 @@ export const profileReducer = (state = profileInitialState, action:TProfileActio
         wasOnPageForgotPassword: false,
       };
     }
- 
+
     case AUTH_CHECKED: {
       return {
         ...state,
-        isAuthChecked:true
+        isAuthChecked: true,
       };
     }
 

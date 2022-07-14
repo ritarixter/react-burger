@@ -1,23 +1,24 @@
 import styles from "./FeedPage.module.css";
 import { OrderCard } from "../../components/OrderCard/OrderCard";
 import { useDispatch,useSelector } from "../../utils/hooks";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import {
   WS_CONNECTION_START,
   WS_CONNECTION_CLOSED,
 } from "../../services/actions/wsActionTypes";
 import { useState } from "react";
 import Preloader from "../../components/Preloader/Preloader";
+import { IData } from "../../utils/types";
 
-export function FeedPage() {
+export const FeedPage = () => {
   const dispatch = useDispatch();
+  
+  const [pending, setPending]= useState<IData | any>(null);
+  const [done, setDone]= useState<IData | any>(null);
   const { wsConnected, orders, total, totalToday } = useSelector(
     (store) => store.wsReducer
   );
-
-  const [pending, setPending] = useState(null);
-  const [done, setDone] = useState(null);
-
+  
   useEffect(() => {
     dispatch({ type: WS_CONNECTION_START, payload: "/all" });
     return () => {
@@ -29,6 +30,7 @@ export function FeedPage() {
     setDone(orders.filter((el) => el.status === "done"));
     setPending(orders.filter((el) => el.status === "pending"));
   }, [orders]);
+
 
   return wsConnected ? (
     <section className={styles.feed}>
@@ -49,7 +51,7 @@ export function FeedPage() {
               <h2 className="text text_type_main-medium mb-6">Готовы</h2>
               <ul className={styles.ordes__list}>
                 {done &&
-                  done.map((i) => (
+                  done.map((i: { number: string}) => (
                     <li
                       className={`"text text_type_digits-default mb-2  ${styles.success} ${styles.order__list_item}`}
                       id={i.number} key={i.number}
@@ -63,7 +65,7 @@ export function FeedPage() {
               <h2 className="text text_type_main-medium mb-6">В Работе</h2>
               <ul className={styles.ordes__list}>
 
-                {pending && pending.map((i) => (
+                {pending && pending.map((i: {number: string}) => (
                   <li
                     className={`"text text_type_digits-default mb-2  ${styles.order__list_item}`}
                     id={i.number} key={i.number}
@@ -92,4 +94,4 @@ export function FeedPage() {
   ) : (
     <Preloader />
   )
-}
+  }

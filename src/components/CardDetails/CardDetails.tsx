@@ -8,22 +8,20 @@ import formatDate from "../../utils/formatDate";
 import {
   WS_CONNECTION_START,
   WS_AUTH_CONNECTION_START,
-  CLOSED_ORDER_ID
+  CLOSED_ORDER_ID,
 } from "../../services/actions/wsActionTypes";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { getOrderIdData } from "../../services/actions/wsActionTypes";
 import { getCookie } from "../../utils/getCookie";
 import { IElement } from "../../utils/types";
 import { IParams } from "../../utils/types";
+import { ICardDetails } from "../../utils/types";
 
+export const CardDetails: FC<ICardDetails> = (props) => {
+  const { wsConnected, wsConnectedAuth, orderId } = useSelector(
+    (store) => store.wsReducer
+  );
 
-export const CardDetails = (props: { notModal?: boolean; }) => {
-  const {
-    wsConnected,
-    wsConnectedAuth,
-    orderId,
-  } = useSelector((store) => store.wsReducer);
-  
   const param = useParams() as IParams;
   const dispatch = useDispatch();
   const id = param.id;
@@ -33,20 +31,19 @@ export const CardDetails = (props: { notModal?: boolean; }) => {
   );
 
   const match = useRouteMatch({
-    path: '/profile/orders/:id',
+    path: "/profile/orders/:id",
   });
 
   useEffect(() => {
-    if(match){
+    if (match) {
       dispatch({
         type: WS_AUTH_CONNECTION_START,
         payload: `?token=${getCookie("accessToken").slice(7)}`,
       });
-    }
-    else{
+    } else {
       dispatch({ type: WS_CONNECTION_START, payload: "/all" });
     }
-    
+
     return () => {
       dispatch({ type: CLOSED_ORDER_ID });
     };
@@ -60,8 +57,8 @@ export const CardDetails = (props: { notModal?: boolean; }) => {
 
   if (orderId.ingredients) {
     for (let i = 0; i < orderId.ingredients.length; i++) {
-      const element = ingredients.find(
-        (item: { _id: any; }) => item._id === orderId.ingredients[i]
+      const element: any = ingredients.find(
+        (item: { _id: string }) => item._id === orderId.ingredients[i]
       );
       if (element) {
         ingredientsOrder.push(element);
@@ -69,7 +66,7 @@ export const CardDetails = (props: { notModal?: boolean; }) => {
     }
   }
 
-  const getCount = (id: number) => {
+  const getCount = (id: number | string) => {
     let count = 0;
     ingredientsOrder.forEach((ingredient) => {
       if (ingredient._id === id) count += 1;
@@ -77,12 +74,16 @@ export const CardDetails = (props: { notModal?: boolean; }) => {
     return count;
   };
 
-  const makeUniq = (arr:any) => [...new Set(arr)];
-  const uniqIngredientsOrder:any = makeUniq(ingredientsOrder)
+  const makeUniq = (arr: any) => [...new Set(arr)];
+  const uniqIngredientsOrder: any = makeUniq(ingredientsOrder);
 
-  const totaPrice = uniqIngredientsOrder.reduce((acc:number, ingredient:IElement) => 
-    acc + ingredient.price * (ingredient.type === 'bun' ? 2 : getCount(ingredient._id)), 0
-  )
+  const totaPrice = uniqIngredientsOrder.reduce(
+    (acc: number, ingredient: IElement) =>
+      acc +
+      ingredient.price *
+        (ingredient.type === "bun" ? 2 : getCount(ingredient._id)),
+    0
+  );
 
   let status = "";
   switch (orderId.status) {
@@ -101,7 +102,7 @@ export const CardDetails = (props: { notModal?: boolean; }) => {
     return null;
   }
 
-  return (wsConnectedAuth || wsConnected) ? (
+  return wsConnectedAuth || wsConnected ? (
     <section className={styles.main}>
       <div className={styles.card}>
         {props.notModal && (
@@ -113,18 +114,27 @@ export const CardDetails = (props: { notModal?: boolean; }) => {
           {orderId.name}
         </h2>
         <p
-          className={`text text_type_main-default mb-15 ${status === "Выполнен" && styles.success
-            }`}
+          className={`text text_type_main-default mb-15 ${
+            status === "Выполнен" && styles.success
+          }`}
         >
           {status}
         </p>
         <h2 className="text text_type_main-medium mb-6">Состав:</h2>
         <div className={styles.scrollbar}>
           <ul className={styles.list}>
-            {uniqIngredientsOrder.map((indredient:IElement) => {
-            return <li className={styles.list__item} key={indredient._id}>
-              <CardDetailsItem data={indredient} count={indredient.type === 'bun' ? 2 : getCount(indredient._id)}/>
-              </li>})}
+            {uniqIngredientsOrder.map((indredient: IElement) => {
+              return (
+                <li className={styles.list__item} key={indredient._id}>
+                  <CardDetailsItem
+                    data={indredient}
+                    count={
+                      indredient.type === "bun" ? 2 : getCount(indredient._id)
+                    }
+                  />
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -141,5 +151,5 @@ export const CardDetails = (props: { notModal?: boolean; }) => {
     </section>
   ) : (
     <p>Произошла ошибка.</p>
-  )
-}
+  );
+};

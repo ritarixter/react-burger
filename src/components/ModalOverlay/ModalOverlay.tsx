@@ -1,7 +1,8 @@
 import styles from "./ModalOverlay.module.css";
-import { MouseEventHandler } from "react";
+import { FC } from "react";
+import { IModalOverlay } from "../../utils/types";
 
-function ModalOverlay(props: { closeModal: MouseEventHandler<HTMLDivElement> | undefined; }) {
+export const ModalOverlay: FC<IModalOverlay> = (props) => {
   return <div className={styles.overlay} onClick={props.closeModal}></div>;
-}
+};
 export default ModalOverlay;

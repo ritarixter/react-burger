@@ -1,5 +1,7 @@
 import { getOrderId } from "../../utils/API";
-import { IElement } from "../../utils/types";
+import { IData } from "../../utils/types";
+import { AppThunk } from "../store";
+import { AppDispatch } from "../store";
 export const WS_CONNECTION_START:'WS_CONNECTION_START' = 'WS_CONNECTION_START';
 export const WS_CONNECTION_SUCCESS:'WS_CONNECTION_SUCCESS' = 'WS_CONNECTION_SUCCESS';
 export const WS_CONNECTION_ERROR:'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
@@ -14,22 +16,11 @@ export const WS_AUTH_CONNECTION_SUCCESS:'WS_AUTH_CONNECTION_SUCCESS' = 'WS_AUTH_
 export const WS_AUTH_CONNECTION_ERROR:'WS_CONNECTION_ERROR' = 'WS_CONNECTION_ERROR';
 export const CLOSED_ORDER_ID:'CLOSED_ORDER_ID' = 'CLOSED_ORDER_ID'
 
-export interface IData{
-  createdAt: string;
-  ingredients: Array<string>;
-  name: string
-  number: number
-  owner: string
-  status: string
-  updatedAt: string
-  __v: number
-  _id: string
-}
 
 interface IPayload{
   total:number;
   totalToday:number;
-  orders:Array<IElement>
+  orders:Array<IData>
 }
 
 interface IGetDataProfile {
@@ -40,6 +31,11 @@ interface IGetDataProfile {
 interface IWsConnectionSuccess {
   type: typeof WS_CONNECTION_SUCCESS;
 }
+
+interface IWsConnectionStart{
+  type: typeof WS_CONNECTION_START;
+}
+
 
 interface IWsConnectionError {
   type: typeof WS_CONNECTION_ERROR;
@@ -70,14 +66,15 @@ export type TWsActions =
 |IWsConnectionClosed
 |IWsGetMessage
 |IWsAuthConnectionSuccess
-|IClosedOrderId;
+|IClosedOrderId
+|IWsConnectionStart
 
 export function getDataProfile(data:IData):IGetDataProfile {
   return { type: GET_ORDER_ID,payload:data};
 }
 
-export function getOrderIdData(id: string) {
-  return function (dispatch: (arg0: IGetDataProfile) => void) {
+export const getOrderIdData:AppThunk = (id: string) => {
+  return function (dispatch:AppDispatch) {
     getOrderId(id)
       .then((res) => {
         const ApiData = res.orders[0];

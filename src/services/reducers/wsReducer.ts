@@ -6,43 +6,35 @@ import {
   WS_AUTH_CONNECTION_SUCCESS,
   WS_AUTH_CONNECTION_ERROR,
   GET_ORDER_ID,
-  CLOSED_ORDER_ID
-} from '../actions/wsActionTypes';
-import { IElement } from '../../utils/types';
-import { TWsActions,IData } from '../actions/wsActionTypes';
+  CLOSED_ORDER_ID,
+} from "../actions/wsActionTypes";
+import { TWsActions } from "../actions/wsActionTypes";
+import { TInitialState } from "../../utils/types";
 
-
-type TInitialState = {
-  wsConnected: boolean;
-  error: undefined | string,
-  wsConnectedAuth: boolean;
-  orders: Array<IElement>,
-  total: number;
-  totalToday: number;
-  orderId: IData
-};
-
-const initialState:TInitialState = {
+const initialState: TInitialState = {
   wsConnected: false,
   error: undefined,
   wsConnectedAuth: false,
   orders: [],
   total: 0,
   totalToday: 0,
-  orderId: {  
-    createdAt: '',
+  orderId: {
+    createdAt: "",
     ingredients: [],
-    name: '',
+    name: "",
     number: 0,
-    owner: '',
-    status: '',
-    updatedAt: '',
+    owner: "",
+    status: "",
+    updatedAt: "",
     __v: 0,
-    _id: ''
-  }
+    _id: "",
+  },
 };
 
-export const wsReducer = (state = initialState, action:TWsActions):TInitialState => {
+export const wsReducer = (
+  state = initialState,
+  action: TWsActions
+): TInitialState => {
   switch (action.type) {
     case WS_AUTH_CONNECTION_SUCCESS:
       return {
@@ -55,7 +47,7 @@ export const wsReducer = (state = initialState, action:TWsActions):TInitialState
       return {
         ...state,
         error: action.payload,
-        wsConnectedAuth: false
+        wsConnectedAuth: false,
       };
 
     case WS_CONNECTION_SUCCESS:
@@ -69,7 +61,7 @@ export const wsReducer = (state = initialState, action:TWsActions):TInitialState
       return {
         ...state,
         error: action.payload,
-        wsConnected: false
+        wsConnected: false,
       };
 
     case WS_CONNECTION_CLOSED:
@@ -77,39 +69,39 @@ export const wsReducer = (state = initialState, action:TWsActions):TInitialState
         ...state,
         error: undefined,
         wsConnected: false,
-        orderId: {  
-          createdAt: '',
+        orderId: {
+          createdAt: "",
           ingredients: [],
-          name: '',
+          name: "",
           number: 0,
-          owner: '',
-          status: '',
-          updatedAt: '',
+          owner: "",
+          status: "",
+          updatedAt: "",
           __v: 0,
-          _id: ''
-        }
+          _id: "",
+        },
       };
 
     case GET_ORDER_ID:
       return {
         ...state,
-        orderId: action.payload
+        orderId: action.payload,
       };
 
     case CLOSED_ORDER_ID:
       return {
         ...state,
-        orderId: {  
-          createdAt: '',
+        orderId: {
+          createdAt: "",
           ingredients: [],
-          name: '',
+          name: "",
           number: 0,
-          owner: '',
-          status: '',
-          updatedAt: '',
+          owner: "",
+          status: "",
+          updatedAt: "",
           __v: 0,
-          _id: ''
-        }
+          _id: "",
+        },
       };
 
     case WS_GET_MESSAGE:
@@ -118,9 +110,9 @@ export const wsReducer = (state = initialState, action:TWsActions):TInitialState
         error: undefined,
         orders: action.payload.orders,
         total: action.payload.total,
-        totalToday: action.payload.totalToday
+        totalToday: action.payload.totalToday,
       };
     default:
       return state;
   }
-}
+};

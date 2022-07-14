@@ -1,15 +1,16 @@
 import styles from "./IngredientDetails.module.css";
-import PropTypes from "prop-types";
 import { useSelector } from "../../utils/hooks";
 import { useParams } from "react-router-dom";
+import { FC } from "react";
+import { IParams } from "../../utils/types";
 
-function IngredientDetails() {
+const IngredientDetails: FC = () => {
   const ingredients = useSelector(
     (state) => state.ingredientsReducer.ingredients
   );
-  const param = useParams();
+  const param = useParams() as IParams;
   const id = param.id;
-  const ingredient = ingredients.find((el) => el._id === id);
+  const ingredient = ingredients.find((el: { _id: string }) => el._id === id);
 
   return ingredient ? (
     <div className={`${styles.ingredient__item} pb-15`}>
@@ -55,10 +56,6 @@ function IngredientDetails() {
   ) : (
     <div> Произошла ошибка </div>
   );
-}
-
-IngredientDetails.propTypes = {
-  data: PropTypes.object,
 };
 
 export default IngredientDetails;

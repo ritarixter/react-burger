@@ -12,28 +12,31 @@ import { IElement } from "../../utils/types";
 type TConstructorInitialState = {
   bunElement: IElement;
   draggableElements: Array<IElement>;
-} 
+};
 
-const constructorInitialState:TConstructorInitialState = {
+const constructorInitialState: TConstructorInitialState = {
   bunElement: {
-    _id: 0,
-    name: '',
-    type: 'bun',
+    _id: "",
+    name: "",
+    type: "main",
     proteins: 0,
     fat: 0,
     carbohydrates: 0,
     calories: 0,
     price: 0,
-    image: '',
-    image_mobile: '',
-    image_large: '',
+    image: "",
+    image_mobile: "",
+    image_large: "",
     __v: 0,
-    uid: '',
+    uid: "",
   },
   draggableElements: [],
 };
 
-export function constructorReducer(state = constructorInitialState, action: TConstructorActions):TConstructorInitialState {
+export function constructorReducer(
+  state = constructorInitialState,
+  action: TConstructorActions
+): TConstructorInitialState {
   switch (action.type) {
     case ADD_BUN_ELEMENT: {
       return { ...state, bunElement: action.payload };
@@ -49,7 +52,7 @@ export function constructorReducer(state = constructorInitialState, action: TCon
       return {
         ...state,
         draggableElements: state.draggableElements.filter(
-          (item) => item.uid !== action.uid
+          (item: { uid: string }) => item.uid !== action.uid
         ),
       };
     }
@@ -57,19 +60,19 @@ export function constructorReducer(state = constructorInitialState, action: TCon
     case RESET_CONSTRUCTOR: {
       return {
         bunElement: {
-          _id: 0,
-          name: '',
-          type: 'bun',
+          _id: "0",
+          name: "",
+          type: "main",
           proteins: 0,
           fat: 0,
           carbohydrates: 0,
           calories: 0,
           price: 0,
-          image: '',
-          image_mobile: '',
-          image_large: '',
+          image: "",
+          image_mobile: "",
+          image_large: "",
           __v: 0,
-          uid: '',
+          uid: "",
         },
         draggableElements: [],
       };

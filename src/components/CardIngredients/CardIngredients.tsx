@@ -1,15 +1,20 @@
 import styles from "./CardIngredients.module.css";
 import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
-import PropTypes from "prop-types";
 import { useSelector } from "../../utils/hooks";
 import { useDrag, DragPreviewImage } from "react-dnd";
 import { Counter } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { ICardIngredients } from "../../utils/types";
+import { FC } from "react";
 
-function CardIngredients({ id, image, price, name}) {
+export const CardIngredients: FC<ICardIngredients> = ({
+  id,
+  image,
+  price,
+  name,
+}) => {
   const location = useLocation();
-
   const [{ isDragging }, dragRef, dragPreview] = useDrag(
     {
       type: "BurgerIngredient",
@@ -38,12 +43,10 @@ function CardIngredients({ id, image, price, name}) {
       }}
       className={styles.card__link}
     >
-      
       <div
         className={`${styles.card} ${isDragging && styles.card_isDragging}`}
         ref={dragRef}
         draggable
-        
       >
         <DragPreviewImage src={image} connect={dragPreview} />
         <img src={image} alt={name} className="pl-4 pr-4" />
@@ -59,14 +62,6 @@ function CardIngredients({ id, image, price, name}) {
       </div>
     </Link>
   );
-}
-
-CardIngredients.propTypes = {
-  id: PropTypes.string,
-  name: PropTypes.string,
-  price: PropTypes.number,
-  image: PropTypes.string,
-  openModal: PropTypes.func,
 };
 
 export default CardIngredients;

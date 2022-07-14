@@ -7,11 +7,12 @@ import {
   WS_AUTH_CONNECTION_CLOSED,
 } from "../../services/actions/wsActionTypes";
 import { getCookie } from "../../utils/getCookie";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import Preloader from "../../components/Preloader/Preloader";
 
-export function ProfileOrderPage() {
+export const ProfileOrderPage: FC = () => {
   const dispatch = useDispatch();
+  
   useEffect(() => {
     dispatch({
       type: WS_AUTH_CONNECTION_START,
@@ -46,11 +47,13 @@ export function ProfileOrderPage() {
             </ul>
           </div>
         ) : (
-          <p className="text text text_type_main-medium text_color_inactive pt-30 mt-5">Вы пока не сделали ни одного заказа</p>
+          <p className="text text text_type_main-medium text_color_inactive pt-30 mt-5">
+            Вы пока не сделали ни одного заказа
+          </p>
         )}
       </div>
     </section>
   ) : (
     <Preloader />
   );
-}
+};

@@ -1,22 +1,23 @@
-import React from "react";
+import React, { FC, MutableRefObject, useRef } from "react";
 import styles from "./ProfilePage.module.css";
 import {
   Input,
   Button,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 import { useDispatch, useSelector } from "../../utils/hooks";
-import {
-  editData,
-} from "../../services/actions/profile";
+import { editData } from "../../services/actions/profile";
 import { checkEmail } from "../../utils/functions";
 import { useEffect } from "react";
 import { ProfileNav } from "../../components/ProfileNav/ProfileNav";
 
-export function ProfilePage() {
+export const ProfilePage: FC = () => {
   const dispatch = useDispatch();
-  const inputRefPassword = React.useRef(null);
-  const inputRefName = React.useRef(null);
-  const inputRefEmail = React.useRef(null);
+  const inputRefPassword: MutableRefObject<HTMLInputElement | any> =
+    useRef<HTMLInputElement>(null);
+  const inputRefName: MutableRefObject<HTMLInputElement | any> =
+    useRef<HTMLInputElement>(null);
+  const inputRefEmail: MutableRefObject<HTMLInputElement | any> =
+    useRef<HTMLInputElement>(null);
   const name = useSelector((state) => state.profileReducer.name);
   const email = useSelector((state) => state.profileReducer.email);
   const password = useSelector((state) => state.profileReducer.password);
@@ -24,7 +25,9 @@ export function ProfilePage() {
   const [disabledPassword, setDisabledPassword] = React.useState(true);
   const [disabledName, setDisabledName] = React.useState(true);
   const [disabledEmail, setDisabledEmail] = React.useState(true);
-  const [type, setType] = React.useState("password");
+  const [type, setType] = React.useState<
+    "password" | "text" | "email" | undefined
+  >("password");
   const [valueName, setValueName] = React.useState("");
   const [valueEmail, setValueEmail] = React.useState("");
   const [valuePassword, setValuePassword] = React.useState("");
@@ -37,7 +40,7 @@ export function ProfilePage() {
   }, [name, email, password]);
 
   useEffect(() => {
-    if (checkEmail(valueEmail) & (valuePassword.length > 5)) {
+    if (checkEmail(valueEmail) && valuePassword.length > 5) {
       setBtnDisabled(false);
     } else {
       setBtnDisabled(true);
@@ -81,7 +84,11 @@ export function ProfilePage() {
   return (
     <section className={styles.main}>
       <div className={styles.profile}>
-        <ProfileNav paragraph={'В этом разделе вы можете изменить свои персональные данные'} />
+        <ProfileNav
+          paragraph={
+            "В этом разделе вы можете изменить свои персональные данные"
+          }
+        />
         <form
           className={styles.form}
           onSubmit={(event) => {
@@ -168,10 +175,4 @@ export function ProfilePage() {
       </div>
     </section>
   );
-}
-
-/*<Route path="/profile" exact={true}>...
-  </Route>
-  <Route path="/profile/orders" exact={true}>
-      ...
-  </Route> -- Почему не работает конструкция? */
+};

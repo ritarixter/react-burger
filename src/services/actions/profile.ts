@@ -1,4 +1,6 @@
 import { getDataUser, editProfile } from "../../utils/API";
+import { AppThunk } from "../store";
+import { AppDispatch } from "../store";
 
 export const GET_DATA_USER:'GET_DATA_USER' = "GET_DATA_USER";
 export const LOGOUT_USER:'LOGOUT_USER' = "LOGOUT_USER";
@@ -91,8 +93,8 @@ export type TProfileActions =
   | IAuthorizationChecked;
 
 
-export function editData(nameValue:string, emailValue:string) {
-  return function (dispatch: (arg0: IEditDataProfile) => void) {
+export const editData:AppThunk = (nameValue:string, emailValue:string) => {
+  return function (dispatch:AppDispatch) {
     editProfile(nameValue, emailValue)
       .then((res) => {
         const ApiData = res.user;
@@ -104,8 +106,8 @@ export function editData(nameValue:string, emailValue:string) {
   };
 }
 
-export function getDataUserProfile() {
-  return function (dispatch: (arg0: IGetDataProfile | IAuthorizationChecked) => void) {
+export const getDataUserProfile:AppThunk = () =>{
+  return function (dispatch:AppDispatch) {
     getDataUser()
       .then((res) => {
         const ApiData = res.user;

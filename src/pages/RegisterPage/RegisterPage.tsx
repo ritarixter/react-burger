@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import styles from "./RegisterPage.module.css";
 import { Button } from "@ya.praktikum/react-developer-burger-ui-components";
 import { Link } from "react-router-dom";
@@ -10,21 +10,22 @@ import { registerUser } from "../../utils/API";
 import { useCallback } from "react";
 import { useHistory } from "react-router-dom";
 
-export function RegisterPage() {
+export const RegisterPage: FC = () => {
   const history = useHistory();
   const [valueEmail, setValueEmail] = React.useState("");
   const [valueName, setValueName] = React.useState("");
   const [valuePassword, setValuePassword] = React.useState("");
 
   const canRegisterUser = useCallback(
-    (valueName, valueEmail, passwordValue) => {
+    (valueName: string, valueEmail: string, passwordValue: string) => {
       registerUser(valueName, valueEmail, passwordValue).then((res) => {
         const success = res.success;
         if (success) {
           history.replace({ pathname: "/" });
         }
       });
-    }
+    },
+    []
   );
   return (
     <div className={styles.main}>
@@ -54,7 +55,7 @@ export function RegisterPage() {
               value={valueEmail}
               name={"email"}
               size={"default"}
-              icon={"undefined"}
+              icon={undefined}
             />
           </div>
           <div className={`${styles.input} mb-6 mt-6`}>
@@ -71,7 +72,7 @@ export function RegisterPage() {
         </form>
 
         <p className="mb-4 text text_type_main-default text_color_inactive">
-          Уже зарегистрированы?{" "}
+          Уже зарегистрированы?
           <Link
             to="/login"
             href="#"
@@ -83,4 +84,4 @@ export function RegisterPage() {
       </div>
     </div>
   );
-}
+};

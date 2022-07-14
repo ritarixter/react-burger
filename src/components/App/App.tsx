@@ -13,7 +13,7 @@ import { ForgotPassPage } from "../../pages/ForgotPassPage/ForgotPassPage";
 import { ResetPassPage } from "../../pages/ResetPassPage/ResetPassPage";
 import { ProfilePage } from "../../pages/ProfilePage/ProfilePage";
 import { NotFound404 } from "../../pages/NotFound404/NotFound404";
-import { useEffect } from "react";
+import { FC, useEffect } from "react";
 import { getDataUserProfile } from "../../services/actions/profile";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Modal from "../Modal/Modal";
@@ -25,14 +25,12 @@ import Preloader from "../Preloader/Preloader";
 import { ProfileOrderPage } from "../../pages/ProfileOrderPage/ProfileOrderPage";
 import { CardDetails } from "../CardDetails/CardDetails";
 import { useDispatch, useSelector } from "../../utils/hooks";
-import { Location } from 'history';
+import { ILocationState } from "../../utils/types";
 
-
-function App() {
+const App: FC = () => {
   const error = useSelector(
-    (state) => state.ingredientsReducer.ingredientsFailed 
+    (state) => state.ingredientsReducer.ingredientsFailed
   );
-
   useEffect(() => {
     dispatch(getIngredientsData());
     if (getCookie("accessToken")) {
@@ -42,19 +40,8 @@ function App() {
     }
   }, []);
 
- interface ILocationState extends Location {
-    from: {
-      pathname: string;
-      state: object;
-      search: string;
-      hash: string;
-      key: string;
-    };
-    background?: Location;
-  }
   const dispatch = useDispatch();
-  const location = useLocation<ILocationState>()
-
+  const location = useLocation<ILocationState>();
   const background = location.state && location.state?.background;
 
   return (
@@ -136,9 +123,7 @@ function App() {
           {background && (
             <reactRouterDom.Switch>
               <reactRouterDom.Route path="/ingredients/:id">
-                <Modal
-                  title="Детали заказа"
-                >
+                <Modal title="Детали заказа">
                   <IngredientDetails />
                 </Modal>
               </reactRouterDom.Route>
@@ -148,11 +133,10 @@ function App() {
           {background && (
             <reactRouterDom.Switch>
               <reactRouterDom.Route path="/profile/orders/:id" exact={true}>
-              <ProtectedRoute anonymous={true}>
-                <Modal
-                >
-                  <CardDetails />    
-                </Modal>
+                <ProtectedRoute anonymous={true}>
+                  <Modal>
+                    <CardDetails />
+                  </Modal>
                 </ProtectedRoute>
               </reactRouterDom.Route>
             </reactRouterDom.Switch>
@@ -161,8 +145,7 @@ function App() {
           {background && (
             <reactRouterDom.Switch>
               <reactRouterDom.Route path="/feed/:id" exact={true}>
-                <Modal
-                >
+                <Modal>
                   <CardDetails />
                 </Modal>
               </reactRouterDom.Route>
@@ -172,6 +155,6 @@ function App() {
       )}
     </>
   );
-}
+};
 
 export default App;
