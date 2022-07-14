@@ -1,8 +1,8 @@
-import { IWsActionsWithAuth } from '../store';
+import { AppDispatch, IWsActionsWithAuth, RootState } from '../store';
 import { Middleware, MiddlewareAPI } from 'redux';
 
 export const socketMiddleware = (wsUrl:string, wsActions:IWsActionsWithAuth): Middleware => {
-  return (store: MiddlewareAPI) => {
+  return (store: MiddlewareAPI<AppDispatch, RootState>) => {
     let socket: WebSocket | null = null;
 
   return next => action => {
@@ -18,8 +18,8 @@ export const socketMiddleware = (wsUrl:string, wsActions:IWsActionsWithAuth): Mi
         dispatch({ type: wsActions.onOpen, payload: event });
       };
 
-      socket.onerror = event => {
-        dispatch({ type: wsActions.onError, payload: event });
+      socket.onerror = () => {
+        dispatch({type: wsActions.onError});
       };
 
       socket.onmessage = event => {
@@ -27,8 +27,8 @@ export const socketMiddleware = (wsUrl:string, wsActions:IWsActionsWithAuth): Mi
         dispatch({ type: wsActions.onMessage, payload: data });
       };
 
-      socket.onclose = event => {
-        dispatch({ type: wsActions.onClose, payload: event });
+      socket.onclose = () => {
+        dispatch({ type: wsActions.onClose});
       };
 
       if (type === wsActions.wsSendMessage) {

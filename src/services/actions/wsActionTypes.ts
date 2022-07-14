@@ -39,7 +39,6 @@ interface IWsConnectionStart{
 
 interface IWsConnectionError {
   type: typeof WS_CONNECTION_ERROR;
-  payload: string;
 }
 
 interface IWsConnectionClosed {

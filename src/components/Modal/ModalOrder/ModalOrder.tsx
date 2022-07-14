@@ -19,7 +19,7 @@ export const ModalOrder: FC<IModal> = (props) => {
     dispatch(setOrderClose());
   }
 
-  function closeModalEsc(evt: { key: string }) {
+  function closeModalEsc(evt:KeyboardEvent) {
     if (evt.key === "Escape") {
       dispatch(setOrderClose());
     }

@@ -68,13 +68,12 @@ function BurgerConstructor() {
   });
   const findDraggableElement = useCallback(
     (uid) => {
-      const draggableElement: any = draggableElements.find(
-        //Если убрать any, то ошибка,и я не могу понять почему
+      const draggableElement = draggableElements.find(
         (item) => item.uid === uid
       );
       return {
         draggableElement,
-        draggableElementIndex: draggableElements.indexOf(draggableElement),
+        draggableElementIndex: draggableElements.indexOf(draggableElement!),
       };
     },
     [draggableElements]

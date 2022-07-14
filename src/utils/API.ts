@@ -2,11 +2,7 @@ import { getCookie } from "./getCookie";
 import { setCookie } from "./setCookie";
 const url = "https://norma.nomoreparties.space/api";
 
-const responseCheck = (res: {
-  ok: boolean;
-  json: () => any;
-  status: number;
-}) => {
+const responseCheck = (res: Response) => {
   if (res.ok) {
     return res.json();
   } else {

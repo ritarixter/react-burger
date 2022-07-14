@@ -21,7 +21,7 @@ export const Modal: FC<IModal> = (props) => {
     dispatch(setOrderClose());
   }
 
-  function closeModalEsc(evt: { key: string }) {
+  function closeModalEsc(evt:KeyboardEvent) {
     if (evt.key === "Escape") {
       history.goBack();
       dispatch(setOrderClose());

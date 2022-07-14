@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "../../utils/hooks";
 import {
   WS_AUTH_CONNECTION_START,
   WS_AUTH_CONNECTION_CLOSED,
+  WS_CONNECTION_CLOSED,
 } from "../../services/actions/wsActionTypes";
 import { getCookie } from "../../utils/getCookie";
 import { FC, useEffect } from "react";
@@ -20,7 +21,7 @@ export const ProfileOrderPage: FC = () => {
     });
 
     return () => {
-      dispatch({ type: WS_AUTH_CONNECTION_CLOSED });
+      dispatch({ type: WS_CONNECTION_CLOSED });
     };
   }, [dispatch]);
 

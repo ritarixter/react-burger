@@ -46,7 +46,6 @@ export const wsReducer = (
     case WS_AUTH_CONNECTION_ERROR:
       return {
         ...state,
-        error: action.payload,
         wsConnectedAuth: false,
       };
 
@@ -60,7 +59,6 @@ export const wsReducer = (
     case WS_CONNECTION_ERROR:
       return {
         ...state,
-        error: action.payload,
         wsConnected: false,
       };
 
