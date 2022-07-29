@@ -1,0 +1,36 @@
+.menu__item{
+  color: #8585ad;
+  text-decoration: none;
+  transition: color .2s ease-in-out;
+}
+
+.menu__item:hover{
+  color: #fff;
+}
+
+.menu__item_active{
+  color: #fff;
+}
+
+.list{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  width: 320px;
+}
+
+.list__item{
+  padding-top: 22px;
+  padding-bottom: 22px;
+  box-sizing: border-box;
+}
+
+.list__item:last-child{
+  padding-bottom: 0;
+}
+
+
+.paragraph{
+  opacity: .4;
+  width: 320px;
+}
